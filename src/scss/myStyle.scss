@@ -1,0 +1,87 @@
+$primary: #262B40;
+$secondary: #61DAFB;
+@mixin flexCenter($direction) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
+
+@mixin imageWithTextContainer($textColor) {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding-left: 100px;
+    padding-right: 100px;
+    color: $textColor;
+}
+
+.headerBlack {
+    margin-bottom: 1em;
+    color: black;
+    text-align: center;
+}
+
+.headerWhite {
+    margin-bottom: 1em;
+    color: white;
+    text-align: center;
+}
+
+
+.textJustify {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.imageWithTextContainer  {
+    @include imageWithTextContainer(white)
+}
+
+.textOverImageContainer {
+    position: absolute;
+}
+
+.textWhite {
+    color: white;
+}
+
+.textWhiteBold {
+    color: white;
+    font-weight: bold;
+}
+
+.textBlackBold {
+    color: black;
+    font-weight: bold;
+}
+
+.textBlack {
+    color: black;
+}
+
+.bgWhite {
+    background-color: white;
+}
+
+.bgPrimary {
+    background-color: $primary ;
+}
+
+.bgSecondary {
+    background-color: $secondary;
+}
+
+.arrow {
+    @include flexCenter(column);
+    color: white
+}
+
+.fullHeight {
+    height: 100%;
+}
