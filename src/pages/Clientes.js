@@ -5,7 +5,11 @@ import { Row, Button, ButtonGroup } from "@themesberg/react-bootstrap";
 import { TablaClientes } from "../components/TablaClientes";
 import { Routes } from "../constants/routes";
 
+import { useDispatch, useSelector } from "react-redux";
+
 export const Clientes = () => {
+  const { usuarios } = useSelector((state) => state.usuarios);
+
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -30,7 +34,7 @@ export const Clientes = () => {
         <Row className="justify-content-between align-items-center"></Row>
       </div>
 
-      <TablaClientes />
+      <TablaClientes usuarios={usuarios} />
     </>
   );
 };

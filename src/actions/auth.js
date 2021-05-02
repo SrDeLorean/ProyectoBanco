@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { firebase, db } from "../api/firebase-config";
 import { types } from "../constants/types";
 import { startLoading, finishLoading } from "./ui";
+import { crearCuenta } from "./cuentas";
 
 export const startLoginEmailPassword = (email, password) => {
   return (dispatch) => {
@@ -12,7 +13,8 @@ export const startLoginEmailPassword = (email, password) => {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(({ user }) => {
-        dispatch(login(user.uid, user.displayName));
+        console.log(user);
+        dispatch(login(user.uid, user.displayName, user.phoneNumber));
 
         dispatch(finishLoading());
       })
@@ -28,7 +30,8 @@ export const startRegisterWithEmailPasswordName = async (
   email,
   password,
   name,
-  datos
+  datos,
+  cuentas
 ) => {
   return (dispatch) => {
     dispatch(startLoading());
@@ -38,40 +41,39 @@ export const startRegisterWithEmailPasswordName = async (
       .then(async ({ user }) => {
         await user.updateProfile({ displayName: name });
         console.log(user);
-
-        await db
-          .collection("Usuarios")
-          .doc(user.uid)
-          .set(datos)
-          .then()
-          .catch((e) => {
-            console.log(e);
-            dispatch(finishLoading());
-
-            Swal.fire("Error", e.message, "error");
-          });
+        const uidUsuario = user.uid;
 
         await firebase.auth().signOut();
 
         await firebase
           .auth()
-          .signInWithEmailAndPassword("ian@gmail.com", "123456");
+          .signInWithEmailAndPassword("admin@gmail.com", "123456");
 
-        //dispatch(login(user.uid, user.displayName));
+        await db
+          .collection("Usuarios")
+          .doc(uidUsuario)
+          .set(datos)
+          .then(async () => {
+            dispatch(finishLoading());
+          })
+          .catch((e) => {
+            Swal.fire("Error usuario", e.message, "error");
+          });
+
+        await dispatch(crearCuenta(uidUsuario, cuentas));
       })
       .catch((e) => {
-        console.log(e);
-
-        Swal.fire("Error", e.message, "error");
+        Swal.fire("Error create", e.message, "error");
       });
   };
 };
 
-export const login = (uid, displayName) => ({
+export const login = (uid, displayName, rol) => ({
   type: types.login,
   payload: {
     uid,
     displayName,
+    rol,
   },
 });
 

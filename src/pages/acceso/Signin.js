@@ -23,14 +23,15 @@ export default () => {
   const { loading } = useSelector((state) => state.ui);
 
   const [formValues, handleInputChange] = useForm({
-    email: "ian@gmail.com",
-    password: "123456",
+    email: "",
+    password: "",
   });
 
   const { email, password } = formValues;
 
   const handleLogin = (e) => {
     e.preventDefault();
+    console.log(email, password);
     dispatch(startLoginEmailPassword(email, password));
   };
 
@@ -61,6 +62,7 @@ export default () => {
                         autoFocus
                         required
                         type="email"
+                        name="email"
                         placeholder="example@email.com"
                         onChange={handleInputChange}
                       />
@@ -76,6 +78,7 @@ export default () => {
                         <Form.Control
                           required
                           type="password"
+                          name="password"
                           placeholder="Password"
                           onChange={handleInputChange}
                         />

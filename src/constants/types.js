@@ -7,4 +7,12 @@ export const types = {
 
   uiStartLoading: "[UI] Start loading",
   uiFinishLoading: "[UI] Finish loading",
+
+  nuevoUsuario: "[Usuarios] nuevo usuario",
+  cargarUsuarios: "[Usuarios] Cargar usuarios",
+  editarUsuario: "[Usuarios] Editar usuario",
+  eliminarUsuario: "[Usuarios] Eliminar usuario",
+
+  cargarCuentas: "[Cuentas] cargar cuentas",
+  editarCuentas: "[Cuentas] Editar cuentas",
 };

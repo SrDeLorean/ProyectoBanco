@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 
-import { firebase } from "../api/firebase-config";
+import { db, firebase } from "../api/firebase-config";
 import { AuthRouter } from "./AuthRouter";
 import { PrivateRoute } from "./PrivateRoute";
 
@@ -12,6 +12,8 @@ import { PublicRoute } from "./PublicRoute";
 import { HomeRoutes } from "./HomeRoutes";
 
 import Preloader from "../components/Preloader";
+import { cargarUsuariosBD } from "../actions/usuarios";
+import { cargarCuentasBD } from "../actions/cuentas";
 
 export const AppRouter = () => {
   const dispatch = useDispatch();
@@ -22,10 +24,28 @@ export const AppRouter = () => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
       if (user?.uid) {
-        dispatch(login(user.uid, user.displayName));
+        dispatch(login(user.uid, user.displayName, user.phoneNumber));
         setIsLoggedIn(true);
       } else {
         setIsLoggedIn(false);
+      }
+
+      if (user?.uid) {
+        await db
+          .collection("Usuarios")
+          .doc(user.uid)
+          .get()
+          .then((doc) => {
+            if (doc.data().rol === "admin") {
+              console.log("usario admin");
+              dispatch(cargarUsuariosBD());
+              dispatch(cargarCuentasBD());
+            } else {
+            }
+          })
+          .catch((error) => {
+            console.log("Error getting document:", error);
+          });
       }
 
       setChecking(false);

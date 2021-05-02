@@ -26,17 +26,11 @@ import {
 import { Routes } from "../../constants/routes";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useForm } from "../../hooks/useForm";
-import { removeError, setError } from "../../actions/ui";
-import {
-  startRegisterWithEmailPasswordName,
-  startLogout,
-  startLoginEmailPassword,
-} from "../../actions/auth";
-import { firebase } from "../../api/firebase-config";
+import { startRegisterWithEmailPasswordName } from "../../actions/auth";
 
 export const CrearCliente = () => {
   const dispatch = useDispatch();
-  const { msgError, loading } = useSelector((state) => state.ui);
+  const { loading } = useSelector((state) => state.ui);
 
   const [check, setCheck] = React.useState({
     checkCorriente: false,
@@ -71,12 +65,10 @@ export const CrearCliente = () => {
     if (nombre.trim().length === 0) {
       Swal.fire("Error", "nombre vacio", "error");
 
-      dispatch(setError("Nombre Cliente vacio"));
       return false;
     } else if (!validator.isEmail(email)) {
       Swal.fire("Error", "Email no valido", "error");
 
-      dispatch(setError("Email no valido"));
       return false;
     } else if (password.length <= 5) {
       Swal.fire(
@@ -85,16 +77,13 @@ export const CrearCliente = () => {
         "error"
       );
 
-      dispatch(setError("La contraseña debe ser de 6 caracteres o mas"));
       return false;
     } else if (rut.trim().length === 0) {
       Swal.fire("Error", "Rut de cliente vacio", "error");
 
-      dispatch(setError("RUT vacio"));
       return false;
     } else if (!validarRUT(rut)) {
       Swal.fire("Error", "Rut de cliente invalido", "error");
-      dispatch(setError("Rut invalido"));
       return false;
     }
     if (check.checkCorriente) {
@@ -104,9 +93,7 @@ export const CrearCliente = () => {
           "El saldo de la cuenta corriente debe ser mayor a 0",
           "error"
         );
-        dispatch(
-          setError("El saldo de la cuenta corriente debe ser mayor a 0")
-        );
+
         return false;
       }
     }
@@ -117,11 +104,6 @@ export const CrearCliente = () => {
           "El saldo de la cuenta de ahorro debe ser mayor a 0",
           "error"
         );
-
-        dispatch(
-          setError("El saldo de la cuenta de ahorro debe ser mayor a 0")
-        );
-
         return false;
       }
     }
@@ -132,15 +114,10 @@ export const CrearCliente = () => {
           "El saldo de la tarjeta de credito debe ser mayor a 0",
           "error"
         );
-        dispatch(
-          setError("El saldo de la tarjeta de credito debe ser mayor a 0")
-        );
 
         return false;
       }
     }
-    dispatch(removeError());
-
     return true;
   };
 
@@ -150,10 +127,12 @@ export const CrearCliente = () => {
       [e.target.name]: e.target.checked,
     });
 
-    console.log(([e.target.name], e.target.checked));
+    console.log(e.target.name, e.target.checked);
   };
 
   const handleRegister = async (e) => {
+    e.preventDefault();
+
     if (isFormValid()) {
       const datos = {
         //podria ir el rut aqui como id
@@ -163,13 +142,26 @@ export const CrearCliente = () => {
         correo: email,
         rol: "normal",
         cuentas: {
-          corriente: "00000000000",
-          ahorro: "0000000",
-          credito: "000000000",
+          corriente: 0,
+          ahorro: 0,
+          credito: 0,
         },
       };
+
+      const cuentas = {
+        saldoCuentaCorriente,
+        saldoTarjetaCredito,
+        saldoCuentaAhorro,
+        check,
+      };
       dispatch(
-        await startRegisterWithEmailPasswordName(email, password, nombre, datos)
+        await startRegisterWithEmailPasswordName(
+          email,
+          password,
+          nombre,
+          datos,
+          cuentas
+        )
       );
     }
   };
