@@ -13,9 +13,13 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Preloader from "../components/Preloader";
+import { useSelector } from "react-redux";
+import { Inicio } from "../pages/Inicio";
 
 export const HomeRoutes = () => {
   const [loaded, setLoaded] = useState(false);
+
+  const { rol } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 1000);
@@ -27,7 +31,7 @@ export const HomeRoutes = () => {
   };
 
   const [showSettings, setShowSettings] = useState(
-    localStorageIsSettingsVisible
+    localStorageIsSettingsVisible,
   );
 
   const toggleSettings = () => {
@@ -38,20 +42,34 @@ export const HomeRoutes = () => {
   return (
     <>
       <Preloader show={loaded ? false : true} />
-      <Sidebar />
+      <Sidebar rol={rol} />
 
       <main className="content">
         <Navbar />
-        <Switch>
-          {/* pages */}
+        {rol ? (
+          rol == "admin" ? (
+            <Switch>
+              {/* pages */}
 
           <Route exact path={Routes.Clientes.path} component={Clientes} />
           <Route exact path={Routes.CrearCliente.path} component={CrearCliente}/>
           <Route exact path={Routes.EditarCliente.path} component={EditarCliente}/>
           <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
 
-          <Redirect to={Routes.Clientes.path}/>
-        </Switch>
+              <Redirect to={Routes.Clientes.path} />
+            </Switch>
+          ) : (
+            <Switch>
+              {/* pages */}
+
+              <Route exact path={Routes.Inicio.path} component={Inicio} />
+
+              <Redirect to={Routes.Inicio.path} />
+            </Switch>
+          )
+        ) : (
+          <div>Error...</div>
+        )}
 
         <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
       </main>

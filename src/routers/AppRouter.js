@@ -23,29 +23,29 @@ export const AppRouter = () => {
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(async (user) => {
-      if (user?.uid) {
-        dispatch(login(user.uid, user.displayName, user.phoneNumber));
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-
+      var rol = "normal";
       if (user?.uid) {
         await db
           .collection("Usuarios")
           .doc(user.uid)
           .get()
           .then((doc) => {
-            if (doc.data().rol === "admin") {
-              console.log("usario admin");
+            rol = doc.data().rol;
+            if (rol === "admin") {
               dispatch(cargarUsuariosBD());
               dispatch(cargarCuentasBD());
-            } else {
             }
           })
           .catch((error) => {
             console.log("Error getting document:", error);
           });
+      }
+
+      if (user?.uid) {
+        dispatch(login(user.uid, user.displayName, rol));
+        setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
       }
 
       setChecking(false);
