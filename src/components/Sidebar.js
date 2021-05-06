@@ -184,6 +184,22 @@ export default (props = {}) => {
                 link={Routes.Clientes.path}
               />
 
+              {/* Este boton del sidebar te llevara a las transferencias.
+              De momento, te llevara directamente a las transferencias internas, 
+                ya que es lo unico que hay de momento.
+                El enrutamiento esta hecho, solo descomenta.
+              */}
+              {/* <NavItem
+                title="Transferencias"
+                icon={faCog}
+                link={Routes.TransferenciaInterna.path}
+              /> */}
+              
+
+
+
+
+
               {/*<CollapsableNavItem
                 eventKey="tables/"
                 title="Tables"

@@ -6,6 +6,7 @@ import { Routes } from "../constants/routes";
 import { Clientes } from "../pages/Clientes";
 import { CrearCliente } from "../components/Clientes/CrearCliente";
 import { EditarCliente } from "../components/Clientes/EditarCliente";
+import { TransferenciaInterna } from "../components/Clientes/TransferenciaInterna";
 
 // components
 import Sidebar from "../components/Sidebar";
@@ -45,18 +46,11 @@ export const HomeRoutes = () => {
           {/* pages */}
 
           <Route exact path={Routes.Clientes.path} component={Clientes} />
-          <Route
-            exact
-            path={Routes.CrearCliente.path}
-            component={CrearCliente}
-          />
-          <Route
-            exact
-            path={Routes.EditarCliente.path}
-            component={EditarCliente}
-          />
+          <Route exact path={Routes.CrearCliente.path} component={CrearCliente}/>
+          <Route exact path={Routes.EditarCliente.path} component={EditarCliente}/>
+          <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
 
-          <Redirect to={Routes.Clientes.path} />
+          <Redirect to={Routes.Clientes.path}/>
         </Switch>
 
         <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
