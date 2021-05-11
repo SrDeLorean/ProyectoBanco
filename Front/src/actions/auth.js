@@ -12,9 +12,21 @@ export const startLoginEmailPassword = (email, password) => {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        console.log(user);
-        dispatch(login(user.uid, user.displayName, user.phoneNumber));
+      .then(async ({ user }) => {
+        //console.log(user);
+        var rol = "ian";
+        await db
+          .collection("Usuarios")
+          .doc(user.uid)
+          .get()
+          .then((doc) => {
+            if (doc.exists) rol = doc.data().rol;
+            else console.log("document not found");
+          })
+          .catch((e) => {
+            console.log(e.message);
+          });
+        dispatch(login(user.uid, user.displayName, rol));
 
         dispatch(finishLoading());
       })
@@ -31,7 +43,7 @@ export const startRegisterWithEmailPasswordName = async (
   password,
   name,
   datos,
-  cuentas
+  cuentas,
 ) => {
   return (dispatch) => {
     dispatch(startLoading());
@@ -40,7 +52,7 @@ export const startRegisterWithEmailPasswordName = async (
       .createUserWithEmailAndPassword(email, password)
       .then(async ({ user }) => {
         await user.updateProfile({ displayName: name });
-        console.log(user);
+        //console.log(user);
         const uidUsuario = user.uid;
 
         await firebase.auth().signOut();
@@ -82,6 +94,7 @@ export const startLogout = () => {
     await firebase.auth().signOut();
 
     dispatch(logout());
+    window.location.reload();
   };
 };
 
