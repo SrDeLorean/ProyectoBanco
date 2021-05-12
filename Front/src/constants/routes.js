@@ -8,5 +8,8 @@ export const Routes = {
   // Usuarios
   Inicio: { path: "/Inicio" },
 
+  // Usuarios
+  Inicio: { path: "/Inicio" },
+
   Signin: { path: "/auth/login" },
 };
