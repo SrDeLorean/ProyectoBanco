@@ -181,11 +181,7 @@ export default (props = {}) => {
                   icon={faCog}
                   link={Routes.Clientes.path}
                 />
-                {/* <NavItem
-                  title="Transferencias"
-                  icon={faCog}
-                  link={Routes.TransferenciaInterna.path}
-                /> */}
+
 
                 <Dropdown.Divider className="my-3 border-indigo" />
               </Nav>
@@ -195,6 +191,11 @@ export default (props = {}) => {
                   title="Inicio"
                   link={Routes.Clientes.path}
                   image={ReactHero}
+                />
+                <NavItem
+                  title="Transferencias"
+                  icon={faCog}
+                  link={Routes.TransferenciaInterna.path}
                 />
                 <Dropdown.Divider className="my-3 border-indigo" />
 

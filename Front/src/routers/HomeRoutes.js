@@ -20,6 +20,7 @@ export const HomeRoutes = () => {
   const [loaded, setLoaded] = useState(false);
 
   const { rol } = useSelector((state) => state.auth);
+  console.log(rol)
 
   useEffect(() => {
     const timer = setTimeout(() => setLoaded(true), 1000);
@@ -51,20 +52,22 @@ export const HomeRoutes = () => {
             <Switch>
               {/* pages */}
 
-          <Route exact path={Routes.Clientes.path} component={Clientes} />
-          <Route exact path={Routes.CrearCliente.path} component={CrearCliente}/>
-          <Route exact path={Routes.EditarCliente.path} component={EditarCliente}/>
-          <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
+              <Route exact path={Routes.Clientes.path} component={Clientes} />
+
+              <Route exact path={Routes.CrearCliente.path} component={CrearCliente}/>
+              
+              <Route exact path={Routes.EditarCliente.path} component={EditarCliente}/>                
 
               <Redirect to={Routes.Clientes.path} />
             </Switch>
-          ) : (
-            <Switch>
-              {/* pages */}
+            ) : (
+              <Switch>
+                {/* pages */}
 
-              <Route exact path={Routes.Inicio.path} component={Inicio} />
+                <Route exact path={Routes.Inicio.path} component={Inicio} />
+                <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
 
-              <Redirect to={Routes.Inicio.path} />
+                <Redirect to={Routes.Inicio.path} />
             </Switch>
           )
         ) : (
