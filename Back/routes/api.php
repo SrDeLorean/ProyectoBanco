@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\TransferenciasController;
 use App\Http\Controllers\UsuarioController;
 
 /*
@@ -41,6 +42,10 @@ Route::group(['middleware' => 'api'], function(){
     Route::post('usuarios', [UsuarioController::class, 'store']);
     Route::put('usuarios/{id}', [UsuarioController::class, 'update']);
     Route::delete('usuarios/{id}', [UsuarioController::class, 'delete']);
+
+    // Rutas Transferencias
+    Route::get('transferencias/internas', [TransferenciasController::class, 'getInt']);
+    Route::post('transferencias/internas', [TransferenciasController::class, 'storeInt']);
 
     // Rutas CRUD de Productos
     Route::resource('productos', ProductoController::class);
