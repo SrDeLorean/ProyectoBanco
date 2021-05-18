@@ -1,11 +1,22 @@
+import axios from "axios";
 import { firebase, db } from "../api/firebase-config";
+import { api } from "../constants/api";
 import { types } from "../constants/types";
 import { finishLoading, startLoading } from "./ui";
 
 export const cargarCuentasBD = () => {
   return async (dispatch, getState) => {
     const cuentas = [];
-    db.collection("Cuentas")
+
+    await axios
+      .get(api.route + "/transferencias/internas")
+      .then((resp) => {
+        //console.log(resp);
+      })
+      .catch((e) => {
+        // console.log(e);
+      });
+    /*db.collection("Cuentas")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
@@ -19,7 +30,7 @@ export const cargarCuentasBD = () => {
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
-      });
+      });*/
   };
 };
 
@@ -57,7 +68,7 @@ export const crearCuenta = (uidUsuario, cuentas) => {
         uidUsuario,
         numeroAhorro,
         "ahorro",
-        saldoCuentaAhorro
+        saldoCuentaAhorro,
       );
     }
 
@@ -72,7 +83,7 @@ export const crearCuenta = (uidUsuario, cuentas) => {
         uidUsuario,
         numeroCorriente,
         "corriente",
-        saldoCuentaCorriente
+        saldoCuentaCorriente,
       );
     }
 
@@ -88,7 +99,7 @@ export const crearCuenta = (uidUsuario, cuentas) => {
         uidUsuario,
         numeroCredito,
         "credito",
-        saldoTarjetaCredito
+        saldoTarjetaCredito,
       );
     }
   };
@@ -118,7 +129,7 @@ const crearCuentaIndividual = async (
   uidUsuario,
   numeroCuenta,
   tipoCuenta,
-  saldo
+  saldo,
 ) => {
   let cuenta = {
     tipo: tipoCuenta,
@@ -188,7 +199,7 @@ export const editarCuenta = (uidUsuario, cuentas, numerosCuenta) => {
           uidUsuario,
           numeroAhorro,
           "ahorro",
-          saldoCuentaAhorro
+          saldoCuentaAhorro,
         );
       } else {
         await actualizarCuenta(numerosCuenta.ahorro, {
@@ -215,7 +226,7 @@ export const editarCuenta = (uidUsuario, cuentas, numerosCuenta) => {
           uidUsuario,
           numeroCorriente,
           "corriente",
-          saldoCuentaCorriente
+          saldoCuentaCorriente,
         );
       } else {
         await actualizarCuenta(numerosCuenta.corriente, {
@@ -243,7 +254,7 @@ export const editarCuenta = (uidUsuario, cuentas, numerosCuenta) => {
           uidUsuario,
           numeroCredito,
           "credito",
-          saldoTarjetaCredito
+          saldoTarjetaCredito,
         );
       } else {
         await actualizarCuenta(numerosCuenta.credito, {
