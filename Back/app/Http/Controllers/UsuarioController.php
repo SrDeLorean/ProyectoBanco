@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CuentaAhorro;
+use App\Models\CuentaCorriente;
+use App\Models\CuentaCredito;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -29,10 +32,14 @@ class UsuarioController extends Controller
     public function store(Request $request){
         try{
             $validador = Validator::make($request->all(), [
+                'rut' => 'required',
                 'nombre' => 'required',
                 'email' => 'required',
                 'rol' => 'required',
-                'password' => 'required'
+                'password' => 'required',
+                'cuenta_corriente' => 'required|integer',
+                'cuenta_ahorro' => 'required|integer',
+                'cuenta_credito' => 'required|integer'
             ]);
 
             if($validador->fails()){
@@ -43,11 +50,30 @@ class UsuarioController extends Controller
             }
 
             $user = new User();
+            $user->rut = $request->rut;
             $user->nombre = $request->nombre;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->rol = $request->rol;
             $user->save();
+            if($request->cuenta_corriente > 0){
+                $cuenta = new CuentaCorriente();
+                $cuenta->saldo = $request->cuenta_corriente;
+                $cuenta->cliente_id = $user->id;
+                $cuenta->save();
+            }
+            if($request->cuenta_ahorro > 0){
+                $cuenta = new CuentaAhorro();
+                $cuenta->saldo = $request->cuenta_ahorro;
+                $cuenta->cliente_id = $user->id;
+                $cuenta->save();
+            }
+            if($request->cuenta_credito > 0){
+                $cuenta = new CuentaCredito();
+                $cuenta->saldo = $request->cuenta_credito;
+                $cuenta->cliente_id = $user->id;
+                $cuenta->save();
+            }
 
             return response()->json([
                 'status' => 200,
@@ -57,7 +83,8 @@ class UsuarioController extends Controller
         }catch(Exception $ex){
             return response()->json([
                 'status' => 500,
-                'msg' => 'Hubo un error al crear el usuario.'
+                'msg' => 'Hubo un error al crear el usuario.',
+                'error' => $ex
             ]);
         }
     }
@@ -65,10 +92,14 @@ class UsuarioController extends Controller
     public function update(Request $request, $id){
         try{
             $validador = Validator::make($request->all(), [
+                'rut' => 'required',
                 'nombre' => 'required',
                 'email' => 'required',
                 'rol' => 'required',
-                'password' => 'required'
+                'password' => 'required',
+                'cuenta_corriente' => 'required|integer',
+                'cuenta_ahorro' => 'required|integer',
+                'cuenta_credito' => 'required|integer'
             ]);
 
             if($validador->fails()){
@@ -80,10 +111,27 @@ class UsuarioController extends Controller
 
             $user = User::findOrFail($id);
             $user->nombre = $request->nombre;
+            $user->rut = $request->rut;
             $user->email = $request->email;
             $user->password = bcrypt($request->password);
             $user->rol = $request->rol;
             $user->save();
+
+            if($request->cuenta_corriente > 0){
+                $cuenta = $user->cuentaCorriente()->first();
+                $cuenta->saldo = $request->cuenta_corriente;
+                $cuenta->save();
+            }
+            if($request->cuenta_ahorro > 0){
+                $cuenta = $user->cuentaAhorro()->first();
+                $cuenta->saldo = $request->cuenta_ahorro;
+                $cuenta->save();
+            }
+            if($request->cuenta_credito > 0){
+                $cuenta = $user->cuentaCredito()->first();
+                $cuenta->saldo = $request->cuenta_credito;
+                $cuenta->save();
+            }
 
             return response()->json([
                 'status' => 200,

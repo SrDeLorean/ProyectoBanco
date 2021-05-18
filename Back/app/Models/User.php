@@ -64,4 +64,16 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    public function cuentaCorriente(){
+        return $this->hasOne(CuentaCorriente::class);
+    }
+
+    public function cuentaAhorro(){
+        return $this->hasOne(CuentaAhorro::class);
+    }
+
+    public function cuentaCredito(){
+        return $this->hasOne(CuentaCredito::class);
+    }
 }
