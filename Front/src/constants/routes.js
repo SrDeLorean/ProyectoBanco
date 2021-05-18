@@ -3,6 +3,7 @@ export const Routes = {
   Clientes: { path: "/Clientes" },
   CrearCliente: { path: "/Crear-cliente" },
   EditarCliente: { path: "/Editar-cliente/:id" },
+  TransferenciaInterna: { path: "/TransferenciaInterna"},
 
   // Usuarios
   Inicio: { path: "/Inicio" },

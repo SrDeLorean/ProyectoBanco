@@ -48,35 +48,20 @@ export const startRegisterWithEmailPasswordName = async (
 ) => {
   return (dispatch) => {
     dispatch(startLoading());
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(async ({ user }) => {
-        await user.updateProfile({ displayName: name });
-        //console.log(user);
-        const uidUsuario = user.uid;
 
-        await firebase.auth().signOut();
-
-        await firebase
-          .auth()
-          .signInWithEmailAndPassword("admin@gmail.com", "123456");
-
-        await db
-          .collection("Usuarios")
-          .doc(uidUsuario)
-          .set(datos)
-          .then(async () => {
-            dispatch(finishLoading());
-          })
-          .catch((e) => {
-            Swal.fire("Error usuario", e.message, "error");
-          });
-
-        await dispatch(crearCuenta(uidUsuario, cuentas));
+    const datos = {
+      email:email,
+      password:password,
+      nombre:name,
+      rol: "user",
+    }
+    axios.post(api.route + "/usuarios", datos)
+      .then(resp => {
+        console.log(resp)
+        dispatch(finishLoading());
       })
-      .catch((e) => {
-        Swal.fire("Error create", e.message, "error");
+      .catch(err => {
+          console.log(err)
       });
   };
 };

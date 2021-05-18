@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\UsuarioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,22 @@ Route::group([
     Route::post('logout', [AuthController::class, "logout"]);
     Route::post('refresh', [AuthController::class, "refresh"]);
     Route::get('me', [AuthController::class, "me"]);
+
+
+
 });
 
-Route::resource('productos', ProductoController::class);
+Route::group(['middleware' => 'api'], function(){
+    // Rutas CRUD de Usuario
+    Route::get('usuarios', [UsuarioController::class, 'showAll']);
+    Route::get('usuarios/{id}', [UsuarioController::class, 'show']);
+    Route::post('usuarios', [UsuarioController::class, 'store']);
+    Route::put('usuarios/{id}', [UsuarioController::class, 'update']);
+    Route::delete('usuarios/{id}', [UsuarioController::class, 'delete']);
+
+    // Rutas CRUD de Productos
+    Route::resource('productos', ProductoController::class);
+
+});
+
+

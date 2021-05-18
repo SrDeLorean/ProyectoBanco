@@ -22,15 +22,16 @@ const datos = [
   },
 ];
 export const TablaClientes = (props) => {
+  console.log(props)
   const TableRow = (props) => {
-    const { Id, nombre, rut } = props;
+    const { id, nombre, email } = props;
     return (
       <tr>
         <td>
           <span className="fw-normal">{nombre}</span>
         </td>
         <td>
-          <span className="fw-normal">{rut}</span>
+          <span className="fw-normal">{email}</span>
         </td>
 
         <td>
@@ -46,7 +47,7 @@ export const TablaClientes = (props) => {
               </span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href={`/Editar-cliente/${Id}`}>
+              <Dropdown.Item href={`/Editar-cliente/${id}`}>
                 <FontAwesomeIcon icon={faEdit} className="me-2" /> Editar
               </Dropdown.Item>
               <Dropdown.Item className="text-danger">
@@ -70,12 +71,12 @@ export const TablaClientes = (props) => {
             <thead>
               <tr>
                 <th className="border-bottom">Nombre Completo</th>
-                <th className="border-bottom">Rut</th>
+                <th className="border-bottom">Email</th>
               </tr>
             </thead>
             <tbody>
               {props.usuarios.map((t) => (
-                <TableRow key={`transaction-${t.Id}`} {...t} />
+                <TableRow key={`transaction-${t.id}`} {...t} />
               ))}
             </tbody>
           </Table>

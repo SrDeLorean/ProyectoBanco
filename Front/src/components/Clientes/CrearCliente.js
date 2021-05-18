@@ -159,8 +159,9 @@ export const CrearCliente = () => {
           email,
           password,
           nombre,
-          datos,
-          cuentas
+          rut,
+          // datos,
+          // cuentas
         )
       );
     }
