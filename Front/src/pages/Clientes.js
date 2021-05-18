@@ -1,15 +1,31 @@
 import React from "react";
-
+import { useState, useEffect } from 'react'
 import { Row, Button, ButtonGroup } from "@themesberg/react-bootstrap";
 
 import { TablaClientes } from "../components/TablaClientes";
 import { Routes } from "../constants/routes";
 
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { api } from "./../constants/api.js";
+import { Link } from "react-router-dom";
+
 
 export const Clientes = () => {
-  const { usuarios } = useSelector((state) => state.usuarios);
+  //const { usuarios } = useSelector((state) => state.usuarios);
+  const [usuarios, setUsuarios] = useState([])
 
+  const getUsuarios = () => {
+    axios.get(api.route + "/usuarios")
+      .then(resp => {
+          setUsuarios(resp.data)
+      })
+      .catch(err => {
+          console.log(err)
+      });
+  }
+  useEffect(getUsuarios, [])
+  
   return (
     <>
       <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
@@ -19,13 +35,14 @@ export const Clientes = () => {
         </div>
         <div className="btn-toolbar mb-2 mb-md-0">
           <ButtonGroup>
-            <Button
-              variant="outline-primary"
-              size="sm"
-              href={Routes.CrearCliente.path}
-            >
-              Nuevo Cliente
-            </Button>
+            <Link to={Routes.CrearCliente.path}>
+              <Button
+                variant="outline-primary"
+                size="sm"
+              >
+                Nuevo Cliente
+              </Button>
+            </Link>
           </ButtonGroup>
         </div>
       </div>
@@ -37,4 +54,6 @@ export const Clientes = () => {
       <TablaClientes usuarios={usuarios} />
     </>
   );
+
+
 };

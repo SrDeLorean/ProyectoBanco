@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCog,
+  faSearch,
+  faSignOutAlt,
+} from "@fortawesome/free-solid-svg-icons";
 import { faUserCircle, faUser } from "@fortawesome/free-regular-svg-icons";
 import {
   Row,
@@ -15,6 +19,7 @@ import {
   Container,
   ListGroup,
   InputGroup,
+  Button,
 } from "@themesberg/react-bootstrap";
 
 import { startLogout } from "../actions/auth";
@@ -48,23 +53,16 @@ export default (props) => {
             <Dropdown as={Nav.Item}>
               <Dropdown.Toggle as={Nav.Link} className="pt-1 px-0">
                 <div className="media d-flex align-items-center">
-                  <FontAwesomeIcon icon={faUser} color="#123454" />
+                  <Button variant="light">
+                    <FontAwesomeIcon icon={faCog} color="#123454" />
 
-                  <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
-                    <span className="mb-0 font-small fw-bold">
-                      Nombre Usuario
-                    </span>
-                  </div>
+                    <div className="media-body ms-2 text-dark align-items-center d-none d-lg-block">
+                      <span className="mb-0 font-small fw-bold">Options</span>
+                    </div>
+                  </Button>
                 </div>
               </Dropdown.Toggle>
               <Dropdown.Menu className="user-dropdown dropdown-menu-right mt-2">
-                <Dropdown.Item className="fw-bold" href={Routes.Clientes.path}>
-                  <FontAwesomeIcon icon={faUserCircle} className="me-2" />{" "}
-                  Perfil
-                </Dropdown.Item>
-
-                <Dropdown.Divider />
-
                 <Dropdown.Item className="fw-bold" onClick={hanleLogout}>
                   <FontAwesomeIcon
                     icon={faSignOutAlt}

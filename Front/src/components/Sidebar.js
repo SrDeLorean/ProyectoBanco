@@ -25,12 +25,22 @@ import { Link } from "react-router-dom";
 import { Routes } from "../constants/routes";
 import ReactHero from "../assets/img/Publicacion/user.png";
 import ProfilePicture from "../assets/img/Publicacion/user.png";
+import { useDispatch } from "react-redux";
+import { startLogout } from "../actions/auth";
 
 export default (props = {}) => {
   const location = useLocation();
   const { pathname } = location;
   const [show, setShow] = useState(false);
   const showClass = show ? "show" : "";
+
+  const { rol } = props;
+
+  const dispatch = useDispatch();
+
+  const hanleLogout = () => {
+    dispatch(startLogout());
+  };
 
   const onCollapse = () => setShow(!show);
 
@@ -146,16 +156,14 @@ export default (props = {}) => {
                   />
                 </div>
                 <div className="d-block">
-                  <h6>Hi, Jane</h6>
                   <Button
-                    as={Link}
                     variant="secondary"
                     size="xs"
-                    to={Routes.Signin.path}
+                    onClick={hanleLogout}
                     className="text-dark"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />{" "}
-                    Sign Out
+                    Logout
                   </Button>
                 </div>
               </div>
@@ -166,62 +174,38 @@ export default (props = {}) => {
                 <FontAwesomeIcon icon={faTimes} />
               </Nav.Link>
             </div>
-            <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem
-                title="Inicio"
-                link={Routes.Clientes.path}
-                image={ReactHero}
-              />
-
-              <NavItem
-                title="Clientes"
-                icon={faUserCircle}
-                link={Routes.Clientes.path}
-              />
-              <NavItem
-                title="Clientes"
-                icon={faCog}
-                link={Routes.Clientes.path}
-              />
-
-              {/*<CollapsableNavItem
-                eventKey="tables/"
-                title="Tables"
-                icon={faTable}
-              >
+            {rol == "admin" ? (
+              <Nav className="flex-column pt-3 pt-md-0">
                 <NavItem
-                  title="Bootstrap Table"
-                  link={Routes.BootstrapTables.path}
+                  title="Clientes"
+                  icon={faCog}
+                  link={Routes.Clientes.path}
                 />
-              </CollapsableNavItem>
-              */}
 
-              <Dropdown.Divider className="my-3 border-indigo" />
 
-              {/*<CollapsableNavItem
-                eventKey="components/"
-                title="Components"
-                icon={faBoxOpen}
-              >
-                <NavItem title="Accordion" link={Routes.Accordions.path} />
-                <NavItem title="Alerts" link={Routes.Alerts.path} />
-                <NavItem title="Badges" link={Routes.Badges.path} />
-                <NavItem title="Breadcrumbs" link={Routes.Breadcrumbs.path} />
-                <NavItem title="Buttons" link={Routes.Buttons.path} />
-                <NavItem title="Forms" link={Routes.Forms.path} />
-                <NavItem title="Modals" link={Routes.Modals.path} />
-                <NavItem title="Navbars" link={Routes.Navbars.path} />
-                <NavItem title="Navs" link={Routes.Navs.path} />
-                <NavItem title="Pagination" link={Routes.Pagination.path} />
-                <NavItem title="Popovers" link={Routes.Popovers.path} />
-                <NavItem title="Progress" link={Routes.Progress.path} />
-                <NavItem title="Tables" link={Routes.Tables.path} />
-                <NavItem title="Tabs" link={Routes.Tabs.path} />
-                <NavItem title="Toasts" link={Routes.Toasts.path} />
-                <NavItem title="Tooltips" link={Routes.Tooltips.path} />
-              </CollapsableNavItem>
-            */}
-            </Nav>
+                <Dropdown.Divider className="my-3 border-indigo" />
+              </Nav>
+            ) : (
+              <Nav className="flex-column pt-3 pt-md-0">
+                <NavItem
+                  title="Inicio"
+                  link={Routes.Clientes.path}
+                  image={ReactHero}
+                />
+                <NavItem
+                  title="Transferencias"
+                  icon={faCog}
+                  link={Routes.TransferenciaInterna.path}
+                />
+                <Dropdown.Divider className="my-3 border-indigo" />
+
+                <NavItem
+                  title="Cuentas"
+                  icon={faCog}
+                  link={Routes.Clientes.path}
+                />
+              </Nav>
+            )}
           </div>
         </SimpleBar>
       </CSSTransition>

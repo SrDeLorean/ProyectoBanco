@@ -31,7 +31,6 @@ export default () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(email, password);
     dispatch(startLoginEmailPassword(email, password));
   };
 
