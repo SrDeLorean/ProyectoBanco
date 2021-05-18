@@ -15,7 +15,7 @@ class CreateTransferenciaInternasTable extends Migration
     {
         Schema::create('transferencia_internas', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('cliente_id');
+            $table->bigInteger('cliente_id')->unsigned();
             $table->integer('tipo_cuenta_origen');
             $table->bigInteger('cuenta_origen');
             $table->integer('tipo_cuenta_destino');

@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'rol' => 'admin',
             'password' => bcrypt('123456'),
+            'rut' => '1-9',
         ]);
 
         User::create([
@@ -26,6 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'user@gmail.com',
             'rol' => 'user',
             'password' => bcrypt('123456'),
+            'rut' => '24251436-k',
         ]);
     }
 }
