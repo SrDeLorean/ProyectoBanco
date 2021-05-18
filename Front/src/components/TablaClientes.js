@@ -13,10 +13,14 @@ import {
   ButtonGroup,
 } from "@themesberg/react-bootstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useDispatch } from "react-redux";
+import { deleteUser } from "../actions/usuarios";
 
 export const TablaClientes = (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
   console.log(props);
+
   const TableRow = (props) => {
     const { id, nombre, email } = props;
     return (
@@ -48,7 +52,12 @@ export const TablaClientes = (props) => {
               >
                 <FontAwesomeIcon icon={faEdit} className="me-2" /> Editar
               </Dropdown.Item>
-              <Dropdown.Item className="text-danger">
+              <Dropdown.Item
+                className="text-danger"
+                onClick={async () => {
+                  dispatch(deleteUser(id));
+                }}
+              >
                 <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
                 Deshabilitar
               </Dropdown.Item>

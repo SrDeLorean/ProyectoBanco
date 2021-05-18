@@ -37,6 +37,21 @@ export const editarUsuario = (id, datos) => {
   };
 };
 
+export const deleteUser = (id) => {
+  return async (dispatch) => {
+    await axios
+      .delete(api.route + "/usuarios/" + id)
+      .then((resp) => {
+        console.log(resp);
+        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
+        else Swal.fire("", resp.data.msg, "error");
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+};
+
 export const cargarUsuarios = (usuarios) => ({
   type: types.cargarUsuarios,
   payload: usuarios,
