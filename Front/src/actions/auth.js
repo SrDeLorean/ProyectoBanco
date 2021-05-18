@@ -5,6 +5,7 @@ import { startLoading, finishLoading } from "./ui";
 import { crearCuenta } from "./cuentas";
 import axios from "axios";
 import { api } from "./../constants/api.js";
+import { cargarUsuariosBD } from "./usuarios";
 
 export const startLoginEmailPassword = (email, password) => {
   return async (dispatch) => {
@@ -50,18 +51,19 @@ export const startRegisterWithEmailPasswordName = async (
     dispatch(startLoading());
 
     const datos = {
-      email:email,
-      password:password,
-      nombre:name,
+      email: email,
+      password: password,
+      nombre: name,
       rol: "user",
-    }
-    axios.post(api.route + "/usuarios", datos)
-      .then(resp => {
-        console.log(resp)
+    };
+    axios
+      .post(api.route + "/usuarios", datos)
+      .then((resp) => {
+        console.log(resp);
         dispatch(finishLoading());
       })
-      .catch(err => {
-          console.log(err)
+      .catch((err) => {
+        console.log(err);
       });
   };
 };
@@ -71,7 +73,7 @@ export const startCheking = () => {
     const user = JSON.parse(sessionStorage.getItem("user"));
 
     if (user?.rol) {
-      //dispatch(cargarUsuariosBD());
+      dispatch(cargarUsuariosBD());
       // dispatch(cargarCuentasBD());
     }
 

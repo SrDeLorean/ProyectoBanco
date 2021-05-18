@@ -38,10 +38,11 @@ export const EditarCliente = () => {
   const { id } = useParams();
 
   const [check, setCheck] = React.useState({});
+  //console.log(usuarios);
 
   const seleccionarUsuario = (id, usuarios) => {
     var usuarioSeleccionado = usuarios.filter(function (usuario) {
-      return usuario.Id == id;
+      return usuario.id == id;
     });
 
     return usuarioSeleccionado[0];
@@ -62,7 +63,7 @@ export const EditarCliente = () => {
       Swal.fire(
         "Error",
         "La contraseña debe ser de 6 caracteres o mas",
-        "error"
+        "error",
       );
 
       return false;
@@ -79,7 +80,7 @@ export const EditarCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta corriente debe ser mayor o igual a 0",
-          "error"
+          "error",
         );
 
         return false;
@@ -90,7 +91,7 @@ export const EditarCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta de ahorro debe ser mayor o igual a 0",
-          "error"
+          "error",
         );
         return false;
       }
@@ -100,7 +101,7 @@ export const EditarCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la tarjeta de credito debe ser mayor o igual a 0",
-          "error"
+          "error",
         );
 
         return false;
@@ -202,7 +203,7 @@ export const EditarCliente = () => {
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   <h3 className="mb-0">Editar cliente</h3>
                 </div>
-                {usuarios && cuentas ? (
+                {usuarios /*&& cuentas*/ ? (
                   <Form className="mt-4">
                     <Form.Group id="rut" className="mb-4">
                       <Form.Label>Rut Cliente</Form.Label>

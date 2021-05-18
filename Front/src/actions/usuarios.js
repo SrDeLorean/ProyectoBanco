@@ -1,4 +1,6 @@
+import axios from "axios";
 import { firebase, db } from "../api/firebase-config";
+import { api } from "../constants/api";
 import { types } from "../constants/types";
 
 export const cargarUsuariosBD = () => {
@@ -6,7 +8,18 @@ export const cargarUsuariosBD = () => {
     ///dispatch(startLoading());
     const userIDAdmin = getState().auth.uid;
     const usuarios = [];
-    db.collection("Usuarios")
+
+    await axios
+      .get(api.route + "/usuarios")
+      .then((resp) => {
+        //console.log(resp.data);
+        dispatch(cargarUsuarios(resp.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    /*db.collection("Usuarios")
       .where("rol", "!=", "admin")
       .get()
       .then((querySnapshot) => {
@@ -23,7 +36,7 @@ export const cargarUsuariosBD = () => {
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
-      });
+      });*/
   };
 };
 
