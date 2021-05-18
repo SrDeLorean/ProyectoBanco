@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 import { firebase, db } from "../api/firebase-config";
 import { api } from "../constants/api";
 import { types } from "../constants/types";
@@ -18,25 +19,21 @@ export const cargarUsuariosBD = () => {
       .catch((err) => {
         console.log(err);
       });
+  };
+};
 
-    /*db.collection("Usuarios")
-      .where("rol", "!=", "admin")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          usuarios.push({
-            Id: doc.id,
-            ...doc.data(),
-          });
-          // doc.data() is never undefined for query doc snapshots
-          //console.log(doc.id, " => ", doc.data());
-        });
-
-        dispatch(cargarUsuarios(usuarios));
+export const editarUsuario = (id, datos) => {
+  return async (dispatch) => {
+    console.log(id, datos);
+    await axios
+      .put(api.route + "/usuarios/" + id, datos)
+      .then((resp) => {
+        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
+        else Swal.fire("", resp.data.msg, "error");
       })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });*/
+      .catch((e) => {
+        console.log(e);
+      });
   };
 };
 

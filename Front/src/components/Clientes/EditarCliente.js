@@ -33,11 +33,18 @@ export const EditarCliente = () => {
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.ui);
   const { usuarios } = useSelector((state) => state.usuarios);
-  const { cuentas } = useSelector((state) => state.cuentas);
+  //const { cuentas } = useSelector((state) => state.cuentas);
 
   const { id } = useParams();
 
-  const [check, setCheck] = React.useState({});
+  const [check, setCheck] = React.useState({
+    checkCorriente: false,
+    checkCredito: false,
+    checkAhorro: false,
+    saldoCuentaCorriente: 0,
+    saldoCuentaAhorro: 0,
+    saldoTarjetaCredito: 0,
+  });
   //console.log(usuarios);
 
   const seleccionarUsuario = (id, usuarios) => {
@@ -45,7 +52,7 @@ export const EditarCliente = () => {
       return usuario.id == id;
     });
 
-    return usuarioSeleccionado[0];
+    return { ...usuarioSeleccionado[0], password: "" };
   };
 
   const [formValues, handleInputChange, reset] = useForm({});
@@ -55,11 +62,11 @@ export const EditarCliente = () => {
       Swal.fire("Error", "nombre vacio", "error");
 
       return false;
-    } else if (!validator.isEmail(formValues.correo)) {
+    } else if (!validator.isEmail(formValues.email)) {
       Swal.fire("Error", "Email no valido", "error");
 
       return false;
-    } else if (formValues.clave.length <= 5) {
+    } else if (formValues.password != "" && formValues.password.length <= 5) {
       Swal.fire(
         "Error",
         "La contraseña debe ser de 6 caracteres o mas",
@@ -76,10 +83,10 @@ export const EditarCliente = () => {
       return false;
     }
     if (check.checkCorriente) {
-      if (check.saldoCuentaCorriente < 0) {
+      if (check.saldoCuentaCorriente <= 0) {
         Swal.fire(
           "Error",
-          "El saldo de la cuenta corriente debe ser mayor o igual a 0",
+          "El saldo de la cuenta corriente debe ser mayor a 0",
           "error",
         );
 
@@ -87,20 +94,20 @@ export const EditarCliente = () => {
       }
     }
     if (check.checkAhorro) {
-      if (check.saldoCuentaAhorro < 0) {
+      if (check.saldoCuentaAhorro <= 0) {
         Swal.fire(
           "Error",
-          "El saldo de la cuenta de ahorro debe ser mayor o igual a 0",
+          "El saldo de la cuenta de ahorro debe ser mayor a 0",
           "error",
         );
         return false;
       }
     }
     if (check.checkCredito) {
-      if (check.saldoTarjetaCredito < 0) {
+      if (check.saldoTarjetaCredito <= 0) {
         Swal.fire(
           "Error",
-          "El saldo de la tarjeta de credito debe ser mayor o igual a 0",
+          "El saldo de la tarjeta de credito debe ser mayor a 0",
           "error",
         );
 
@@ -129,21 +136,26 @@ export const EditarCliente = () => {
 
     if (isFormValid()) {
       const datos = {
-        //podria ir el rut aqui como id
         nombre: formValues.nombre,
-        clave: formValues.clave,
         rut: formValues.rut,
-        correo: formValues.correo,
+        email: formValues.email,
         rol: formValues.rol,
-        cuentas: formValues.cuentas,
+        password: formValues.password,
+
+        cuenta_corriente: check.checkCorriente
+          ? parseInt(check.saldoCuentaCorriente)
+          : 0,
+        cuenta_credito: check.checkCredito
+          ? parseInt(check.saldoTarjetaCredito)
+          : 0,
+        cuenta_ahorro: check.checkAhorro
+          ? parseInt(check.saldoCuentaAhorro)
+          : 0,
       };
 
-      const datosCuentas = {
-        ...check,
-      };
-
-      await dispatch(editarCuenta(id, datosCuentas, formValues.cuentas));
-      window.location.reload();
+      await dispatch(editarUsuario(id, datos));
+      //await dispatch(editarCuenta(id, datosCuentas, formValues.cuentas));
+      //window.location.reload();
     }
   };
 
@@ -178,8 +190,8 @@ export const EditarCliente = () => {
 
   useEffect(() => {
     if (usuarios) reset(seleccionarUsuario(id, usuarios));
-    if (cuentas) setCheck(seleccionarCuentasActivas(id, cuentas));
-  }, [usuarios, cuentas]);
+    //if (cuentas) setCheck(seleccionarCuentasActivas(id, cuentas));
+  }, [usuarios]);
 
   return (
     <main>
@@ -212,7 +224,6 @@ export const EditarCliente = () => {
                         <Form.Control
                           autoFocus
                           required
-                          disabled
                           type="text"
                           name="rut"
                           value={formValues.rut ? formValues.rut : ""}
@@ -228,7 +239,6 @@ export const EditarCliente = () => {
                         <Form.Control
                           autoFocus
                           required
-                          disabled
                           type="text"
                           name="nombre"
                           value={formValues.nombre ? formValues.nombre : ""}
@@ -246,10 +256,9 @@ export const EditarCliente = () => {
                         <Form.Control
                           autoFocus
                           required
-                          disabled
                           type="email"
-                          name="correo"
-                          value={formValues.correo ? formValues.correo : ""}
+                          name="email"
+                          value={formValues.email ? formValues.email : ""}
                           onChange={handleInputChange}
                           placeholder="example@company.com"
                         />
@@ -263,11 +272,10 @@ export const EditarCliente = () => {
                         </InputGroup.Text>
                         <Form.Control
                           required
-                          disabled
                           type="password"
-                          name="clave"
+                          name="password"
                           placeholder="Contraseña"
-                          value={formValues.clave ? formValues.clave : ""}
+                          value={formValues.password ? formValues.password : ""}
                           onChange={handleInputChange}
                         />
                       </InputGroup>
@@ -301,7 +309,7 @@ export const EditarCliente = () => {
                             disabled={!check.checkCorriente ? "disabled" : ""}
                             name="saldoCuentaCorriente"
                             value={
-                              check.saldoCuentaCorriente
+                              check.saldoCuentaCorriente != null
                                 ? check.saldoCuentaCorriente
                                 : 0
                             }
@@ -337,7 +345,7 @@ export const EditarCliente = () => {
                             disabled={!check.checkAhorro ? "disabled" : ""}
                             name="saldoCuentaAhorro"
                             value={
-                              check.saldoCuentaAhorro
+                              check.saldoCuentaAhorro != null
                                 ? check.saldoCuentaAhorro
                                 : 0
                             }
@@ -375,7 +383,7 @@ export const EditarCliente = () => {
                             disabled={!check.checkCredito ? "disabled" : ""}
                             name="saldoTarjetaCredito"
                             value={
-                              check.saldoTarjetaCredito
+                              check.saldoTarjetaCredito != null
                                 ? check.saldoTarjetaCredito
                                 : 0
                             }

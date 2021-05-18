@@ -44,22 +44,28 @@ export const startRegisterWithEmailPasswordName = async (
   email,
   password,
   name,
-  datos,
+  rut,
   cuentas,
 ) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(startLoading());
 
     const datos = {
       email: email,
       password: password,
       nombre: name,
+      rut: rut,
       rol: "user",
+      cuenta_corriente: cuentas.saldoCuentaCorriente,
+      cuenta_ahorro: cuentas.saldoCuentaAhorro,
+      cuenta_credito: cuentas.saldoTarjetaCredito,
     };
-    axios
+
+    await axios
       .post(api.route + "/usuarios", datos)
       .then((resp) => {
-        console.log(resp);
+        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
+        else Swal.fire("", resp.data.msg, "error");
         dispatch(finishLoading());
       })
       .catch((err) => {
@@ -95,9 +101,15 @@ export const login = (uid, displayName, rol, checking) => ({
 
 export const startLogout = () => {
   return async (dispatch) => {
+    await axios
+      .post(api.route + "/logout")
+      .then((resp) => console.log(resp))
+      .catch((err) => {
+        console.log(err);
+      });
     dispatch(logout());
 
-    window.location.reload();
+    //window.location.reload();
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("config");
