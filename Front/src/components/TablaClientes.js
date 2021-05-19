@@ -12,17 +12,15 @@ import {
   Dropdown,
   ButtonGroup,
 } from "@themesberg/react-bootstrap";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useDispatch } from "react-redux";
+import { deleteUser } from "../actions/usuarios";
 
-const datos = [
-  {
-    Id: 1,
-    nombre: "Juan García",
-    rut: "1234-5",
-    status: "Inactivo",
-  },
-];
 export const TablaClientes = (props) => {
-  console.log(props)
+  const history = useHistory();
+  const dispatch = useDispatch();
+  console.log(props);
+
   const TableRow = (props) => {
     const { id, nombre, email } = props;
     return (
@@ -47,10 +45,19 @@ export const TablaClientes = (props) => {
               </span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href={`/Editar-cliente/${id}`}>
+              <Dropdown.Item
+                onClick={() => {
+                  history.push("Editar-cliente/" + id);
+                }}
+              >
                 <FontAwesomeIcon icon={faEdit} className="me-2" /> Editar
               </Dropdown.Item>
-              <Dropdown.Item className="text-danger">
+              <Dropdown.Item
+                className="text-danger"
+                onClick={async () => {
+                  dispatch(deleteUser(id));
+                }}
+              >
                 <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
                 Deshabilitar
               </Dropdown.Item>
