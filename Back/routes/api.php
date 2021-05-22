@@ -35,7 +35,7 @@ Route::group([
 
 });
 
-Route::group(['middleware' => 'api'], function(){
+Route::group(['middleware' => 'auth:api'], function(){
     // Rutas CRUD de Usuario
     Route::get('usuarios', [UsuarioController::class, 'showAll']);
     Route::get('usuarios/{id}', [UsuarioController::class, 'show']);
