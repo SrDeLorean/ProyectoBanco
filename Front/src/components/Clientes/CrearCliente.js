@@ -74,7 +74,7 @@ export const CrearCliente = () => {
       Swal.fire(
         "Error",
         "La contraseña debe ser de 6 caracteres o mas",
-        "error"
+        "error",
       );
 
       return false;
@@ -91,7 +91,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta corriente debe ser mayor a 0",
-          "error"
+          "error",
         );
 
         return false;
@@ -102,7 +102,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta de ahorro debe ser mayor a 0",
-          "error"
+          "error",
         );
         return false;
       }
@@ -112,7 +112,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la tarjeta de credito debe ser mayor a 0",
-          "error"
+          "error",
         );
 
         return false;
@@ -134,7 +134,7 @@ export const CrearCliente = () => {
     e.preventDefault();
 
     if (isFormValid()) {
-      const datos = {
+      /*const datos = {
         //podria ir el rut aqui como id
         nombre: nombre,
         clave: password,
@@ -146,22 +146,27 @@ export const CrearCliente = () => {
           ahorro: 0,
           credito: 0,
         },
-      };
+      };*/
 
       const cuentas = {
-        saldoCuentaCorriente,
-        saldoTarjetaCredito,
-        saldoCuentaAhorro,
-        check,
+        saldoCuentaCorriente: check.checkCorriente
+          ? parseInt(saldoCuentaCorriente)
+          : 0,
+        saldoTarjetaCredito: check.checkCredito
+          ? parseInt(saldoTarjetaCredito)
+          : 0,
+        saldoCuentaAhorro: check.checkAhorro ? parseInt(saldoCuentaAhorro) : 0,
       };
+
+      console.log(cuentas);
       dispatch(
         await startRegisterWithEmailPasswordName(
           email,
           password,
           nombre,
-          datos,
-          cuentas
-        )
+          rut,
+          cuentas,
+        ),
       );
     }
   };

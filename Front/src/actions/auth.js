@@ -1,22 +1,36 @@
 import Swal from "sweetalert2";
-
 import { firebase, db } from "../api/firebase-config";
 import { types } from "../constants/types";
 import { startLoading, finishLoading } from "./ui";
 import { crearCuenta } from "./cuentas";
+import axios from "axios";
+import { api } from "./../constants/api.js";
+import { cargarUsuariosBD } from "./usuarios";
 
 export const startLoginEmailPassword = (email, password) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(startLoading());
-
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(({ user }) => {
-        console.log(user);
-        dispatch(login(user.uid, user.displayName, user.phoneNumber));
+    let user = {
+      email: email,
+      password: password,
+    };
+    await axios
+      .post(api.auth, user)
+      .then((response) => {
+        console.log(response.data.data);
+        const data = response.data.data;
 
         dispatch(finishLoading());
+        var config = {
+          headers: {
+            Authorization: "Bearer " + data.token,
+          },
+        };
+
+        sessionStorage.setItem("token", JSON.stringify(data.token));
+        sessionStorage.setItem("config", JSON.stringify(config));
+        sessionStorage.setItem("user", JSON.stringify(data.user));
+        dispatch(login(data.user.id, data.user.nombre, data.user.rol, false));
       })
       .catch((e) => {
         console.log(e);
@@ -30,58 +44,75 @@ export const startRegisterWithEmailPasswordName = async (
   email,
   password,
   name,
-  datos,
-  cuentas
+  rut,
+  cuentas,
 ) => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(startLoading());
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(async ({ user }) => {
-        await user.updateProfile({ displayName: name });
-        console.log(user);
-        const uidUsuario = user.uid;
 
-        await firebase.auth().signOut();
+    const datos = {
+      email: email,
+      password: password,
+      nombre: name,
+      rut: rut,
+      rol: "user",
+      cuenta_corriente: cuentas.saldoCuentaCorriente,
+      cuenta_ahorro: cuentas.saldoCuentaAhorro,
+      cuenta_credito: cuentas.saldoTarjetaCredito,
+    };
 
-        await firebase
-          .auth()
-          .signInWithEmailAndPassword("admin@gmail.com", "123456");
-
-        await db
-          .collection("Usuarios")
-          .doc(uidUsuario)
-          .set(datos)
-          .then(async () => {
-            dispatch(finishLoading());
-          })
-          .catch((e) => {
-            Swal.fire("Error usuario", e.message, "error");
-          });
-
-        await dispatch(crearCuenta(uidUsuario, cuentas));
+    await axios
+      .post(api.route + "/usuarios", datos)
+      .then((resp) => {
+        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
+        else Swal.fire("", resp.data.msg, "error");
+        dispatch(finishLoading());
       })
-      .catch((e) => {
-        Swal.fire("Error create", e.message, "error");
+      .catch((err) => {
+        console.log(err);
       });
   };
 };
 
-export const login = (uid, displayName, rol) => ({
+export const startCheking = () => {
+  return (dispatch) => {
+    const user = JSON.parse(sessionStorage.getItem("user"));
+
+    if (user?.rol) {
+      dispatch(cargarUsuariosBD());
+      // dispatch(cargarCuentasBD());
+    }
+
+    if (user?.id) {
+      dispatch(login(user.id, user.nombre, user.rol, false));
+    }
+  };
+};
+
+export const login = (uid, displayName, rol, checking) => ({
   type: types.login,
   payload: {
     uid,
     displayName,
     rol,
+    checking,
   },
 });
 
 export const startLogout = () => {
   return async (dispatch) => {
-    await firebase.auth().signOut();
-
+    await axios
+      .post(api.route + "/logout")
+      .then((resp) => console.log(resp))
+      .catch((err) => {
+        console.log(err);
+      });
     dispatch(logout());
+
+    //window.location.reload();
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+    sessionStorage.removeItem("config");
   };
 };
 

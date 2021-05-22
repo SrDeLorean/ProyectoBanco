@@ -15,7 +15,7 @@ class CreateCuentaCreditosTable extends Migration
     {
         Schema::create('cuenta_creditos', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('cliente_id');
+            $table->bigInteger('cliente_id')->unsigned();
             $table->bigInteger('saldo');
             $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

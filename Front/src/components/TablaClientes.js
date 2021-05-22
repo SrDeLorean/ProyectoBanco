@@ -12,25 +12,24 @@ import {
   Dropdown,
   ButtonGroup,
 } from "@themesberg/react-bootstrap";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useDispatch } from "react-redux";
+import { deleteUser } from "../actions/usuarios";
 
-const datos = [
-  {
-    Id: 1,
-    nombre: "Juan García",
-    rut: "1234-5",
-    status: "Inactivo",
-  },
-];
 export const TablaClientes = (props) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  console.log(props);
+
   const TableRow = (props) => {
-    const { Id, nombre, rut } = props;
+    const { id, nombre, email } = props;
     return (
       <tr>
         <td>
           <span className="fw-normal">{nombre}</span>
         </td>
         <td>
-          <span className="fw-normal">{rut}</span>
+          <span className="fw-normal">{email}</span>
         </td>
 
         <td>
@@ -46,10 +45,19 @@ export const TablaClientes = (props) => {
               </span>
             </Dropdown.Toggle>
             <Dropdown.Menu>
-              <Dropdown.Item href={`/Editar-cliente/${Id}`}>
+              <Dropdown.Item
+                onClick={() => {
+                  history.push("Editar-cliente/" + id);
+                }}
+              >
                 <FontAwesomeIcon icon={faEdit} className="me-2" /> Editar
               </Dropdown.Item>
-              <Dropdown.Item className="text-danger">
+              <Dropdown.Item
+                className="text-danger"
+                onClick={async () => {
+                  dispatch(deleteUser(id));
+                }}
+              >
                 <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
                 Deshabilitar
               </Dropdown.Item>
@@ -70,12 +78,12 @@ export const TablaClientes = (props) => {
             <thead>
               <tr>
                 <th className="border-bottom">Nombre Completo</th>
-                <th className="border-bottom">Rut</th>
+                <th className="border-bottom">Email</th>
               </tr>
             </thead>
             <tbody>
               {props.usuarios.map((t) => (
-                <TableRow key={`transaction-${t.Id}`} {...t} />
+                <TableRow key={`transaction-${t.id}`} {...t} />
               ))}
             </tbody>
           </Table>
