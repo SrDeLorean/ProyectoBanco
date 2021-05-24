@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { firebase, db } from "../api/firebase-config";
 import { types } from "../constants/types";
 import { startLoading, finishLoading } from "./ui";
-import { crearCuenta } from "./cuentas";
+import { cargarCuentasBD, crearCuenta } from "./cuentas";
 import axios from "axios";
 import { api } from "./../constants/api.js";
 import { cargarUsuariosBD } from "./usuarios";
@@ -16,8 +16,7 @@ export const startLoginEmailPassword = (email, password) => {
     };
     await axios
       .post(api.auth, user)
-      .then((response) => {
-        console.log(response.data.data);
+      .then(async (response) => {
         const data = response.data.data;
 
         dispatch(finishLoading());
@@ -30,6 +29,13 @@ export const startLoginEmailPassword = (email, password) => {
         sessionStorage.setItem("token", JSON.stringify(data.token));
         sessionStorage.setItem("config", JSON.stringify(config));
         sessionStorage.setItem("user", JSON.stringify(data.user));
+        if (data.user?.rol == "admin") {
+          await dispatch(cargarUsuariosBD());
+          // dispatch(cargarCuentasBD());
+        }
+        if (data.user?.rol == "user") {
+          await dispatch(cargarCuentasBD());
+        }
         dispatch(login(data.user.id, data.user.nombre, data.user.rol, false));
       })
       .catch((e) => {
@@ -78,11 +84,13 @@ export const startCheking = () => {
   return (dispatch) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
 
-    if (user?.rol) {
+    if (user?.rol == "admin") {
       dispatch(cargarUsuariosBD());
       // dispatch(cargarCuentasBD());
     }
-
+    if (user?.rol == "user") {
+      dispatch(cargarCuentasBD());
+    }
     if (user?.id) {
       dispatch(login(user.id, user.nombre, user.rol, false));
     }
