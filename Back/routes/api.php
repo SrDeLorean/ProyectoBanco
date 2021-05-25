@@ -51,7 +51,6 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('transferencias/internas', [TransferenciasController::class, 'storeInt']);
 
     // Rutas CRUD de Productos
-    Route::resource('productos', ProductoController::class);
 
 });
 
