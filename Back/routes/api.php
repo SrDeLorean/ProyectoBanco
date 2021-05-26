@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CuentasController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TransferenciasController;
 use App\Http\Controllers\UsuarioController;
@@ -35,7 +36,7 @@ Route::group([
 
 });
 
-Route::group(['middleware' => 'api'], function(){
+Route::group(['middleware' => 'auth:api'], function(){
     // Rutas CRUD de Usuario
     Route::get('usuarios', [UsuarioController::class, 'showAll']);
     Route::get('usuarios/{id}', [UsuarioController::class, 'show']);
@@ -43,12 +44,13 @@ Route::group(['middleware' => 'api'], function(){
     Route::put('usuarios/{id}', [UsuarioController::class, 'update']);
     Route::delete('usuarios/{id}', [UsuarioController::class, 'delete']);
 
+    Route::get('cuentas', [CuentasController::class, 'getCuentas']);
+
     // Rutas Transferencias
     Route::get('transferencias/internas', [TransferenciasController::class, 'getInt']);
     Route::post('transferencias/internas', [TransferenciasController::class, 'storeInt']);
 
     // Rutas CRUD de Productos
-    Route::resource('productos', ProductoController::class);
 
 });
 

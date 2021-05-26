@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TransferenciasController extends Controller
 {
@@ -29,9 +30,7 @@ class TransferenciasController extends Controller
     public function storeInt(Request $request){
         try{
             $validador = Validator::make($request->all(), [
-                'tipo_cuenta_origen' => 'required',
                 'cuenta_origen' => 'required',
-                'tipo_cuenta_destino' => 'required',
                 'cuenta_destino' => 'required',
                 'monto' => 'required'
             ]);
@@ -42,57 +41,56 @@ class TransferenciasController extends Controller
                     'msg' => 'Hubo un problema al validar los datos.'
                 ]);
             }
-            $cuentaOrig = null;
-            $cuentaDest = null;
-            switch($request->tipo_cuenta_origen){
+            $user = JWTAuth::parseToken()->authenticate();
+            $origen = null;
+            $destino = null;
+            switch($request->cuenta_origen){
                 case 0: // Cuenta corriente
-                    $cuentaOrig = CuentaCorriente::findOrFail($request->cuenta_origen);
+                    $origen = $user->cuentaCorriente;
                     break;
-                case 1: // Cuenta ahorros
-                    $cuentaOrig = CuentaAhorro::findOrFail($request->cuenta_origen);
+                case 1: // Cuenta ahorro
+                    $origen = $user->cuentaAhorro;
                     break;
                 case 2: // Cuenta credito
-                    $cuentaOrig = CuentaCredito::findOrFail($request->cuenta_origen);
-                    break;
-                default: // Otra cuenta
-                    return response()->json([
-                        'status' => 500,
-                        'msg' => 'El tipo de cuenta no existe.'
-                    ]);
+                    $origen = $user->cuentaCredito;
                     break;
             }
-            switch($request->tipo_cuenta_destino){
+            switch($request->cuenta_destino){
                 case 0: // Cuenta corriente
-                    $cuentaDest = CuentaCorriente::findOrFail($request->cuenta_origen);
+                    $destino = $user->cuentaCorriente;
                     break;
-                case 1: // Cuenta ahorros
-                    $cuentaDest = CuentaAhorro::findOrFail($request->cuenta_origen);
+                case 1: // Cuenta ahorro
+                    $destino = $user->cuentaAhorro;
                     break;
                 case 2: // Cuenta credito
-                    $cuentaDest = CuentaCredito::findOrFail($request->cuenta_origen);
+                    $destino = $user->cuentaCredito;
                     break;
-                default: // Otra cuenta
-                    return response()->json([
-                        'status' => 500,
-                        'msg' => 'El tipo de cuenta no existe.'
-                    ]);
-                    break;
+            }
+            if($origen == null){
+                return response()->json([
+                    'status' => 500,
+                    'msg' => 'La cuenta de origen no existe.'
+                ]);
+            }
+            if($destino == null){
+                return response()->json([
+                    'status' => 500,
+                    'msg' => 'La cuenta de destino no existe.'
+                ]);
             }
 
             $trans = new TransferenciaInterna();
-            $trans->tipo_cuenta_origen = $request->tipo_cuenta_origen;
             $trans->cuenta_origen = $request->cuenta_origen;
-            $trans->tipo_cuenta_destino = $request->tipo_cuenta_destino;
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
             $trans->cliente_id = Auth::id();
             $trans->save();
 
-            $cuentaOrig->saldo = $cuentaOrig->saldo - $request->monto;
-            $cuentaOrig->save();
+            $origen->saldo = $origen->saldo - $request->monto;
+            $origen->save();
 
-            $cuentaDest->saldo = $cuentaDest->saldo + $request->monto;
-            $cuentaDest->save();
+            $destino->saldo = $destino->saldo + $request->monto;
+            $destino->save();
 
             return response()->json([
                 'status' => 200,
