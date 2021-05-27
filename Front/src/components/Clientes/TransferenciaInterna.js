@@ -166,16 +166,29 @@ export const TransferenciaInterna = () => {
   };
 
   useEffect(() => {
-    if (cuentas) {
+    if (
+      cuentas?.cuenta_corriente != null ||
+      cuentas?.cuenta_ahorro != null ||
+      cuentas?.cuenta_credito != null
+    ) {
       setOpcionesTI(crearCuentasSelect(cuentas));
     } else {
-      Swal.fire(
-        "Inactividad",
-        "La sesión ha sido cerrada por inactividad.",
-        "info",
-      ).then(() => {
-        dispatch(startLogout());
-      });
+      if (cuentas)
+        Swal.fire(
+          "Sin cuentas para trasnferir",
+          "No tiene cuentas en el banco",
+          "warning",
+        ).then(() => {
+          history.push("/inicio");
+        });
+      else
+        Swal.fire(
+          "Inactividad",
+          "La sesión ha sido cerrada por inactividad.",
+          "warning",
+        ).then(() => {
+          dispatch(startLogout());
+        });
     }
   }, [cuentas]);
 
