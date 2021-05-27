@@ -1,8 +1,7 @@
 import Swal from "sweetalert2";
-import { firebase, db } from "../api/firebase-config";
 import { types } from "../constants/types";
 import { startLoading, finishLoading } from "./ui";
-import { cargarCuentasBD, crearCuenta } from "./cuentas";
+import { cargarCuentas, cargarCuentasBD } from "./cuentas";
 import axios from "axios";
 import { api } from "./../constants/api.js";
 import { cargarUsuariosBD } from "./usuarios";
@@ -22,7 +21,7 @@ export const startLoginEmailPassword = (email, password) => {
         dispatch(finishLoading());
         var config = {
           headers: {
-            Authorization: "Bearer " + data.token,
+            Authorization: "bearer " + data.token,
           },
         };
 
@@ -52,6 +51,7 @@ export const startRegisterWithEmailPasswordName = async (
   name,
   rut,
   cuentas,
+  history,
 ) => {
   return async (dispatch) => {
     dispatch(startLoading());
@@ -66,15 +66,22 @@ export const startRegisterWithEmailPasswordName = async (
       cuenta_ahorro: cuentas.saldoCuentaAhorro,
       cuenta_credito: cuentas.saldoTarjetaCredito,
     };
+    const config = JSON.parse(sessionStorage.getItem("config"));
 
     await axios
-      .post(api.route + "/usuarios", datos)
+      .post(api.route + "/usuarios", datos, config)
       .then((resp) => {
-        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
-        else Swal.fire("", resp.data.msg, "error");
+        if (resp.data.status == 200) {
+          Swal.fire("", resp.data.msg, "success").then(() => {
+            history.push("/Clientes");
+          });
+        } else Swal.fire("", resp.data.msg, "error");
+
         dispatch(finishLoading());
       })
       .catch((err) => {
+        dispatch(finishLoading());
+
         console.log(err);
       });
   };
@@ -109,13 +116,16 @@ export const login = (uid, displayName, rol, checking) => ({
 
 export const startLogout = () => {
   return async (dispatch) => {
+    const config = JSON.parse(sessionStorage.getItem("config"));
     await axios
-      .post(api.route + "/logout")
+      .post(api.route + "/auth/logout", config)
       .then((resp) => console.log(resp))
       .catch((err) => {
         console.log(err);
       });
     dispatch(logout());
+    dispatch(cargarCuentas([]));
+    dispatch(cargarUsuariosBD([]));
 
     //window.location.reload();
     sessionStorage.removeItem("token");

@@ -27,9 +27,12 @@ import { Routes } from "../../constants/routes";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useForm } from "../../hooks/useForm";
 import { startRegisterWithEmailPasswordName } from "../../actions/auth";
+import { useHistory } from "react-router-dom";
 
 export const CrearCliente = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const { loading } = useSelector((state) => state.ui);
 
   const [check, setCheck] = React.useState({
@@ -158,14 +161,15 @@ export const CrearCliente = () => {
         saldoCuentaAhorro: check.checkAhorro ? parseInt(saldoCuentaAhorro) : 0,
       };
 
-      console.log(cuentas);
-      dispatch(
+      //console.log(cuentas);
+      await dispatch(
         await startRegisterWithEmailPasswordName(
           email,
           password,
           nombre,
           rut,
           cuentas,
+          history,
         ),
       );
     }

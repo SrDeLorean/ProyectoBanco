@@ -7,30 +7,16 @@ import { finishLoading, startLoading } from "./ui";
 export const cargarCuentasBD = () => {
   return async (dispatch, getState) => {
     const cuentas = [];
-
+    const config = JSON.parse(sessionStorage.getItem("config"));
     await axios
-      .get(api.route + "/transferencias/internas")
+      .get(api.route + "/cuentas", config)
       .then((resp) => {
-        //console.log(resp);
+        console.log(resp.data.cuentas);
+        dispatch(cargarCuentas(resp.data.cuentas));
       })
       .catch((e) => {
-        // console.log(e);
+        console.log(e);
       });
-    /*db.collection("Cuentas")
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          cuentas.push({
-            ...doc.data(),
-          });
-          // doc.data() is never undefined for query doc snapshots
-        });
-
-        dispatch(cargarCuentas(cuentas));
-      })
-      .catch((error) => {
-        console.log("Error getting documents: ", error);
-      });*/
   };
 };
 

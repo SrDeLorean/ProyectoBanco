@@ -5,7 +5,7 @@ export const cuentasReducer = (state = [], action) => {
     case types.cargarCuentas:
       return {
         ...state,
-        cuentas: [...action.payload],
+        cuentas: action.payload,
       };
 
     default:
