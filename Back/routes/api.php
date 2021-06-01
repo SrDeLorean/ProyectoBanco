@@ -49,7 +49,8 @@ Route::group(['middleware' => 'auth:api'], function(){
     // Rutas Transferencias
     Route::get('transferencias/internas', [TransferenciasController::class, 'getInt']);
     Route::post('transferencias/internas', [TransferenciasController::class, 'storeInt']);
-
+    Route::get('transferencias/externas', [TransferenciasController::class, 'getExt']);
+    Route::post('transferencias/externas', [TransferenciasController::class, 'storeExt']);
     // Rutas CRUD de Productos
 
 });
