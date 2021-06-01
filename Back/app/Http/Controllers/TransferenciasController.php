@@ -83,7 +83,7 @@ class TransferenciasController extends Controller
             $trans->cuenta_origen = $request->cuenta_origen;
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
-            $trans->cliente_id = Auth::id();
+            $trans->cliente_id = $user->id;
             $trans->save();
 
             $origen->saldo = $origen->saldo - $request->monto;
@@ -104,5 +104,90 @@ class TransferenciasController extends Controller
             ]);
         }
     }
+    public function storeExt(Request $request){
+        try{
+            $validador = Validator::make($request->all(), [
+                'banco' => 'boolean',
+                'tipo_origen' => 'required',
+                'cuenta_origen' => 'required',
+                'tipo_destino' => 'nullable',
+                'cuenta_destino' => 'nullable',
+                'monto' => 'required'
+            ]);
 
+            if($validador->fails()){
+                return response()->json([
+                    'status' => 500,
+                    'msg' => 'Hubo un problema al validar los datos.',
+                    'errors' => $validador->errors()
+                ]);
+            }
+            $user = JWTAuth::parseToken()->authenticate();
+            $origen = null;
+            $destino = null;
+            switch($request->tipo_origen){
+                case 0: // Cuenta corriente
+                    $origen = CuentaCorriente::find($request->cuenta_origen);
+                    break;
+                case 1: // Cuenta ahorro
+                    $origen = CuentaAhorro::find($request->cuenta_origen);
+                    break;
+                case 2: // Cuenta credito
+                    $origen = CuentaCredito::find($request->cuenta_origen);
+                    break;
+            }
+            if($request->banco){
+                switch($request->tipo_destino){
+                    case 0: // Cuenta corriente
+                        $destino = CuentaCorriente::find($request->cuenta_destino);
+                        break;
+                    case 1: // Cuenta ahorro
+                        $destino = CuentaAhorro::find($request->cuenta_destino);
+                        break;
+                    case 2: // Cuenta credito
+                        $destino = CuentaCredito::find($request->cuenta_destino);
+                        break;
+                }
+            }
+            if($origen == null){
+                return response()->json([
+                    'status' => 500,
+                    'msg' => 'La cuenta de origen no existe.'
+                ]);
+            }
+            if($destino == null&&$request->banco){
+                return response()->json([
+                    'status' => 500,
+                    'msg' => 'La cuenta de destino no existe.'
+                ]);
+            }
+
+            $trans = new TransferenciaExterna();
+            $trans->tipo_cuenta_origen = $request->tipo_origen;
+            $trans->cuenta_origen = $request->cuenta_origen;
+            $trans->tipo_cuenta_destino = $request->tipo_destino;
+            $trans->cuenta_destino = $request->cuenta_destino;
+            $trans->monto = $request->monto;
+            $trans->cliente_id = $user->id;
+            $trans->save();
+
+            $origen->saldo = $origen->saldo - $request->monto;
+            $origen->save();
+            if($destino != null){
+                $destino->saldo = $destino->saldo + $request->monto;
+                $destino->save();
+            }
+
+            return response()->json([
+                'status' => 200,
+                'msg' => 'Transferencia externa realizada exitosamente.'
+            ]);
+        }catch(Exception $ex){
+            return response()->json([
+                'status' => 500,
+                'msg' => 'Hubo un error al generar la transferencia externa.',
+                'error' => $ex
+            ]);
+        }
+    }
 }
