@@ -2,21 +2,94 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { api } from "../constants/api";
 import { types } from "../constants/types";
+import { transferenciasReducer } from "../reducers/transferenciasReducer";
 import { cargarCuentasBD } from "./cuentas";
 
-export const cargarTransferencias = () => {
-  return async (dispatch) => {
+export const cargarTransferenciasBD = () => {
+  return async (dispatch, getState) => {
+    const transferencias = [];
     const config = JSON.parse(sessionStorage.getItem("config"));
-
     await axios
-      .get(api.route + "/transferencias/internas", config)
-      .then((resp) => {
-        //console.log(resp.data);
+      .get(api.route + "/transferencias/externas", config)
+      .then(async (respExt) => {
+        await axios
+          .get(api.route + "/transferencias/internas", config)
+          .then((respInt) => {
+            var transferencias = [];
+
+            respExt.data.map((transferencia, index) => {});
+
+            transferencias.push(respExt.data);
+            transferencias.push(respInt.data);
+
+            dispatch(
+              cargarTransferencias(
+                generalizarDatosTransferencias(respInt.data, respExt.data),
+              ),
+            );
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((e) => {
+        console.log(e);
       });
   };
+};
+
+const generalizarDatosTransferencias = (internas, externas) => {
+  const data = [];
+
+  internas.map((transferencia, index) => {
+    data.push({
+      cuenta: transferencia.cuenta_origen,
+      fecha: transferencia.created_at.slice(0, 10),
+      cargo: transferencia.monto,
+      descripcion: "Transferencia Interna",
+      saldo: "---",
+    });
+    data.push({
+      cuenta: transferencia.cuenta_destino,
+      fecha: transferencia.created_at.slice(0, 10),
+      abono: transferencia.monto,
+      descripcion: "Transferencia Interna",
+      saldo: "---",
+    });
+  });
+
+  externas.map((transferencia, index) => {
+    data.push({
+      cuenta: transferencia.tipo_cuenta_origen,
+      fecha: transferencia.created_at.slice(0, 10),
+      cargo: transferencia.monto,
+      descripcion: "Transferencia Externa",
+      saldo: "---",
+    });
+    /*data.push({
+      cuenta: transferencia.cuenta_destino,
+      fecha: transferencia.created_at,
+      abono: transferencia.monto,
+      descripcion: "Transferencia Externa",
+      saldo: "---",
+    });*/
+  });
+
+  data.sort((a, b) => {
+    const fechaA = new Date(a.fecha).getTime();
+    const fechaB = new Date(b.fecha).getTime();
+
+    if (fechaA < fechaB) {
+      return 1;
+    }
+    if (fechaA > fechaB) {
+      return -1;
+    }
+    // a must be equal to b
+    return 0;
+  });
+
+  return data;
 };
 
 export const transferenciaInterna = (datosTI, monto, history) => {
@@ -34,6 +107,7 @@ export const transferenciaInterna = (datosTI, monto, history) => {
         if (resp.data.status == 200)
           Swal.fire("", resp.data.msg, "success").then(() => {
             dispatch(cargarCuentasBD());
+            dispatch(cargarTransferenciasBD());
             history.push("/TransferenciaInterna");
           });
         else Swal.fire("", resp.data.msg, "error");
@@ -62,6 +136,7 @@ export const transferenciaExterna = (datosTransferencia, history) => {
         if (resp.data.status == 200)
           Swal.fire("", resp.data.msg, "success").then(() => {
             dispatch(cargarCuentasBD());
+            dispatch(cargarTransferenciasBD());
             history.push("/TransferenciaInterna");
           });
         else Swal.fire("", resp.data.msg, "error");
@@ -71,3 +146,8 @@ export const transferenciaExterna = (datosTransferencia, history) => {
       });
   };
 };
+
+export const cargarTransferencias = (transferencias) => ({
+  type: types.cargarTransferencias,
+  payload: transferencias,
+});

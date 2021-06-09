@@ -5,6 +5,7 @@ import { authReducer } from "../reducers/authReducer";
 import { cuentasReducer } from "../reducers/cuentasReducer";
 import { uiReducer } from "../reducers/uiReducer";
 import { usuarioReducer } from "../reducers/usuarioReducer";
+import { transferenciasReducer } from "../reducers/transferenciasReducer";
 
 const composeEnhancers =
   (typeof window !== "undefined" &&
@@ -16,6 +17,7 @@ const reducers = combineReducers({
   usuarios: usuarioReducer,
   ui: uiReducer,
   cuentas: cuentasReducer,
+  transferencias: transferenciasReducer,
 });
 
 export const store = createStore(

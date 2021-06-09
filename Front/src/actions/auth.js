@@ -5,6 +5,7 @@ import { cargarCuentas, cargarCuentasBD } from "./cuentas";
 import axios from "axios";
 import { api } from "./../constants/api.js";
 import { cargarUsuariosBD } from "./usuarios";
+import { cargarTransferenciasBD } from "./transferencias";
 
 export const startLoginEmailPassword = (email, password) => {
   return async (dispatch) => {
@@ -34,6 +35,7 @@ export const startLoginEmailPassword = (email, password) => {
         }
         if (data.user?.rol == "user") {
           await dispatch(cargarCuentasBD());
+          await dispatch(cargarTransferenciasBD());
         }
         dispatch(login(data.user.id, data.user.nombre, data.user.rol, false));
       })
@@ -97,6 +99,7 @@ export const startCheking = () => {
     }
     if (user?.rol == "user") {
       dispatch(cargarCuentasBD());
+      dispatch(cargarTransferenciasBD());
     }
     if (user?.id) {
       dispatch(login(user.id, user.nombre, user.rol, false));
