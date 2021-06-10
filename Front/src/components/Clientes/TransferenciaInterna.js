@@ -1,15 +1,13 @@
 import React from "react";
 import Divider from '@material-ui/core/Divider';
-
-
 import {Col,Row,Form,Button,Container,InputGroup,Tabs,Tab} from "@themesberg/react-bootstrap";
 
 export const TransferenciaInterna = () => {
     const opciones = [
         {value: "", label:"Selecciona una Cuenta..."},
-        {value: "prueba", label:"Cuenta Corriente N° 1234567890"},
-        {value: "prueba", label:"Cuenta Ahorro N° 1234567890"},
-        {value: "prueba", label:"Cuenta Credito N° 1234567890"},          
+        {value: "prueba1", label:"Cuenta Corriente N° 1234567890"},
+        {value: "prueba2", label:"Cuenta Ahorro N° 1234567890"},
+        {value: "prueba3", label:"Cuenta Credito N° 1234567890"},          
     ];
     const tiposCuentas = [
         {value: "", label:"Selecciona tipo de cuenta..."},
@@ -30,7 +28,7 @@ export const TransferenciaInterna = () => {
         <main>
             <section className="d-flex justify-content-center">
                 <Container>
-                    <Tabs id="transferencias" variant="pills" unmountOnExit>
+                    <Tabs id="transferencias" unmountOnExit>
                         <Tab eventKey="interna" title="Transferencia Interna">
                             <Row className="justify-content-center form-bg-image" style={{}}>
                                 <Col xs = {12} className="d-flex align-items-center justify-content-center">

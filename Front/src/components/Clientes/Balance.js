@@ -58,7 +58,7 @@ export const Balance = () => {
         <main>
             <section className="d-flex justify-content-center">
                 <Container>
-                    <Tabs id="balances" variant="pills" unmountOnExit>
+                    <Tabs id="balances" unmountOnExit>
 
                         {/* Tab para balance de cuenta corriente de Cliente */}
                         <Tab eventKey="balannceCorriente" title="Cuenta Corriente ">
