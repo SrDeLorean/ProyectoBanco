@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::put('usuarios/{id}', [UsuarioController::class, 'update']);
     Route::delete('usuarios/{id}', [UsuarioController::class, 'delete']);
     Route::get('cuentas/balance', [CuentasController::class, 'getBalance']);
+    Route::get('cuentas/balance/exportar', [CuentasController::class, 'exportarBalance']);
     Route::get('cuentas', [CuentasController::class, 'getCuentas']);
 
     // Rutas Transferencias
