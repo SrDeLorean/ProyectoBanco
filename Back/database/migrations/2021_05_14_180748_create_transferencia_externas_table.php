@@ -22,6 +22,7 @@ class CreateTransferenciaExternasTable extends Migration
             $table->integer('tipo_cuenta_destino');
             $table->bigInteger('cuenta_destino');
             $table->integer('monto');
+            $table->integer('saldo');
             $table->bigInteger('cliente_id')->unsigned();
             $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

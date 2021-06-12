@@ -83,6 +83,7 @@ class TransferenciasController extends Controller
             $trans->cuenta_origen = $request->cuenta_origen;
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
+            $trans->saldo = $origen->saldo - $request->monto;
             $trans->cliente_id = $user->id;
             $trans->save();
 
@@ -168,6 +169,7 @@ class TransferenciasController extends Controller
             $trans->tipo_cuenta_destino = $request->tipo_destino;
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
+            $trans->saldo = $origen->saldo - $request->monto;
             $trans->cliente_id = $user->id;
             $trans->save();
 

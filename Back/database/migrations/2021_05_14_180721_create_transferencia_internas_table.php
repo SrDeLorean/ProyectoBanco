@@ -19,6 +19,7 @@ class CreateTransferenciaInternasTable extends Migration
             $table->bigInteger('cuenta_origen');
             $table->bigInteger('cuenta_destino');
             $table->integer('monto');
+            $table->integer('saldo');
             $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
