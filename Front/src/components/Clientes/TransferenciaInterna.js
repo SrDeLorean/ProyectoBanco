@@ -132,35 +132,35 @@ export const TransferenciaInterna = () => {
       Swal.fire(
         "Transferencia Interna",
         "Seleccione una cuenta de origen",
-        "error",
+        "error"
       );
       return false;
     } else if (cuentaDestino === "") {
       Swal.fire(
         "Transferencia Interna",
         "Seleccione una cuenta de Destino",
-        "error",
+        "error"
       );
       return false;
     } else if (cuentaOrigen == cuentaDestino) {
       Swal.fire(
         "Transferencia Interna",
         "No se puede transferir a la misma cuenta de destino.",
-        "error",
+        "error"
       );
       return false;
     } else if (montoTI == 0) {
       Swal.fire(
         "Transferencia Interna",
         "El monto a transferir debe ser mayor a 0.",
-        "error",
+        "error"
       );
       return false;
     } else if (saldoCuentaOrigen - montoTI < 0) {
       Swal.fire(
         "Transferencia Interna",
         "El monto de la transferencia supera el saldo en tu cuenta de origen.",
-        "error",
+        "error"
       );
       return false;
     }
@@ -185,7 +185,7 @@ export const TransferenciaInterna = () => {
         Swal.fire(
           "Sin cuentas para trasnferir",
           "No tiene cuentas en el banco",
-          "warning",
+          "warning"
         ).then(() => {
           history.push("/inicio");
         });
@@ -193,7 +193,7 @@ export const TransferenciaInterna = () => {
         Swal.fire(
           "Inactividad",
           "La sesión ha sido cerrada por inactividad.",
-          "warning",
+          "warning"
         ).then(() => {
           dispatch(startLogout());
         });

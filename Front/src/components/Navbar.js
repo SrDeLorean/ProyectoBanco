@@ -29,7 +29,7 @@ import { Routes } from "../constants/routes";
 export default (props) => {
   const dispatch = useDispatch();
 
-  const hanleLogout = () => {
+  const handleLogout = () => {
     dispatch(startLogout());
   };
 
@@ -63,7 +63,7 @@ export default (props) => {
                 </div>
               </Dropdown.Toggle>
               <Dropdown.Menu className="user-dropdown dropdown-menu-right mt-2">
-                <Dropdown.Item className="fw-bold" onClick={hanleLogout}>
+                <Dropdown.Item className="fw-bold" onClick={handleLogout}>
                   <FontAwesomeIcon
                     icon={faSignOutAlt}
                     className="text-danger me-2"
