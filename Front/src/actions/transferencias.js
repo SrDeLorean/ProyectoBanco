@@ -9,7 +9,14 @@ export const cargarTransferenciasBD = () => {
   return async (dispatch, getState) => {
     const transferencias = [];
     const config = JSON.parse(sessionStorage.getItem("config"));
-    await axios
+    await axios.get(api.route + "/cuentas/balance", config).then((resp) => {
+      var balance = [];
+      const { uid } = getState().auth;
+      balance.push(...resp.data);
+      crearBalance(balance, uid, dispatch);
+    });
+
+    /*await axios
       .get(api.route + "/transferencias/externas", config)
       .then(async (respExt) => {
         await axios
@@ -24,8 +31,8 @@ export const cargarTransferenciasBD = () => {
 
             dispatch(
               cargarTransferencias(
-                generalizarDatosTransferencias(respInt.data, respExt.data),
-              ),
+                generalizarDatosTransferencias(respInt.data, respExt.data)
+              )
             );
           })
           .catch((e) => {
@@ -34,11 +41,30 @@ export const cargarTransferenciasBD = () => {
       })
       .catch((e) => {
         console.log(e);
-      });
+      });*/
   };
 };
 
-const generalizarDatosTransferencias = (internas, externas) => {
+const crearBalance = (balance, uid, dispatch) => {
+  const data = [];
+
+  const externas = balance.filter((transaccion) => {
+    return transaccion.hasOwnProperty("tipo_cuenta_destino");
+  });
+
+  const internas = balance.filter((transaccion) => {
+    return !transaccion.hasOwnProperty("tipo_cuenta_destino");
+  });
+  console.log(internas);
+  console.log(externas);
+  dispatch(
+    cargarTransferencias(
+      generalizarDatosTransferencias(internas, externas, uid)
+    )
+  );
+};
+
+const generalizarDatosTransferencias = (internas, externas, uid) => {
   const data = [];
 
   internas.map((transferencia, index) => {
@@ -47,7 +73,7 @@ const generalizarDatosTransferencias = (internas, externas) => {
       fecha: transferencia.created_at.slice(0, 10),
       cargo: transferencia.monto,
       descripcion: "Transferencia Interna",
-      saldo: "---",
+      saldo: transferencia.saldo,
     });
     data.push({
       cuenta: transferencia.cuenta_destino,
@@ -59,13 +85,23 @@ const generalizarDatosTransferencias = (internas, externas) => {
   });
 
   externas.map((transferencia, index) => {
-    data.push({
-      cuenta: transferencia.tipo_cuenta_origen,
-      fecha: transferencia.created_at.slice(0, 10),
-      cargo: transferencia.monto,
-      descripcion: "Transferencia Externa",
-      saldo: "---",
-    });
+    if (uid == transferencia.cliente_id)
+      data.push({
+        cuenta: transferencia.tipo_cuenta_origen,
+        fecha: transferencia.created_at.slice(0, 10),
+        cargo: transferencia.monto,
+        descripcion: "Transferencia Externa",
+        saldo: transferencia.saldo,
+      });
+    else
+      data.push({
+        cuenta: transferencia.tipo_cuenta_origen,
+        fecha: transferencia.created_at.slice(0, 10),
+        abono: transferencia.monto,
+        descripcion: "Transferencia Externa",
+        saldo: "----",
+      });
+
     /*data.push({
       cuenta: transferencia.cuenta_destino,
       fecha: transferencia.created_at,

@@ -79,7 +79,7 @@ export const Balance = () => {
           tipoCuenta: "Cuenta Corriente",
           numeroCuenta: cuenta[1].id,
           transferencias: transferencias.filter(
-            (transferencia) => transferencia.cuenta == 0,
+            (transferencia) => transferencia.cuenta == 0
           ),
         });
       } else if (cuenta[0] == "cuenta_ahorro") {
@@ -87,7 +87,7 @@ export const Balance = () => {
           tipoCuenta: "Cuenta Ahorro",
           numeroCuenta: cuenta[1].id,
           transferencias: transferencias.filter(
-            (transferencia) => transferencia.cuenta == 1,
+            (transferencia) => transferencia.cuenta == 1
           ),
         });
       } else if (cuenta[0] == "cuenta_credito") {
@@ -95,7 +95,7 @@ export const Balance = () => {
           tipoCuenta: "Cuenta Credito",
           numeroCuenta: cuenta[1].id,
           transferencias: transferencias.filter(
-            (transferencia) => transferencia.cuenta == 2,
+            (transferencia) => transferencia.cuenta == 2
           ),
         });
       }
@@ -117,7 +117,7 @@ export const Balance = () => {
         Swal.fire(
           "Sin cuentas para ver balances",
           "No tiene cuentas en el banco",
-          "warning",
+          "warning"
         ).then(() => {
           history.push("/inicio");
         });
@@ -125,7 +125,7 @@ export const Balance = () => {
         Swal.fire(
           "Inactividad",
           "La sesión ha sido cerrada por inactividad.",
-          "warning",
+          "warning"
         ).then(() => {
           dispatch(startLogout());
         });
@@ -140,7 +140,7 @@ export const Balance = () => {
     <main>
       <section className="d-flex justify-content-center">
         <Container>
-          <Tabs id="balances" variant="pills" unmountOnExit>
+          <Tabs id="balances" unmountOnExit>
             {/* Tab para balance de cuenta corriente de Cliente */}
             {balanceCuentas.map((balance, key) => (
               <Tab key={key} eventKey={key} title={balance.tipoCuenta}>

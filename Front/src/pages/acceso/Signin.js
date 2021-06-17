@@ -20,18 +20,19 @@ import { startLoginEmailPassword } from "../../actions/auth";
 
 export default () => {
   const dispatch = useDispatch();
+
   const { loading } = useSelector((state) => state.ui);
 
   const [formValues, handleInputChange] = useForm({
-    email: "",
+    rut: "",
     password: "",
   });
 
-  const { email, password } = formValues;
+  const { rut, password } = formValues;
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(startLoginEmailPassword(email, password));
+    dispatch(startLoginEmailPassword(rut, password));
   };
 
   return (
@@ -51,8 +52,8 @@ export default () => {
                   <h3 className="mb-0">Inicia sesión </h3>
                 </div>
                 <Form className="mt-4" onSubmit={handleLogin}>
-                  <Form.Group id="email" className="mb-4">
-                    <Form.Label>Correo Electrónico</Form.Label>
+                  <Form.Group id="rut" className="mb-4">
+                    <Form.Label>RUT</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faEnvelope} />
@@ -60,9 +61,9 @@ export default () => {
                       <Form.Control
                         autoFocus
                         required
-                        type="email"
-                        name="email"
-                        placeholder="example@email.com"
+                        type="rut"
+                        name="rut"
+                        placeholder="19123876-1"
                         onChange={handleInputChange}
                       />
                     </InputGroup>

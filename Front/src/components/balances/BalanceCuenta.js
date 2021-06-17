@@ -1,14 +1,23 @@
 import { Button, Col, Row, Table } from "@themesberg/react-bootstrap";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { exportarBalance } from "../../actions/cuentas";
 
 export const BalanceCuenta = (props) => {
   const { tipoCuenta, numCuenta, nombreCliente, transacciones } = props;
+  const dispatch = useDispatch();
   return (
     <Row className="justify-content-center form-bg-image" style={{}}>
       <Col xs={12} className="d-flex align-items-center justify-content-center">
         <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
           <div className="mb-n1 text-end">
-            <Button variant="info" size="sm">
+            <Button
+              variant="info"
+              size="sm"
+              onClick={() => {
+                dispatch(exportarBalance());
+              }}
+            >
               Exportar
             </Button>
           </div>
@@ -42,7 +51,7 @@ export const BalanceCuenta = (props) => {
               {transacciones.map((transaccion, index) => {
                 if (transaccion.abono) {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td>{transaccion.fecha}</td>
                       <td></td>
                       <td>${transaccion.abono}</td>
@@ -52,7 +61,7 @@ export const BalanceCuenta = (props) => {
                   );
                 } else if (transaccion.cargo) {
                   return (
-                    <tr>
+                    <tr key={index}>
                       <td>{transaccion.fecha}</td>
                       <td>${transaccion.cargo}</td>
                       <td></td>

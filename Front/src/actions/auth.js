@@ -7,11 +7,11 @@ import { api } from "./../constants/api.js";
 import { cargarUsuariosBD } from "./usuarios";
 import { cargarTransferenciasBD } from "./transferencias";
 
-export const startLoginEmailPassword = (email, password) => {
+export const startLoginEmailPassword = (rut, password) => {
   return async (dispatch) => {
     dispatch(startLoading());
     let user = {
-      email: email,
+      rut: rut,
       password: password,
     };
     await axios
@@ -53,7 +53,7 @@ export const startRegisterWithEmailPasswordName = async (
   name,
   rut,
   cuentas,
-  history,
+  history
 ) => {
   return async (dispatch) => {
     dispatch(startLoading());

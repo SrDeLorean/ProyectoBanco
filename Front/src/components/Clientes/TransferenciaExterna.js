@@ -146,12 +146,11 @@ export const TransferenciaExterna = () => {
       banco,
     } = datosTI;
     const regexNumerico = new RegExp("^[0-9]+$");
-
     if (cuentaOrigen === "") {
       Swal.fire(
         "Transferencia Externa",
         "Seleccione una cuenta de origen",
-        "error",
+        "error"
       );
       return false;
     }
@@ -159,7 +158,7 @@ export const TransferenciaExterna = () => {
       Swal.fire(
         "Transferencia Externa",
         "Seleccione un Banco para la cuenta de destino",
-        "error",
+        "error"
       );
       return false;
     }
@@ -167,14 +166,14 @@ export const TransferenciaExterna = () => {
       Swal.fire(
         "Transferencia Externa",
         "Seleccione un tipo de cuenta de destino",
-        "error",
+        "error"
       );
       return false;
     } else if (cuentaDestino === "" || !regexNumerico.test(cuentaDestino)) {
       Swal.fire(
         "Transferencia Externa",
         "Ingrese una cuenta de Destino Valida",
-        "error",
+        "error"
       );
       return false;
     } else if (
@@ -185,21 +184,28 @@ export const TransferenciaExterna = () => {
       Swal.fire(
         "Transferencia Externa",
         "No se puede transferir a la misma cuenta de origen.",
-        "error",
+        "error"
       );
       return false;
     } else if (monto == 0) {
       Swal.fire(
-        "Transferencia Interna",
+        "Transferencia Externa",
         "El monto a transferir debe ser mayor a 0.",
-        "error",
+        "error"
       );
       return false;
     } else if (saldoCuentaOrigen - monto < 0) {
       Swal.fire(
-        "Transferencia Interna",
+        "Transferencia Externa",
         "El monto de la transferencia supera el saldo en tu cuenta de origen.",
-        "error",
+        "error"
+      );
+      return false;
+    } else if (validarTransferenciaInt(cuentaDestino, tipo_destino, banco)) {
+      Swal.fire(
+        "Transferencia Externa",
+        "Solo se pueden realizar trasnferencias externas, si desea realizar una transferencia interna cambie a la pestaña Transferencia Internas.",
+        "warning"
       );
       return false;
     }
@@ -207,10 +213,33 @@ export const TransferenciaExterna = () => {
     return true;
   };
 
+  const validarTransferenciaInt = (cuentaDest, tipoCuentaDes, banco) => {
+    let validar = false;
+    if (banco == 1) {
+      Object.entries(cuentas).map((cuenta, id) => {
+        if (cuenta[0] == "cuenta_corriente" && tipoCuentaDes == 0) {
+          if (cuentaDest == cuenta[1].id) {
+            validar = true;
+          }
+        } else if (cuenta[0] == "cuenta_ahorro" && tipoCuentaDes == 1) {
+          if (cuentaDest == cuenta[1].id) {
+            validar = true;
+          }
+        } else if (cuenta[0] == "cuenta_credito" && tipoCuentaDes == 2) {
+          if (cuentaDest == cuenta[1].id) {
+            validar = true;
+          }
+        }
+      });
+    }
+
+    return validar;
+  };
+
   const actionTransferir = () => {
     if (checkDatos(datosTransferencia))
       dispatch(
-        transferenciaExterna({ ...datosTransferencia, monto: monto }, history),
+        transferenciaExterna({ ...datosTransferencia, monto: monto }, history)
       );
   };
 
@@ -226,7 +255,7 @@ export const TransferenciaExterna = () => {
         Swal.fire(
           "Sin cuentas para trasnferir",
           "No tiene cuentas en el banco",
-          "warning",
+          "warning"
         ).then(() => {
           history.push("/inicio");
         });
@@ -234,7 +263,7 @@ export const TransferenciaExterna = () => {
         Swal.fire(
           "Inactividad",
           "La sesión ha sido cerrada por inactividad.",
-          "warning",
+          "warning"
         ).then(() => {
           dispatch(startLogout());
         });

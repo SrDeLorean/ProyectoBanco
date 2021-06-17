@@ -222,7 +222,7 @@ export const TransferenciaInterna = () => {
     <main>
       <section className="d-flex justify-content-center">
         <Container>
-          <Tabs id="transferencias" variant="pills" unmountOnExit>
+          <Tabs id="transferencias" unmountOnExit>
             <Tab eventKey="interna" title="Transferencia Interna">
               <Row className="justify-content-center form-bg-image" style={{}}>
                 <Col
