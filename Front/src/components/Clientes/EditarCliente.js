@@ -82,53 +82,8 @@ export const EditarCliente = () => {
       Swal.fire("Error", "Rut de cliente invalido", "error");
       return false;
     }
-    if (check.checkCorriente) {
-      if (check.saldoCuentaCorriente <= 0) {
-        Swal.fire(
-          "Error",
-          "El saldo de la cuenta corriente debe ser mayor a 0",
-          "error",
-        );
 
-        return false;
-      }
-    }
-    if (check.checkAhorro) {
-      if (check.saldoCuentaAhorro <= 0) {
-        Swal.fire(
-          "Error",
-          "El saldo de la cuenta de ahorro debe ser mayor a 0",
-          "error",
-        );
-        return false;
-      }
-    }
-    if (check.checkCredito) {
-      if (check.saldoTarjetaCredito <= 0) {
-        Swal.fire(
-          "Error",
-          "El saldo de la tarjeta de credito debe ser mayor a 0",
-          "error",
-        );
-
-        return false;
-      }
-    }
     return true;
-  };
-
-  const handleChange = (e) => {
-    setCheck({
-      ...check,
-      [e.target.name]: e.target.checked,
-    });
-  };
-
-  const handleInputChangeCheck = ({ target }) => {
-    setCheck({
-      ...check,
-      [target.name]: target.value,
-    });
   };
 
   const handleEdit = async (e) => {
@@ -157,35 +112,6 @@ export const EditarCliente = () => {
       //await dispatch(editarCuenta(id, datosCuentas, formValues.cuentas));
       //window.location.reload();
     }
-  };
-
-  const seleccionarCuentasActivas = (id, cuentas) => {
-    var checkAux = {
-      checkCorriente: false,
-      checkCredito: false,
-      checkAhorro: false,
-      saldoCuentaCorriente: 0,
-      saldoCuentaAhorro: 0,
-      saldoTarjetaCredito: 0,
-    };
-
-    cuentas.map((cuenta) => {
-      if (cuenta.dueño == id) {
-        if (cuenta.tipo == "corriente") {
-          checkAux.checkCorriente = cuenta.activa;
-          checkAux.saldoCuentaCorriente = cuenta.saldo;
-        }
-        if (cuenta.tipo == "ahorro") {
-          checkAux.checkAhorro = cuenta.activa;
-          checkAux.saldoCuentaAhorro = cuenta.saldo;
-        }
-        if (cuenta.tipo == "credito") {
-          checkAux.checkCredito = cuenta.activa;
-          checkAux.saldoTarjetaCredito = cuenta.saldo;
-        }
-      }
-    });
-    return checkAux;
   };
 
   useEffect(() => {
@@ -279,118 +205,6 @@ export const EditarCliente = () => {
                           onChange={handleInputChange}
                         />
                       </InputGroup>
-                    </Form.Group>
-
-                    <Form.Group id="Corriente" className="mb-4">
-                      <Row>
-                        <Col
-                          xs={12}
-                          className="align-items-center justify-content-center"
-                        >
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={
-                                  check.checkCorriente
-                                    ? check.checkCorriente
-                                    : false
-                                }
-                                onChange={handleChange}
-                                name="checkCorriente"
-                              />
-                            }
-                            label="Cuenta Corriente"
-                          />
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            type="number"
-                            placeholder="0"
-                            disabled={!check.checkCorriente ? "disabled" : ""}
-                            name="saldoCuentaCorriente"
-                            value={
-                              check.saldoCuentaCorriente != null
-                                ? check.saldoCuentaCorriente
-                                : 0
-                            }
-                            onChange={handleInputChangeCheck}
-                          />
-                        </Col>
-                      </Row>
-                    </Form.Group>
-
-                    <Form.Group id="Ahorro" className="mb-4">
-                      <Row>
-                        <Col
-                          xs={12}
-                          className="align-items-center justify-content-center"
-                        >
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={
-                                  check.checkAhorro ? check.checkAhorro : false
-                                }
-                                onChange={handleChange}
-                                name="checkAhorro"
-                              />
-                            }
-                            label="Cuenta Ahorro"
-                          />
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            type="number"
-                            placeholder="0"
-                            disabled={!check.checkAhorro ? "disabled" : ""}
-                            name="saldoCuentaAhorro"
-                            value={
-                              check.saldoCuentaAhorro != null
-                                ? check.saldoCuentaAhorro
-                                : 0
-                            }
-                            onChange={handleInputChangeCheck}
-                          />
-                        </Col>
-                      </Row>
-                    </Form.Group>
-
-                    <Form.Group id="Credito" className="mb-4">
-                      <Row>
-                        <Col
-                          xs={12}
-                          className="align-items-center justify-content-center"
-                        >
-                          <FormControlLabel
-                            control={
-                              <Switch
-                                checked={
-                                  check.checkCredito
-                                    ? check.checkCredito
-                                    : false
-                                }
-                                onChange={handleChange}
-                                name="checkCredito"
-                              />
-                            }
-                            label="Tarjeta de crédito"
-                          />
-                        </Col>
-                        <Col>
-                          <Form.Control
-                            type="number"
-                            placeholder="0"
-                            disabled={!check.checkCredito ? "disabled" : ""}
-                            name="saldoTarjetaCredito"
-                            value={
-                              check.saldoTarjetaCredito != null
-                                ? check.saldoTarjetaCredito
-                                : 0
-                            }
-                            onChange={handleInputChangeCheck}
-                          />
-                        </Col>
-                      </Row>
                     </Form.Group>
 
                     <Button

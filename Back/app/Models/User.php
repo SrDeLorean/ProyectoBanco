@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -12,7 +13,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -66,14 +67,14 @@ class User extends Authenticatable implements JWTSubject
     }
 
     public function cuentaCorriente(){
-        return $this->hasOne(CuentaCorriente::class);
+        return $this->hasOne(CuentaCorriente::class, 'cliente_id', 'id');
     }
 
     public function cuentaAhorro(){
-        return $this->hasOne(CuentaAhorro::class);
+        return $this->hasOne(CuentaAhorro::class, 'cliente_id', 'id');
     }
 
     public function cuentaCredito(){
-        return $this->hasOne(CuentaCredito::class);
+        return $this->hasOne(CuentaCredito::class, 'cliente_id', 'id');
     }
 }

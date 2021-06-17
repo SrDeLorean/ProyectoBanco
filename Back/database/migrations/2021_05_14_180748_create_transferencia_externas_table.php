@@ -15,11 +15,16 @@ class CreateTransferenciaExternasTable extends Migration
     {
         Schema::create('transferencia_externas', function (Blueprint $table) {
             $table->id();
+            // CUENTA DE ORIGEN
             $table->integer('tipo_cuenta_origen');
             $table->bigInteger('cuenta_origen');
+            // CUENTA DE DESTINO (si es mismo banco)
             $table->integer('tipo_cuenta_destino');
             $table->bigInteger('cuenta_destino');
             $table->integer('monto');
+            $table->integer('saldo');
+            $table->bigInteger('cliente_id')->unsigned();
+            $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

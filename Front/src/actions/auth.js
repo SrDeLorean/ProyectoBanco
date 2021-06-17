@@ -1,17 +1,17 @@
 import Swal from "sweetalert2";
-import { firebase, db } from "../api/firebase-config";
 import { types } from "../constants/types";
 import { startLoading, finishLoading } from "./ui";
-import { cargarCuentasBD, crearCuenta } from "./cuentas";
+import { cargarCuentas, cargarCuentasBD } from "./cuentas";
 import axios from "axios";
 import { api } from "./../constants/api.js";
 import { cargarUsuariosBD } from "./usuarios";
+import { cargarTransferenciasBD } from "./transferencias";
 
-export const startLoginEmailPassword = (email, password) => {
+export const startLoginEmailPassword = (rut, password) => {
   return async (dispatch) => {
     dispatch(startLoading());
     let user = {
-      email: email,
+      rut: rut,
       password: password,
     };
     await axios
@@ -22,7 +22,7 @@ export const startLoginEmailPassword = (email, password) => {
         dispatch(finishLoading());
         var config = {
           headers: {
-            Authorization: "Bearer " + data.token,
+            Authorization: "bearer " + data.token,
           },
         };
 
@@ -35,6 +35,7 @@ export const startLoginEmailPassword = (email, password) => {
         }
         if (data.user?.rol == "user") {
           await dispatch(cargarCuentasBD());
+          await dispatch(cargarTransferenciasBD());
         }
         dispatch(login(data.user.id, data.user.nombre, data.user.rol, false));
       })
@@ -52,6 +53,7 @@ export const startRegisterWithEmailPasswordName = async (
   name,
   rut,
   cuentas,
+  history
 ) => {
   return async (dispatch) => {
     dispatch(startLoading());
@@ -66,15 +68,22 @@ export const startRegisterWithEmailPasswordName = async (
       cuenta_ahorro: cuentas.saldoCuentaAhorro,
       cuenta_credito: cuentas.saldoTarjetaCredito,
     };
+    const config = JSON.parse(sessionStorage.getItem("config"));
 
     await axios
-      .post(api.route + "/usuarios", datos)
+      .post(api.route + "/usuarios", datos, config)
       .then((resp) => {
-        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
-        else Swal.fire("", resp.data.msg, "error");
+        if (resp.data.status == 200) {
+          Swal.fire("", resp.data.msg, "success").then(() => {
+            history.push("/Clientes");
+          });
+        } else Swal.fire("", resp.data.msg, "error");
+
         dispatch(finishLoading());
       })
       .catch((err) => {
+        dispatch(finishLoading());
+
         console.log(err);
       });
   };
@@ -90,6 +99,7 @@ export const startCheking = () => {
     }
     if (user?.rol == "user") {
       dispatch(cargarCuentasBD());
+      dispatch(cargarTransferenciasBD());
     }
     if (user?.id) {
       dispatch(login(user.id, user.nombre, user.rol, false));
@@ -109,13 +119,16 @@ export const login = (uid, displayName, rol, checking) => ({
 
 export const startLogout = () => {
   return async (dispatch) => {
+    const config = JSON.parse(sessionStorage.getItem("config"));
     await axios
-      .post(api.route + "/logout")
+      .post(api.route + "/auth/logout", config)
       .then((resp) => console.log(resp))
       .catch((err) => {
         console.log(err);
       });
     dispatch(logout());
+    dispatch(cargarCuentas([]));
+    dispatch(cargarUsuariosBD([]));
 
     //window.location.reload();
     sessionStorage.removeItem("token");

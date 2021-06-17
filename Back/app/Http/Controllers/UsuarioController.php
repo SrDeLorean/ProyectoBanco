@@ -150,6 +150,11 @@ class UsuarioController extends Controller
         try{
             $user = User::findOrFail($id);
             $user->delete();
+
+            return response()->json([
+                'status' => 200,
+                'msg' => 'Usuario eliminado correctamente.'
+            ]);
         }catch(Exception $ex){
             return response()->json([
                 'status' => 500,

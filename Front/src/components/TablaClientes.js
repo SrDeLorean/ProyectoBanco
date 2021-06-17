@@ -19,7 +19,6 @@ import { deleteUser } from "../actions/usuarios";
 export const TablaClientes = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  console.log(props);
 
   const TableRow = (props) => {
     const { id, nombre, email } = props;
@@ -55,7 +54,7 @@ export const TablaClientes = (props) => {
               <Dropdown.Item
                 className="text-danger"
                 onClick={async () => {
-                  dispatch(deleteUser(id));
+                  dispatch(deleteUser(id, history));
                 }}
               >
                 <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}

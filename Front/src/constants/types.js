@@ -15,4 +15,6 @@ export const types = {
 
   cargarCuentas: "[Cuentas] cargar cuentas",
   editarCuentas: "[Cuentas] Editar cuentas",
+
+  cargarTransferencias: "[Transferencia] cargar transferencias",
 };

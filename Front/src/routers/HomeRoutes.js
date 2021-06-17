@@ -7,7 +7,7 @@ import { Clientes } from "../pages/Clientes";
 import { CrearCliente } from "../components/Clientes/CrearCliente";
 import { EditarCliente } from "../components/Clientes/EditarCliente";
 import { TransferenciaInterna } from "../components/Clientes/TransferenciaInterna";
-import { Balance } from "../components/Clientes/Balance";
+import { Balance } from "../components/balances/Balance";
 
 // components
 import Sidebar from "../components/Sidebar";
@@ -78,11 +78,7 @@ export const HomeRoutes = () => {
                 path={Routes.TransferenciaInterna.path}
                 component={TransferenciaInterna}
               />
-              <Route
-                exact
-                path={Routes.Balance.path}
-                component={Balance}
-              />
+              <Route exact path={Routes.Balance.path} component={Balance} />
 
               <Redirect to={Routes.Inicio.path} />
             </Switch>

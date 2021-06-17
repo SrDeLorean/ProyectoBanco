@@ -1,11 +1,11 @@
 import { types } from "../constants/types";
 
-export const cuentasReducer = (state = [], action) => {
+export const transferenciasReducer = (state = [], action) => {
   switch (action.type) {
-    case types.cargarCuentas:
+    case types.cargarTransferencias:
       return {
         ...state,
-        cuentas: action.payload,
+        transferencias: action.payload,
       };
 
     default:

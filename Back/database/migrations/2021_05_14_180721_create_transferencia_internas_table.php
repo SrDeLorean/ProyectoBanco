@@ -16,11 +16,10 @@ class CreateTransferenciaInternasTable extends Migration
         Schema::create('transferencia_internas', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('cliente_id')->unsigned();
-            $table->integer('tipo_cuenta_origen');
             $table->bigInteger('cuenta_origen');
-            $table->integer('tipo_cuenta_destino');
             $table->bigInteger('cuenta_destino');
             $table->integer('monto');
+            $table->integer('saldo');
             $table->foreign('cliente_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
