@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUnlockAlt,  faPiggyBank, } from "@fortawesome/free-solid-svg-icons";
 
 import {
   Col,
@@ -12,7 +12,6 @@ import {
   Container,
   InputGroup,
 } from "@themesberg/react-bootstrap";
-
 import BgImage from "../../assets/img/signin.svg";
 
 import { useForm } from "../../hooks/useForm";
@@ -48,9 +47,13 @@ export default () => {
               className="d-flex align-items-center justify-content-center"
             >
               <div className="bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
-                <div className="text-center text-md-center mb-4 mt-md-0">
-                  <h3 className="mb-0">Inicia sesión </h3>
+              <div className="text-center text-md-center mb-4 mt-md-0">
+                  <FontAwesomeIcon icon={faPiggyBank} size="lg" className="me-2" />
+                  <h2 className="mb-0">Bienvenido a Proyecto Banco </h2>
                 </div>
+                {/* <div className="text-center text-md-center mb-4 mt-md-0">
+                  <h3 className="mb-0">Inicia sesión </h3>
+                </div> */}
                 <Form className="mt-4" onSubmit={handleLogin}>
                   <Form.Group id="rut" className="mb-4">
                     <Form.Label>RUT</Form.Label>

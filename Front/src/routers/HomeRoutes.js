@@ -43,52 +43,56 @@ export const HomeRoutes = () => {
   return (
     <>
       <Preloader show={loaded ? false : true} />
-      <Sidebar rol={rol} />
+      {/* <Sidebar rol={rol} /> */}
 
-      <main className="content">
-        <Navbar />
-        {rol ? (
-          rol == "admin" ? (
-            <Switch>
-              {/* pages */}
+      {/* <main className="content"> */}
+      <Navbar rol={rol}/>
+      <main>
+        <div className="d-flex align-items-center justify-content-center mt-2">
+          
+          {rol ? (
+            rol == "admin" ? (
+              <Switch>
+                {/* pages */}
 
-              <Route exact path={Routes.Clientes.path} component={Clientes} />
+                <Route exact path={Routes.Clientes.path} component={Clientes} />
 
-              <Route
-                exact
-                path={Routes.CrearCliente.path}
-                component={CrearCliente}
-              />
+                <Route
+                  exact
+                  path={Routes.CrearCliente.path}
+                  component={CrearCliente}
+                />
+                <Route
+                  exact
+                  path={Routes.EditarCliente.path}
+                  component={EditarCliente}
+                />
 
-              <Route
-                exact
-                path={Routes.EditarCliente.path}
-                component={EditarCliente}
-              />
+                <Redirect to={Routes.Clientes.path} />
+              </Switch>
+            ) : (
+              <Switch>
+                {/* pages */}
 
-              <Redirect to={Routes.Clientes.path} />
-            </Switch>
+                <Route exact path={Routes.Inicio.path} component={Inicio} />
+                <Route
+                  exact
+                  path={Routes.TransferenciaInterna.path}
+                  component={TransferenciaInterna}
+                />
+                <Route exact path={Routes.Balance.path} component={Balance} />
+
+                <Redirect to={Routes.Inicio.path} />
+              </Switch>
+            )
           ) : (
-            <Switch>
-              {/* pages */}
-
-              <Route exact path={Routes.Inicio.path} component={Inicio} />
-              <Route
-                exact
-                path={Routes.TransferenciaInterna.path}
-                component={TransferenciaInterna}
-              />
-              <Route exact path={Routes.Balance.path} component={Balance} />
-
-              <Redirect to={Routes.Inicio.path} />
-            </Switch>
-          )
-        ) : (
-          <div>Error...</div>
-        )}
-
-        <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
+            <div>Error...</div>
+          )}
+        </div>
       </main>
+      <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
+
+      {/* </main> */}
     </>
   );
 };

@@ -8,17 +8,17 @@ export default (props) => {
   return (
     <div>
       <footer className="footer section py-5">
-        <Row>
-          <Col xs={12} lg={6} className="mb-4 mb-lg-0">
-            <p className="mb-0 text-center text-xl-left">
+        <Row className="mx-0">
+          <Col className="mb-4 mb-lg-0">
+            <p className="mb-0 text-center">
               Copyright © {`${currentYear} `}
               <Card.Link
                 target="_blank"
                 className="text-blue text-decoration-none fw-normal"
               ></Card.Link>
             </p>
-          </Col>
-          <Col xs={12} lg={6}></Col>
+          </Col>  
+
         </Row>
       </footer>
     </div>
