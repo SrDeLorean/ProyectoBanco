@@ -138,9 +138,9 @@ export const EditarCliente = () => {
               xs={12}
               className="d-flex align-items-center justify-content-center"
             >
-              <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-700">
-              <div className="mb-1 mt-n2 mx-n2 text-start">
-                  <Button href={Routes.Clientes.path} variant="outline-primary" size="sm">
+              <div className="mb-2 mb-lg-0 bg-white shadow-soft border rounded border-light p-5 p-lg-5 pt-lg-4 w-100 fmxw-1000">
+                <div className="mb-1 mt-n2 mx-n2 text-start">
+                  <Button as={Link} to={Routes.Clientes.path} variant="outline-primary" size="sm">
                   <FontAwesomeIcon icon={faAngleLeft} className="me-2" />Volver
                   </Button>
                 </div>
@@ -148,7 +148,9 @@ export const EditarCliente = () => {
                   <h3 className="mb-0">Editar cliente</h3>
                 </div>
                 {usuarios /*&& cuentas*/ ? (
-                  <Form className="mt-4">
+                  <Form>
+                    <Row>
+                      
                     <Form.Group id="rut" className="mb-4">
                       <Form.Label>Rut Cliente</Form.Label>
                       <InputGroup>
@@ -164,7 +166,8 @@ export const EditarCliente = () => {
                         />
                       </InputGroup>
                     </Form.Group>
-                    <Form.Group id="rut" className="mb-4">
+                    <Col className="align-items-center ">
+                    <Form.Group id="nombre" className="mb-4">
                       <Form.Label>Nombre Cliente</Form.Label>
                       <InputGroup>
                         <InputGroup.Text></InputGroup.Text>
@@ -179,8 +182,9 @@ export const EditarCliente = () => {
                         />
                       </InputGroup>
                     </Form.Group>
+                    
                     <Form.Group id="email" className="mb-4">
-                      <Form.Label>Correo Electronico</Form.Label>
+                      <Form.Label>Correo Electrónico</Form.Label>
                       <InputGroup>
                         <InputGroup.Text>
                           <FontAwesomeIcon icon={faEnvelope} />
@@ -213,15 +217,20 @@ export const EditarCliente = () => {
                       </InputGroup>
                     </Form.Group>
 
-                    <Button
-                      variant="primary"
-                      type="submit"
-                      onClick={handleEdit}
-                      className="w-100"
-                      disabled={loading}
-                    >
-                      Guardar Cliente
-                    </Button>
+                    
+                    <Form.Group> 
+                      <Button
+                        variant="primary"
+                        type="submit"
+                        onClick={handleEdit}
+                        className="w-100"
+                        disabled={loading}
+                      >
+                        Guardar Cliente
+                      </Button>
+                    </Form.Group>
+                    </Col>
+                    </Row>  
                   </Form>
                 ) : (
                   <div>....</div>

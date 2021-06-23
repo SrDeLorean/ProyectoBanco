@@ -289,7 +289,7 @@ export const TransferenciaExterna = () => {
         </div>
         <Form>
           <Row>
-            <Form.Group as={Col} id="origenT" className="mb-4">
+            <Form.Group as={Col} sm={12} lg={6} id="origenT" className="mb-4">
               <Form.Label>Cuenta Origen</Form.Label>
               <Form.Control as="select" onChange={handleChangeOptions}>
                 {opciones.map((opcion, key) => (
@@ -299,7 +299,7 @@ export const TransferenciaExterna = () => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group as={Col} id="saldoT" className="mb-4">
+            <Form.Group as={Col} sm={12} lg={6} id="saldoT" className="mb-4">
               <Form.Label>Saldo</Form.Label>
               <InputGroup>
                 <InputGroup.Text disabled>$</InputGroup.Text>
@@ -311,10 +311,7 @@ export const TransferenciaExterna = () => {
               </InputGroup>
             </Form.Group>
           </Row>
-
-          <Divider></Divider>
-
-          <Form.Group id="banco" className="mb-4 mt-4">
+          <Form.Group id="banco" className="mb-4 mt-2 ">
             <Form.Label>Banco del destinatario</Form.Label>
             <Form.Control as="select" onChange={handleChangeOptionsBanco}>
               {bancos.map((banco, key) => (
@@ -354,7 +351,6 @@ export const TransferenciaExterna = () => {
               }}
             ></Form.Control>
           </Form.Group>
-          <Divider></Divider>
 
           <Form.Group id="montoT" className="mb-4 mt-4">
             <Form.Label>Monto</Form.Label>

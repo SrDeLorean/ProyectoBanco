@@ -222,20 +222,15 @@ export const TransferenciaInterna = () => {
     <main>
       <section className="d-flex justify-content-center">
         <Container>
-          <Tabs id="transferencias" unmountOnExit>
+          <Tabs fill variant="pills" id="transferencias" unmountOnExit>
             <Tab eventKey="interna" title="Transferencia Interna">
-              <Row className="justify-content-center form-bg-image" style={{}}>
-                <Col
-                  xs={12}
-                  className="d-flex align-items-center justify-content-center"
-                >
-                  <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
-                    <div className="text-center text-md-center mb-5 mt-md-0">
+            <Col xs={12} className="d-flex align-items-center justify-content-center">
+              <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
+                <div className="text-center text-md-center mb-5 mt-md-0">
                       <h3 className="mb-0">Transferencia Interna</h3>
                     </div>
                     <Form>
                       <Row>
-                        <Col>
                           <Form.Group id="origenI" className="mb-4">
                             <Form.Label>Cuenta Origen</Form.Label>
                             <Form.Control
@@ -249,6 +244,7 @@ export const TransferenciaInterna = () => {
                               ))}
                             </Form.Control>
                           </Form.Group>
+
                           <Form.Group id="destinoI" className="mb-4">
                             <Form.Label>Cuenta Destino</Form.Label>
                             <Form.Control
@@ -262,8 +258,7 @@ export const TransferenciaInterna = () => {
                               ))}
                             </Form.Control>
                           </Form.Group>
-                        </Col>
-                        <Divider orientation="vertical"></Divider>
+
 
                         <Col className="align-items-center justify-content-center">
                           <Form.Group id="montoI" className="mb-4">
@@ -298,7 +293,8 @@ export const TransferenciaInterna = () => {
                               </Form.Text>
                             )}
                           </Form.Group>
-                          <Form.Group>
+                          
+                          <Form.Group> 
                             <Button
                               variant="primary"
                               className="w-100 mt-2"
@@ -315,7 +311,6 @@ export const TransferenciaInterna = () => {
                     </Form>
                   </div>
                 </Col>
-              </Row>
             </Tab>
 
             <Tab eventKey="terceros" title="A Terceros">

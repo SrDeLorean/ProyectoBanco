@@ -108,21 +108,20 @@ export default (props = {}) => {
 
     <Navbar variant="dark" collapseOnSelect expand="lg" bg="dark" className="navbar-transparent navbar-theme-primary">
       <Container className="position-relative">
-        <Navbar.Brand href={Routes.Clientes.path} className="me-lg-3">
+        <Navbar.Brand as={Link} to={Routes.Clientes.path} className="me-lg-3">
         <FontAwesomeIcon icon={faPiggyBank} className="me-2" /> Proyecto Banco
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
           {rol == "admin" ? (
             <Nav className="navbar-nav-hover align-items-center">
-              <Nav.Link href={Routes.Clientes.path}>Administrar Clientes</Nav.Link>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
             </Nav>
           ) : (
-            <Nav className="navbar-nav-hover align-items-center">
-              <NavItem link={Routes.Inicio.path}>Inicio</NavItem>
-              <NavItem link={Routes.Balance.path}>Balances</NavItem>
-              <Nav.Link link={Routes.TransferenciaInterna.path}>Transferencias</Nav.Link>
+            <Nav className="navbar-nav-hover align-items-center">              
+              <Nav.Link as={Link} to={Routes.Inicio.path}>Inicio</Nav.Link>
+              <Nav.Link as={Link} to={Routes.Balance.path}>Balances</Nav.Link>
+              <Nav.Link as={Link} to={Routes.TransferenciaInterna.path}>Transferencias</Nav.Link>
               <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
             </Nav>
           )}

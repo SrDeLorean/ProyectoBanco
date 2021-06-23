@@ -196,8 +196,8 @@ export const CrearCliente = () => {
             >
               <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 <div className="mb-1 mt-n2 mx-n2 text-start">
-                  <Button href={Routes.Clientes.path} variant="outline-primary" size="sm">
-                  <FontAwesomeIcon icon={faAngleLeft} className="me-2" />Volver
+                  <Button as={Link} to={Routes.Clientes.path} variant="outline-primary" size="sm">
+                    <FontAwesomeIcon icon={faAngleLeft} className="me-2" />Volver
                   </Button>
                 </div>
                 <div className="text-center text-md-center mb-4 mt-md-0">
@@ -235,7 +235,7 @@ export const CrearCliente = () => {
                     </InputGroup>
                   </Form.Group>
                   <Form.Group id="email" className="mb-4">
-                    <Form.Label>Correo Electronico</Form.Label>
+                    <Form.Label>Correo Electrónico</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faEnvelope} />
@@ -312,7 +312,7 @@ export const CrearCliente = () => {
                               name="checkAhorro"
                             />
                           }
-                          label="Cuenta Ahorro"
+                          label="Cuenta de Ahorros"
                         />
                       </Col>
                       <Col>
@@ -342,7 +342,7 @@ export const CrearCliente = () => {
                               name="checkCredito"
                             />
                           }
-                          label="Tarjeta de crédito"
+                          label="Cuenta de Crédito"
                         />
                       </Col>
                       <Col>

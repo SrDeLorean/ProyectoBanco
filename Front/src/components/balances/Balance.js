@@ -10,6 +10,7 @@ import {
   Button,
   Tabs,
   Tab,
+  Nav,
 } from "@themesberg/react-bootstrap";
 import { BalanceCuenta } from "./BalanceCuenta";
 import { useDispatch, useSelector } from "react-redux";
@@ -140,8 +141,7 @@ export const Balance = () => {
     <main>
       <section className="d-flex justify-content-center">
         <Container>
-          <Tabs id="balances" unmountOnExit>
-            {/* Tab para balance de cuenta corriente de Cliente */}
+          <Tabs fill variant="pills" id="balances" unmountOnExit>
             {balanceCuentas.map((balance, key) => (
               <Tab key={key} eventKey={key} title={balance.tipoCuenta}>
                 <BalanceCuenta
@@ -152,91 +152,31 @@ export const Balance = () => {
                 />
               </Tab>
             ))}
-
-            {/*<Tab eventKey="balanceAhorro" title="Cuenta Ahorro">
-              <Row className="justify-content-center form-bg-image" style={{}}>
-                <Col
-                  xs={12}
-                  className="d-flex align-items-center justify-content-center"
-                >
-                  <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
-                    <div className="mb-n1 text-end">
-                      <Button variant="info" size="sm">
-                        Exportar
-                      </Button>
-                    </div>
-                    <div className="text-center text-md-center mb-4 mt-md-0">
-                      {/* Nombre Cliente */}
-            {/*<h5 className="mb-0">JUAN PEREZ PEREZ</h5>}
-                      {/* Numero de Cuenta */}
-            {/* <h5 className="mb-0">Cuenta Ahorro: 0000111122</h5>
-                    </div>
-                    {/* Aqui hay que iterar las transferencias que se obtengan de la bd 
-                                            Arriba esta el mismo metodo que se utiliza con la tabla de Clientes, probablemente reusar
-                                        */}
-            {/* <Table
-                      responsive
-                      hover
-                      bordered
-                      className="user-table align-items-center"
-                    >
-                      <thead>
-                        <tr>
-                          <th className="border-bottom">Fecha</th>
-                          <th className="border-bottom">Cargo ($)</th>
-                          <th className="border-bottom">Abono ($)</th>
-                          <th className="border-bottom">Descripcion</th>
-                          <th className="border-bottom">Saldo</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>10-05-2021</td>
-                          <td>$200.000</td>
-                          <td></td>
-                          <td>Transferencia 1</td>
-                          <td>$600.000</td>
-                        </tr>
-                        <tr>
-                          <td>10-05-2021</td>
-                          <td>$200.000</td>
-                          <td></td>
-                          <td>Transferencia 1</td>
-                          <td>$600.000</td>
-                        </tr>
-                        <tr>
-                          <td>10-05-2021</td>
-                          <td>$200.000</td>
-                          <td></td>
-                          <td>Transferencia 1</td>
-                          <td>$600.000</td>
-                        </tr>
-                        <tr>
-                          <td>10-05-2021</td>
-                          <td>$200.000</td>
-                          <td></td>
-                          <td>Transferencia 1</td>
-                          <td>$600.000</td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
-                </Col>
-              </Row>
-            </Tab>
-
-            <Tab eventKey="balanceCredito" title="Cuenta Credito">
-              <Alert variant="danger">
-                <Alert.Heading>Estimado Cliente</Alert.Heading>
-                <p>
-                  Usted no posee este tipo de Cuenta Bancaria. Por favor
-                  contacte con su ejecutivo si desea crear una.
-                </p>
-              </Alert>
-                   </Tab>*/}
           </Tabs>
-        </Container>
+          </Container>
       </section>
+      
+      {/* <Tab.Container>
+            <Nav fill variant="pills" className="flex-column vertical-tab">
+              {balanceCuentas.map((balance, key) => (
+                  <Nav.Item>
+                    <Nav.Link eventKey={key} className="mb-sm-3 mb-md-0">{balance.tipoCuenta}</Nav.Link>
+                  </Nav.Item>
+                ))}
+          </Nav>
+        <Tab.Content>
+        {balanceCuentas.map((balance, key) => (
+          <Tab.Pane eventKey={key} className="py-4">
+            <BalanceCuenta
+              tipoCuenta={balance.tipoCuenta}
+              numCuenta={balance.numeroCuenta}
+              nombreCliente={auth.name}
+              transacciones={balance.transferencias}
+            />
+          </Tab.Pane>
+        ))}
+        </Tab.Content>
+      </Tab.Container> */}
     </main>
   );
 };
