@@ -18,7 +18,6 @@ export default (props) => {
               ></Card.Link>
             </p>
           </Col>  
-
         </Row>
       </footer>
     </div>

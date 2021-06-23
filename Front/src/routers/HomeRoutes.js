@@ -42,46 +42,31 @@ export const HomeRoutes = () => {
 
   return (
     <>
+      {/* Vista que se muestra al cargar las distintas vistas */}
       <Preloader show={loaded ? false : true} />
-      {/* <Sidebar rol={rol} /> */}
-
-      {/* <main className="content"> */}
+      {/* Barra de Navegacion (Barra superior) */}
       <Navbar rol={rol}/>
       <main>
         <div className="d-flex align-items-center justify-content-center mt-2">
-          
           {rol ? (
             rol == "admin" ? (
               <Switch>
-                {/* pages */}
-
+                {/* Rutas permitidas como Administrador */}
                 <Route exact path={Routes.Clientes.path} component={Clientes} />
-
-                <Route
-                  exact
-                  path={Routes.CrearCliente.path}
-                  component={CrearCliente}
-                />
-                <Route
-                  exact
-                  path={Routes.EditarCliente.path}
-                  component={EditarCliente}
-                />
-
+                <Route exact path={Routes.CrearCliente.path} component={CrearCliente}/>
+                <Route exact path={Routes.EditarCliente.path} component={EditarCliente}/>
+                
+                {/* En caso de ingresar a alguna ruta no permitida, la pagina redirige al usuario a la Vista de Administracion de Clientes */}
                 <Redirect to={Routes.Clientes.path} />
               </Switch>
             ) : (
               <Switch>
-                {/* pages */}
-
+                {/*Rutas permitidas como Cliente*/}
                 <Route exact path={Routes.Inicio.path} component={Inicio} />
-                <Route
-                  exact
-                  path={Routes.TransferenciaInterna.path}
-                  component={TransferenciaInterna}
-                />
+                <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
                 <Route exact path={Routes.Balance.path} component={Balance} />
 
+                {/* En caso de ingresar a alguna ruta no permitida, la pagina redirige al usuario a la Vista de Inicio */}
                 <Redirect to={Routes.Inicio.path} />
               </Switch>
             )
@@ -90,9 +75,8 @@ export const HomeRoutes = () => {
           )}
         </div>
       </main>
+      {/* Componente Footer */}
       <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
-
-      {/* </main> */}
     </>
   );
 };
