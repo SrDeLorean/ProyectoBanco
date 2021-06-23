@@ -1,4 +1,4 @@
-import { Button, Col, Row, Table , Card} from "@themesberg/react-bootstrap";
+import { Button, Table , Card} from "@themesberg/react-bootstrap";
 import React from "react";
 import { useDispatch } from "react-redux";
 import { exportarBalance } from "../../actions/cuentas";
@@ -22,7 +22,7 @@ export const BalanceCuenta = (props) => {
           <div className="text-center text-md-center mb-4 mt-md-0">
             {/* Nombre Cliente */}
             <h4 className="mb-0">{nombreCliente}</h4>
-            {/* Numero de Cuenta */}
+            {/* Numero de Cuenta y el saldo disponible en dicha cuenta*/}
             <h5 className="mb-0">
               {tipoCuenta}: {numCuenta} | Saldo Disponible: ?
             </h5>
@@ -32,47 +32,50 @@ export const BalanceCuenta = (props) => {
           */}
           <Card border="light" className="table-wrapper table-responsive shadow-sm">
             <Card.Body className="pt-0">
-          <Table
-            responsive
-            hover
-            className="user-table align-items-center" 
-          >
-            <thead>
-              <tr>
-                <th className="border-bottom">Fecha</th>
-                <th className="border-bottom">Cargo ($)</th>
-                <th className="border-bottom">Abono ($)</th>
-                <th className="border-bottom">Descripción</th>
-                <th className="border-bottom">Saldo</th>
-              </tr>
-            </thead>
-            <tbody>
-              {transacciones.map((transaccion, index) => {
-                if (transaccion.abono) {
-                  return (
-                    <tr key={index}>
-                      <td>{transaccion.fecha}</td>
-                      <td></td>
-                      <td>${transaccion.abono}</td>
-                      <td>{transaccion.descripcion}</td>
-                      <td>{transaccion.saldo}</td>
-                    </tr>
-                  );
-                } else if (transaccion.cargo) {
-                  return (
-                    <tr key={index}>
-                      <td>{transaccion.fecha}</td>
-                      <td>${transaccion.cargo}</td>
-                      <td></td>
-                      <td>{transaccion.descripcion}</td>
-                      <td>{transaccion.saldo}</td>
-                    </tr>
-                  );
-                }
-              })}
-            </tbody>
-          </Table>
-          </Card.Body>
+              {/* Tabla para presentar las transacciones */}
+              <Table
+                responsive
+                hover
+                className="user-table align-items-center" 
+              >
+                {/* Se crean los encabezados de la tabla */}
+                <thead>
+                  <tr>
+                    <th className="border-bottom">Fecha</th>
+                    <th className="border-bottom">Cargo ($)</th>
+                    <th className="border-bottom">Abono ($)</th>
+                    <th className="border-bottom">Descripción</th>
+                    <th className="border-bottom">Saldo</th>
+                  </tr>
+                </thead>
+                {/* Se rellena la tabla con las transacciones obtenidas de la BD */}
+                <tbody>
+                  {transacciones.map((transaccion, index) => {
+                    if (transaccion.abono) {
+                      return (
+                        <tr key={index}>
+                          <td>{transaccion.fecha}</td>
+                          <td></td>
+                          <td>${transaccion.abono}</td>
+                          <td>{transaccion.descripcion}</td>
+                          <td>{transaccion.saldo}</td>
+                        </tr>
+                      );
+                    } else if (transaccion.cargo) {
+                      return (
+                        <tr key={index}>
+                          <td>{transaccion.fecha}</td>
+                          <td>${transaccion.cargo}</td>
+                          <td></td>
+                          <td>{transaccion.descripcion}</td>
+                          <td>{transaccion.saldo}</td>
+                        </tr>
+                      );
+                    }
+                  })}
+                </tbody>
+              </Table>
+            </Card.Body>
           </Card>
         </div>
   );

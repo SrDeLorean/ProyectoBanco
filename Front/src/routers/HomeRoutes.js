@@ -62,12 +62,11 @@ export const HomeRoutes = () => {
             ) : (
               <Switch>
                 {/*Rutas permitidas como Cliente*/}
-                <Route exact path={Routes.Inicio.path} component={Inicio} />
                 <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
                 <Route exact path={Routes.Balance.path} component={Balance} />
 
-                {/* En caso de ingresar a alguna ruta no permitida, la pagina redirige al usuario a la Vista de Inicio */}
-                <Redirect to={Routes.Inicio.path} />
+                {/* En caso de ingresar a alguna ruta no permitida, la pagina redirige al usuario a la Vista de Inicio (balances) */}
+                <Redirect to={Routes.Balance.path} />
               </Switch>
             )
           ) : (

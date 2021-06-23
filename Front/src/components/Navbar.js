@@ -29,7 +29,7 @@ export default (props = {}) => {
             <FontAwesomeIcon icon={faPiggyBank} className="me-2" /> Proyecto Banco
           </Navbar.Brand>    
         ): (
-          <Navbar.Brand as={Link} to={Routes.Inicio.path} className="me-lg-3">
+          <Navbar.Brand as={Link} to={Routes.Balance.path} className="me-lg-3">
             <FontAwesomeIcon icon={faPiggyBank} className="me-2" /> Proyecto Banco
           </Navbar.Brand>    
         )}

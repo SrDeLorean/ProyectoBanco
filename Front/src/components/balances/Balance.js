@@ -1,17 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Divider from "@material-ui/core/Divider";
-
-import {
-  Col,
-  Row,
-  Alert,
-  Table,
-  Container,
-  Button,
-  Tabs,
-  Tab,
-  Nav,
-} from "@themesberg/react-bootstrap";
+import { Container, Tabs, Tab } from "@themesberg/react-bootstrap";
 import { BalanceCuenta } from "./BalanceCuenta";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
@@ -25,52 +13,6 @@ export const Balance = () => {
   const { transferencias } = useSelector((state) => state.transferencias);
   const { auth } = useSelector((state) => state);
   const [balanceCuentas, setBalanceCuentas] = useState([]);
-  /*const TableRow = (props) => {
-        const { id, nombre, email } = props;
-        return (
-          <tr>
-            <td>
-              <span className="fw-normal">{nombre}</span>
-            </td>
-            <td>
-              <span className="fw-normal">{email}</span>
-            </td>
-    
-            <td>
-              <Dropdown as={ButtonGroup}>
-                <Dropdown.Toggle
-                  as={Button}
-                  split
-                  variant="link"
-                  className="text-dark m-0 p-0"
-                >
-                  <span className="icon icon-sm">
-                    <FontAwesomeIcon icon={faEllipsisH} className="icon-dark" />
-                  </span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    onClick={() => {
-                      history.push("Editar-cliente/" + id);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faEdit} className="me-2" /> Editar
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    className="text-danger"
-                    onClick={async () => {
-                      dispatch(deleteUser(id));
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faTrashAlt} className="me-2" />{" "}
-                    Deshabilitar
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </td>
-          </tr>
-        );
-      };*/
 
   const crearBalance = (cuentas, transferencias) => {
     const balances = [];
@@ -141,6 +83,8 @@ export const Balance = () => {
     <main>
       <section className="d-flex justify-content-center">
         <Container>
+          {/* Se crean Tabs para navegar entre los distintos tipos de cuenta*/}
+          {/* Cabe destacar que solo se podra navegar a traves de los tipos de cuenta que el cliente posea */}
           <Tabs fill variant="pills" id="balances" unmountOnExit>
             {balanceCuentas.map((balance, key) => (
               <Tab key={key} eventKey={key} title={balance.tipoCuenta}>
@@ -155,28 +99,6 @@ export const Balance = () => {
           </Tabs>
           </Container>
       </section>
-      
-      {/* <Tab.Container>
-            <Nav fill variant="pills" className="flex-column vertical-tab">
-              {balanceCuentas.map((balance, key) => (
-                  <Nav.Item>
-                    <Nav.Link eventKey={key} className="mb-sm-3 mb-md-0">{balance.tipoCuenta}</Nav.Link>
-                  </Nav.Item>
-                ))}
-          </Nav>
-        <Tab.Content>
-        {balanceCuentas.map((balance, key) => (
-          <Tab.Pane eventKey={key} className="py-4">
-            <BalanceCuenta
-              tipoCuenta={balance.tipoCuenta}
-              numCuenta={balance.numeroCuenta}
-              nombreCliente={auth.name}
-              transacciones={balance.transferencias}
-            />
-          </Tab.Pane>
-        ))}
-        </Tab.Content>
-      </Tab.Container> */}
     </main>
   );
 };
