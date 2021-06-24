@@ -130,14 +130,18 @@ class CuentasController extends Controller
 
         $writer->save('php://output');
     }
-
+    /**
+     * Metodo para comparar segun fecha de creacion del registro
+     */
     private static function date_compare($a, $b){
         $t1 = strtotime($a['created_at']);
         $t2 = strtotime($b['created_at']);
         return $t1 - $t2;
     }
 
-
+    /**
+     * Metodo para obtener las cuentas del usuario conectado
+     */
     public function getCuentas(Request $request){
         $user = JWTAuth::parseToken()->authenticate();
 
