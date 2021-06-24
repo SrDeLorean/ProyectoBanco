@@ -1,15 +1,13 @@
-import { Button, Table, Card } from "@themesberg/react-bootstrap";
+import { Table, Card } from "@themesberg/react-bootstrap";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Link } from 'react-router-dom';
-import { exportarBalance } from "../../actions/cuentas";
 
 export const BalanceCuenta = (props) => {
   const { tipoCuenta, numCuenta, nombreCliente, transacciones, saldo } = props;
   const dispatch = useDispatch();
   const token = JSON.parse(sessionStorage.getItem("token"));
   var cuenta = 0;
-  switch(tipoCuenta){
+  switch (tipoCuenta) {
     case "Cuenta Corriente":
       cuenta = 0;
       break;
@@ -20,15 +18,16 @@ export const BalanceCuenta = (props) => {
       cuenta = 1;
       break;
   }
-  var url = "http://localhost:8000/api/cuentas/balance/exportar?tipocuenta=" + cuenta + "&token=" + token; 
+  var url =
+    "http://localhost:8000/api/cuentas/balance/exportar?tipocuenta=" +
+    cuenta +
+    "&token=" +
+    token;
 
   return (
     <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-5 p-lg-5 pt-lg-4 w-100 fmxw-1000">
       <div className="mb-n1 text-end">
-        <a href={url} >
-          Exportar
-        </a>
-      
+        <a href={url}>Exportar</a>
       </div>
       <div className="text-center text-md-center mb-4 mt-md-0">
         {/* Nombre Cliente */}

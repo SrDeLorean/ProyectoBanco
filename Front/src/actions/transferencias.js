@@ -2,7 +2,6 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { api } from "../constants/api";
 import { types } from "../constants/types";
-import { transferenciasReducer } from "../reducers/transferenciasReducer";
 import { cargarCuentasBD } from "./cuentas";
 
 export const cargarTransferenciasBD = () => {
@@ -18,33 +17,6 @@ export const cargarTransferenciasBD = () => {
 
       crearBalance(balance, uid, dispatch);
     });
-
-    /*await axios
-      .get(api.route + "/transferencias/externas", config)
-      .then(async (respExt) => {
-        await axios
-          .get(api.route + "/transferencias/internas", config)
-          .then((respInt) => {
-            var transferencias = [];
-
-            respExt.data.map((transferencia, index) => {});
-
-            transferencias.push(respExt.data);
-            transferencias.push(respInt.data);
-
-            dispatch(
-              cargarTransferencias(
-                generalizarDatosTransferencias(respInt.data, respExt.data)
-              )
-            );
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      })
-      .catch((e) => {
-        console.log(e);
-      });*/
   };
 };
 
@@ -108,14 +80,6 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
         descripcion: "Transferencia Externa",
         saldo: "----",
       });
-
-    /*data.push({
-      cuenta: transferencia.cuenta_destino,
-      fecha: transferencia.created_at,
-      abono: transferencia.monto,
-      descripcion: "Transferencia Externa",
-      saldo: "---",
-    });*/
   });
 
   data.sort((a, b) => {
