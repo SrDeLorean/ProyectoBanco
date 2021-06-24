@@ -85,7 +85,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
 
       abono: transferencia.monto,
       descripcion: "Transferencia Interna",
-      saldo: "---",
+      saldo: transferencia.saldo_destino
     });
   });
 
@@ -106,7 +106,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
         fechaCompleta: transferencia.created_at,
         abono: transferencia.monto,
         descripcion: "Transferencia Externa",
-        saldo: "----",
+        saldo: transferencia.saldo_destino
       });
 
     /*data.push({
