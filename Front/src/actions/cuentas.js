@@ -11,7 +11,6 @@ export const cargarCuentasBD = () => {
     await axios
       .get(api.route + "/cuentas", config)
       .then((resp) => {
-        console.log(Object.entries(resp.data.cuentas));
         let cuentas = Object.fromEntries(
           Object.entries(resp.data.cuentas).filter((cuenta) => {
             return cuenta[1] != null;

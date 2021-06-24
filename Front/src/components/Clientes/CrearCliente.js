@@ -62,7 +62,7 @@ export const CrearCliente = () => {
       Swal.fire(
         "Error",
         "La contraseña debe ser de 6 caracteres o mas",
-        "error",
+        "error"
       );
 
       return false;
@@ -79,7 +79,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta corriente debe ser mayor a 0",
-          "error",
+          "error"
         );
 
         return false;
@@ -90,7 +90,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta de ahorro debe ser mayor a 0",
-          "error",
+          "error"
         );
         return false;
       }
@@ -100,7 +100,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la tarjeta de credito debe ser mayor a 0",
-          "error",
+          "error"
         );
 
         return false;
@@ -114,8 +114,6 @@ export const CrearCliente = () => {
       ...check,
       [e.target.name]: e.target.checked,
     });
-
-    console.log(e.target.name, e.target.checked);
   };
 
   const handleRegister = async (e) => {
@@ -154,8 +152,8 @@ export const CrearCliente = () => {
           nombre,
           rut,
           cuentas,
-          history,
-        ),
+          history
+        )
       );
     }
   };

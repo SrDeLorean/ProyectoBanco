@@ -21,6 +21,7 @@ export const Balance = () => {
         balances.push({
           tipoCuenta: "Cuenta Corriente",
           numeroCuenta: cuenta[1].id,
+          saldo: cuenta[1].saldo,
           transferencias: transferencias.filter(
             (transferencia) => transferencia.cuenta == 0
           ),
@@ -29,6 +30,7 @@ export const Balance = () => {
         balances.push({
           tipoCuenta: "Cuenta Ahorro",
           numeroCuenta: cuenta[1].id,
+          saldo: cuenta[1].saldo,
           transferencias: transferencias.filter(
             (transferencia) => transferencia.cuenta == 1
           ),
@@ -37,6 +39,7 @@ export const Balance = () => {
         balances.push({
           tipoCuenta: "Cuenta Credito",
           numeroCuenta: cuenta[1].id,
+          saldo: cuenta[1].saldo,
           transferencias: transferencias.filter(
             (transferencia) => transferencia.cuenta == 2
           ),
@@ -93,11 +96,12 @@ export const Balance = () => {
                   numCuenta={balance.numeroCuenta}
                   nombreCliente={auth.name}
                   transacciones={balance.transferencias}
+                  saldo={balance.saldo}
                 />
               </Tab>
             ))}
           </Tabs>
-          </Container>
+        </Container>
       </section>
     </main>
   );
