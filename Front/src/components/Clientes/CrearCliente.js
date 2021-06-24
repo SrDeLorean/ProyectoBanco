@@ -6,8 +6,19 @@ import { Link } from "react-router-dom";
 import Switch from "@material-ui/core/Switch";
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft, faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
-import { Col, Row, Form, Button, Container, InputGroup } from "@themesberg/react-bootstrap";
+import {
+  faAngleLeft,
+  faEnvelope,
+  faUnlockAlt,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  Col,
+  Row,
+  Form,
+  Button,
+  Container,
+  InputGroup,
+} from "@themesberg/react-bootstrap";
 import { Routes } from "../../constants/routes";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useForm } from "../../hooks/useForm";
@@ -144,7 +155,6 @@ export const CrearCliente = () => {
         saldoCuentaAhorro: check.checkAhorro ? parseInt(saldoCuentaAhorro) : 0,
       };
 
-      //console.log(cuentas);
       await dispatch(
         await startRegisterWithEmailPasswordName(
           email,
@@ -163,12 +173,21 @@ export const CrearCliente = () => {
       <section className="d-flex justify-content-center ">
         <Container>
           <Row className="justify-content-center form-bg-image" style={{}}>
-            <Col xs={12} className="d-flex align-items-center justify-content-center">
+            <Col
+              xs={12}
+              className="d-flex align-items-center justify-content-center"
+            >
               <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
                 {/* Boton para volver a la vista de inicio */}
                 <div className="mb-1 mt-n2 mx-n2 text-start">
-                  <Button as={Link} to={Routes.Clientes.path} variant="outline-primary" size="sm">
-                    <FontAwesomeIcon icon={faAngleLeft} className="me-2" />Volver
+                  <Button
+                    as={Link}
+                    to={Routes.Clientes.path}
+                    variant="outline-primary"
+                    size="sm"
+                  >
+                    <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
+                    Volver
                   </Button>
                 </div>
                 {/* Titulo */}

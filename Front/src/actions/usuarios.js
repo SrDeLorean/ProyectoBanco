@@ -5,7 +5,6 @@ import { types } from "../constants/types";
 
 export const cargarUsuariosBD = () => {
   return async (dispatch, getState) => {
-    ///dispatch(startLoading());
     const userIDAdmin = getState().auth.uid;
     const usuarios = [];
     const config = JSON.parse(sessionStorage.getItem("config"));
@@ -13,7 +12,6 @@ export const cargarUsuariosBD = () => {
     await axios
       .get(api.route + "/usuarios", config)
       .then((resp) => {
-        //console.log(resp.data);
         dispatch(cargarUsuarios(resp.data));
       })
       .catch((err) => {
@@ -24,7 +22,6 @@ export const cargarUsuariosBD = () => {
 
 export const editarUsuario = (id, datos) => {
   return async (dispatch) => {
-    //console.log(id, datos);
     const config = JSON.parse(sessionStorage.getItem("config"));
 
     await axios
@@ -48,7 +45,6 @@ export const deleteUser = (id, history) => {
     await axios
       .delete(api.route + "/usuarios/" + id, config)
       .then((resp) => {
-        //console.log(resp);
         if (resp.data.status == 200) {
           dispatch(cargarUsuariosBD());
 
