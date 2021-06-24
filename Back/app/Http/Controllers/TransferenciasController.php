@@ -84,6 +84,7 @@ class TransferenciasController extends Controller
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
             $trans->saldo = $origen->saldo - $request->monto;
+            $trans->saldo_destino = ($destino==null)?0:($destino->saldo + $request->monto);
             $trans->cliente_id = $user->id;
             $trans->save();
 
