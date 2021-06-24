@@ -7,6 +7,13 @@ import { api } from "./../constants/api.js";
 import { cargarUsuariosBD } from "./usuarios";
 import { cargarTransferenciasBD } from "./transferencias";
 
+/**
+ * Inicia sesion del usuario, conectando el front con el backend.
+ * a travez del metodo post con axios. Y se almacena el token del usuario
+ * en el sessionStorage.
+ *
+ * Ademas, se almacena la información de usuario en el store de redux.
+ */
 export const startLoginEmailPassword = (rut, password) => {
   return async (dispatch) => {
     dispatch(startLoading());
@@ -14,6 +21,7 @@ export const startLoginEmailPassword = (rut, password) => {
       rut: rut,
       password: password,
     };
+    // Petición post al servidor backend
     await axios
       .post(api.auth, user)
       .then(async (response) => {
@@ -26,17 +34,20 @@ export const startLoginEmailPassword = (rut, password) => {
           },
         };
 
+        // Almacena el token en el session storage del navegador.
         sessionStorage.setItem("token", JSON.stringify(data.token));
         sessionStorage.setItem("config", JSON.stringify(config));
         sessionStorage.setItem("user", JSON.stringify(data.user));
         if (data.user?.rol == "admin") {
+          // carga la informacion de los usuarios del servidor
           await dispatch(cargarUsuariosBD());
-          // dispatch(cargarCuentasBD());
         }
         if (data.user?.rol == "user") {
+          // carga la informacion del usuario como cuentas y balance del servidor.
           await dispatch(cargarCuentasBD());
           await dispatch(cargarTransferenciasBD());
         }
+        // guarda la información del usuario logeado en el Redux.
         dispatch(login(data.user.id, data.user.nombre, data.user.rol, false));
       })
       .catch((e) => {
@@ -47,6 +58,12 @@ export const startLoginEmailPassword = (rut, password) => {
   };
 };
 
+/**
+ * Registra a un usuario, conectando el front con el backend.
+ * a travez del metodo post con axios.
+ *
+ * Ademas, se almacena la información de usuario creado en el store de redux.
+ */
 export const startRegisterWithEmailPasswordName = async (
   email,
   password,
@@ -57,7 +74,7 @@ export const startRegisterWithEmailPasswordName = async (
 ) => {
   return async (dispatch) => {
     dispatch(startLoading());
-
+    // información requerida para el registro del usuario
     const datos = {
       email: email,
       password: password,
@@ -70,10 +87,12 @@ export const startRegisterWithEmailPasswordName = async (
     };
     const config = JSON.parse(sessionStorage.getItem("config"));
 
+    // Petición post para registrar al usuario
     await axios
       .post(api.route + "/usuarios", datos, config)
       .then((resp) => {
         if (resp.data.status == 200) {
+          // Actualiza los datos para tener el front actualizado
           dispatch(cargarUsuariosBD());
 
           Swal.fire("", resp.data.msg, "success").then(() => {
@@ -91,24 +110,40 @@ export const startRegisterWithEmailPasswordName = async (
   };
 };
 
+/**
+ *  Identifica al tipo de usario que esta logeado, para cargarle la información
+ * necesario y almacenarla en el redux.
+ *
+ */
 export const startCheking = () => {
   return (dispatch) => {
     const user = JSON.parse(sessionStorage.getItem("user"));
 
     if (user?.rol == "admin") {
+      // carga los usarios de la BD
       dispatch(cargarUsuariosBD());
-      // dispatch(cargarCuentasBD());
     }
     if (user?.rol == "user") {
+      // carga las cuentas de un usuario de la BD
       dispatch(cargarCuentasBD());
+      // carga el balance y transferencias de las cuentas de los usuarios de la BD
       dispatch(cargarTransferenciasBD());
     }
     if (user?.id) {
+      // Guarda en el store del redux el usario logeado.
       dispatch(login(user.id, user.nombre, user.rol, false));
     }
   };
 };
 
+/**
+ * Guarda la informacion de un usuario en en el store de redux.
+ * @param {*} uid id del usuario
+ * @param {*} displayName nombre del usuario
+ * @param {*} rol rol del usuario
+ * @param {*} checking si esta logeado
+ * @returns
+ */
 export const login = (uid, displayName, rol, checking) => ({
   type: types.login,
   payload: {
@@ -119,26 +154,34 @@ export const login = (uid, displayName, rol, checking) => ({
   },
 });
 
+/**
+ * Cierra la sesión de un usuario tanto en el front como en el back.
+ * @returns
+ */
 export const startLogout = () => {
   return async (dispatch) => {
     const config = JSON.parse(sessionStorage.getItem("config"));
+    // petición post para el logout del usuario
     await axios
       .post(api.route + "/auth/logout", config)
       .then((resp) => console.log(resp))
       .catch((err) => {
         console.log(err);
       });
+    // borra la informacion store del redux
     dispatch(logout());
     dispatch(cargarCuentas([]));
     dispatch(cargarUsuariosBD([]));
-
-    //window.location.reload();
+    // elimina el token del usuario de la session Storage
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");
     sessionStorage.removeItem("config");
   };
 };
 
+/**
+ * Realiza la tarea del logout en redux.
+ */
 export const logout = () => ({
   type: types.logout,
 });

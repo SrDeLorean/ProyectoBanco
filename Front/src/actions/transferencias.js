@@ -118,8 +118,6 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
     });*/
   });
 
-  console.log(data);
-
   data.sort((a, b) => {
     const fechaA = new Date(a.fechaCompleta).getTime();
     const fechaB = new Date(b.fechaCompleta).getTime();
@@ -133,7 +131,6 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
     // a must be equal to b
     return 0;
   });
-  console.log(data);
 
   return data;
 };

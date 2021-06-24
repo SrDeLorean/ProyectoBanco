@@ -1,8 +1,6 @@
 import axios from "axios";
-import { firebase, db } from "../api/firebase-config";
 import { api } from "../constants/api";
 import { types } from "../constants/types";
-import { finishLoading, startLoading } from "./ui";
 
 export const cargarCuentasBD = () => {
   return async (dispatch, getState) => {
