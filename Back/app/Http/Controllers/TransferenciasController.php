@@ -15,18 +15,25 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TransferenciasController extends Controller
 {
+    /**
+     *   Metodo para obtener todas las transferencias internas de un cliente
+     */
     public function getInt(){
         $cliente = Auth::id();
         $movimientos = TransferenciaInterna::where('cliente_id', $cliente)->get();
         return $movimientos;
     }
-
+    /**
+     * Metodo para obtener todas las transferencias externas de un cliente
+     */
     public function getExt(){
         $cliente = Auth::id();
         $movimientos = TransferenciaExterna::where('cliente_id', $cliente)->get();
         return $movimientos;
     }
-
+    /**
+     * Metodo para generar una transferencia interna entre cuentas
+     */
     public function storeInt(Request $request){
         try{
             $validador = Validator::make($request->all(), [
@@ -106,6 +113,9 @@ class TransferenciasController extends Controller
             ]);
         }
     }
+    /**
+     * Metodo para generar una transferencia externa entre cuentas del mismo o distinto banco
+     */
     public function storeExt(Request $request){
         try{
             $validador = Validator::make($request->all(), [
