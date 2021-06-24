@@ -7,6 +7,7 @@ import { Clientes } from "../pages/Clientes";
 import { CrearCliente } from "../components/Clientes/CrearCliente";
 import { EditarCliente } from "../components/Clientes/EditarCliente";
 import { TransferenciaInterna } from "../components/Clientes/TransferenciaInterna";
+import { Balance } from "../components/balances/Balance";
 
 // components
 import Sidebar from "../components/Sidebar";
@@ -41,52 +42,40 @@ export const HomeRoutes = () => {
 
   return (
     <>
+      {/* Vista que se muestra al cargar las distintas vistas */}
       <Preloader show={loaded ? false : true} />
-      <Sidebar rol={rol} />
+      {/* Barra de Navegacion (Barra superior) */}
+      <Navbar rol={rol}/>
+      <main>
+        <div className="d-flex align-items-center justify-content-center mt-2">
+          {rol ? (
+            rol == "admin" ? (
+              <Switch>
+                {/* Rutas permitidas como Administrador */}
+                <Route exact path={Routes.Clientes.path} component={Clientes} />
+                <Route exact path={Routes.CrearCliente.path} component={CrearCliente}/>
+                <Route exact path={Routes.EditarCliente.path} component={EditarCliente}/>
+                
+                {/* En caso de ingresar a alguna ruta no permitida, la pagina redirige al usuario a la Vista de Administracion de Clientes */}
+                <Redirect to={Routes.Clientes.path} />
+              </Switch>
+            ) : (
+              <Switch>
+                {/*Rutas permitidas como Cliente*/}
+                <Route exact path={Routes.TransferenciaInterna.path} component={TransferenciaInterna}/>
+                <Route exact path={Routes.Balance.path} component={Balance} />
 
-      <main className="content">
-        <Navbar />
-        {rol ? (
-          rol == "admin" ? (
-            <Switch>
-              {/* pages */}
-
-              <Route exact path={Routes.Clientes.path} component={Clientes} />
-
-              <Route
-                exact
-                path={Routes.CrearCliente.path}
-                component={CrearCliente}
-              />
-
-              <Route
-                exact
-                path={Routes.EditarCliente.path}
-                component={EditarCliente}
-              />
-
-              <Redirect to={Routes.Clientes.path} />
-            </Switch>
+                {/* En caso de ingresar a alguna ruta no permitida, la pagina redirige al usuario a la Vista de Inicio (balances) */}
+                <Redirect to={Routes.Balance.path} />
+              </Switch>
+            )
           ) : (
-            <Switch>
-              {/* pages */}
-
-              <Route exact path={Routes.Inicio.path} component={Inicio} />
-              <Route
-                exact
-                path={Routes.TransferenciaInterna.path}
-                component={TransferenciaInterna}
-              />
-
-              <Redirect to={Routes.Inicio.path} />
-            </Switch>
-          )
-        ) : (
-          <div>Error...</div>
-        )}
-
-        <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
+            <div>Error...</div>
+          )}
+        </div>
       </main>
+      {/* Componente Footer */}
+      <Footer toggleSettings={toggleSettings} showSettings={showSettings} />
     </>
   );
 };

@@ -1,59 +1,52 @@
 import React from "react";
-import { useState, useEffect } from 'react'
-import { Row, Button, ButtonGroup } from "@themesberg/react-bootstrap";
-
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, ButtonGroup } from "@themesberg/react-bootstrap";
 import { TablaClientes } from "../components/TablaClientes";
 import { Routes } from "../constants/routes";
-
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { api } from "./../constants/api.js";
-import { Link } from "react-router-dom";
-
+import { cargarCuentasBD } from "../actions/cuentas";
 
 export const Clientes = () => {
   //const { usuarios } = useSelector((state) => state.usuarios);
-  const [usuarios, setUsuarios] = useState([])
+  const [usuarios, setUsuarios] = useState([]);
+  const dispatch = useDispatch();
 
   const getUsuarios = () => {
-    axios.get(api.route + "/usuarios")
-      .then(resp => {
-          setUsuarios(resp.data)
+    const config = JSON.parse(sessionStorage.getItem("config"));
+    axios
+      .get(api.route + "/usuarios", config)
+      .then((resp) => {
+        setUsuarios(resp.data);
       })
-      .catch(err => {
-          console.log(err)
+      .catch((err) => {
+        console.log(err);
       });
-  }
-  useEffect(getUsuarios, [])
-  
+  };
+  useEffect(getUsuarios, []);
+
   return (
     <>
-      <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
-        <div className="d-block mb-4 mb-md-0">
-          <h4>Clientes</h4>
-          <p className="mb-0"></p>
-        </div>
-        <div className="btn-toolbar mb-2 mb-md-0">
+      {/* Pagina principal para Administradores */}
+      <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
+        <div className="mb-n1 text-end">
+          {/* Boton para Crear nuevos Clientes */}
           <ButtonGroup>
             <Link to={Routes.CrearCliente.path}>
-              <Button
-                variant="outline-primary"
-                size="sm"
-              >
+              <Button variant="outline-primary" size="sm">
                 Nuevo Cliente
               </Button>
             </Link>
           </ButtonGroup>
         </div>
+        <div className="text-center text-md-center mb-4 mt-md-0">
+          <h3 className="mb-0">Clientes</h3>
+        </div>
+        {/* Creacion componente TablaClientes */}
+        <TablaClientes usuarios={usuarios} />
       </div>
-
-      <div className="table-settings mb-4">
-        <Row className="justify-content-between align-items-center"></Row>
-      </div>
-
-      <TablaClientes usuarios={usuarios} />
     </>
   );
-
-
 };

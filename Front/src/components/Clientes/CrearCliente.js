@@ -5,31 +5,30 @@ import { validarRUT } from "validar-rut";
 import { Link } from "react-router-dom";
 import Switch from "@material-ui/core/Switch";
 import Swal from "sweetalert2";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faEnvelope,
   faUnlockAlt,
 } from "@fortawesome/free-solid-svg-icons";
-
 import {
   Col,
   Row,
   Form,
-  Card,
   Button,
   Container,
   InputGroup,
 } from "@themesberg/react-bootstrap";
-
 import { Routes } from "../../constants/routes";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useForm } from "../../hooks/useForm";
 import { startRegisterWithEmailPasswordName } from "../../actions/auth";
+import { useHistory } from "react-router-dom";
 
 export const CrearCliente = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const { loading } = useSelector((state) => state.ui);
 
   const [check, setCheck] = React.useState({
@@ -74,7 +73,7 @@ export const CrearCliente = () => {
       Swal.fire(
         "Error",
         "La contraseña debe ser de 6 caracteres o mas",
-        "error",
+        "error"
       );
 
       return false;
@@ -91,7 +90,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta corriente debe ser mayor a 0",
-          "error",
+          "error"
         );
 
         return false;
@@ -102,7 +101,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la cuenta de ahorro debe ser mayor a 0",
-          "error",
+          "error"
         );
         return false;
       }
@@ -112,7 +111,7 @@ export const CrearCliente = () => {
         Swal.fire(
           "Error",
           "El saldo de la tarjeta de credito debe ser mayor a 0",
-          "error",
+          "error"
         );
 
         return false;
@@ -126,8 +125,6 @@ export const CrearCliente = () => {
       ...check,
       [e.target.name]: e.target.checked,
     });
-
-    console.log(e.target.name, e.target.checked);
   };
 
   const handleRegister = async (e) => {
@@ -158,15 +155,15 @@ export const CrearCliente = () => {
         saldoCuentaAhorro: check.checkAhorro ? parseInt(saldoCuentaAhorro) : 0,
       };
 
-      console.log(cuentas);
-      dispatch(
+      await dispatch(
         await startRegisterWithEmailPasswordName(
           email,
           password,
           nombre,
           rut,
           cuentas,
-        ),
+          history
+        )
       );
     }
   };
@@ -175,26 +172,31 @@ export const CrearCliente = () => {
     <main>
       <section className="d-flex justify-content-center ">
         <Container>
-          <p className="text-center">
-            <Card.Link
-              as={Link}
-              to={Routes.Clientes.path}
-              className="text-gray-700"
-            >
-              <FontAwesomeIcon icon={faAngleLeft} className="me-2" /> Volver
-            </Card.Link>
-          </p>
-
           <Row className="justify-content-center form-bg-image" style={{}}>
             <Col
               xs={12}
               className="d-flex align-items-center justify-content-center"
             >
               <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
+                {/* Boton para volver a la vista de inicio */}
+                <div className="mb-1 mt-n2 mx-n2 text-start">
+                  <Button
+                    as={Link}
+                    to={Routes.Clientes.path}
+                    variant="outline-primary"
+                    size="sm"
+                  >
+                    <FontAwesomeIcon icon={faAngleLeft} className="me-2" />
+                    Volver
+                  </Button>
+                </div>
+                {/* Titulo */}
                 <div className="text-center text-md-center mb-4 mt-md-0">
                   <h3 className="mb-0">Crear cliente</h3>
                 </div>
+                {/* Formulario para la creacion de usuarios tipo cliente (administrador solo hay uno) */}
                 <Form className="mt-4">
+                  {/* Distintos inputs */}
                   <Form.Group id="rut" className="mb-4">
                     <Form.Label>Rut Cliente</Form.Label>
                     <InputGroup>
@@ -210,7 +212,7 @@ export const CrearCliente = () => {
                       />
                     </InputGroup>
                   </Form.Group>
-                  <Form.Group id="rut" className="mb-4">
+                  <Form.Group id="nombre" className="mb-4">
                     <Form.Label>Nombre Cliente</Form.Label>
                     <InputGroup>
                       <InputGroup.Text></InputGroup.Text>
@@ -226,7 +228,7 @@ export const CrearCliente = () => {
                     </InputGroup>
                   </Form.Group>
                   <Form.Group id="email" className="mb-4">
-                    <Form.Label>Correo Electronico</Form.Label>
+                    <Form.Label>Correo Electrónico</Form.Label>
                     <InputGroup>
                       <InputGroup.Text>
                         <FontAwesomeIcon icon={faEnvelope} />
@@ -258,7 +260,6 @@ export const CrearCliente = () => {
                       />
                     </InputGroup>
                   </Form.Group>
-
                   <Form.Group id="Corriente" className="mb-4">
                     <Row>
                       <Col
@@ -288,7 +289,6 @@ export const CrearCliente = () => {
                       </Col>
                     </Row>
                   </Form.Group>
-
                   <Form.Group id="Ahorro" className="mb-4">
                     <Row>
                       <Col
@@ -303,7 +303,7 @@ export const CrearCliente = () => {
                               name="checkAhorro"
                             />
                           }
-                          label="Cuenta Ahorro"
+                          label="Cuenta de Ahorros"
                         />
                       </Col>
                       <Col>
@@ -318,7 +318,6 @@ export const CrearCliente = () => {
                       </Col>
                     </Row>
                   </Form.Group>
-
                   <Form.Group id="Credito" className="mb-4">
                     <Row>
                       <Col
@@ -333,7 +332,7 @@ export const CrearCliente = () => {
                               name="checkCredito"
                             />
                           }
-                          label="Tarjeta de crédito"
+                          label="Cuenta de Crédito"
                         />
                       </Col>
                       <Col>
@@ -348,7 +347,7 @@ export const CrearCliente = () => {
                       </Col>
                     </Row>
                   </Form.Group>
-
+                  {/* Boton submit */}
                   <Button
                     variant="primary"
                     type="submit"
@@ -359,10 +358,6 @@ export const CrearCliente = () => {
                     Crear Cliente
                   </Button>
                 </Form>
-
-                <div className="mt-3 mb-4 text-center">
-                  <span className="fw-normal"></span>
-                </div>
               </div>
             </Col>
           </Row>
