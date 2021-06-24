@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Divider from "@material-ui/core/Divider";
-import {
-  Col,
-  Row,
-  Form,
-  Button,
-  InputGroup,
-} from "@themesberg/react-bootstrap";
+import { Col, Row, Form, Button, InputGroup } from "@themesberg/react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { startLogout } from "../../actions/auth";
@@ -287,9 +280,11 @@ export const TransferenciaExterna = () => {
         <div className="text-center text-md-center mb-5 mt-md-0">
           <h3 className="mb-0">A Terceros</h3>
         </div>
+        {/* Formulario para realizar una Transaccion Externa */}
         <Form>
+          {/* Distintos inputs */}
           <Row>
-            <Form.Group as={Col} id="origenT" className="mb-4">
+            <Form.Group as={Col} sm={12} lg={6} id="origenT" className="mb-4">
               <Form.Label>Cuenta Origen</Form.Label>
               <Form.Control as="select" onChange={handleChangeOptions}>
                 {opciones.map((opcion, key) => (
@@ -299,7 +294,7 @@ export const TransferenciaExterna = () => {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group as={Col} id="saldoT" className="mb-4">
+            <Form.Group as={Col} sm={12} lg={6} id="saldoT" className="mb-4">
               <Form.Label>Saldo</Form.Label>
               <InputGroup>
                 <InputGroup.Text disabled>$</InputGroup.Text>
@@ -311,10 +306,7 @@ export const TransferenciaExterna = () => {
               </InputGroup>
             </Form.Group>
           </Row>
-
-          <Divider></Divider>
-
-          <Form.Group id="banco" className="mb-4 mt-4">
+          <Form.Group id="banco" className="mb-4 mt-2 ">
             <Form.Label>Banco del destinatario</Form.Label>
             <Form.Control as="select" onChange={handleChangeOptionsBanco}>
               {bancos.map((banco, key) => (
@@ -334,12 +326,6 @@ export const TransferenciaExterna = () => {
               ))}
             </Form.Control>
           </Form.Group>
-          {/* 
-          <Form.Group id="rutDestinatario" className="mb-4">
-            <Form.Label>Rut Destinatario</Form.Label>
-            <Form.Control placeholder="11.111.111-1"></Form.Control>
-          </Form.Group>
-          */}
           <Form.Group id="cuentaDestinatario" className="mb-4">
             <Form.Label>Cuenta Destinatario</Form.Label>
             <Form.Control
@@ -354,8 +340,6 @@ export const TransferenciaExterna = () => {
               }}
             ></Form.Control>
           </Form.Group>
-          <Divider></Divider>
-
           <Form.Group id="montoT" className="mb-4 mt-4">
             <Form.Label>Monto</Form.Label>
             <InputGroup>
@@ -386,6 +370,7 @@ export const TransferenciaExterna = () => {
               </Form.Text>
             )}
           </Form.Group>
+          {/* Boton submit */}
           <Form.Group className="justify-content-center mt-2">
             <Button
               variant="primary"

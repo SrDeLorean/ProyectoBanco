@@ -7,6 +7,6 @@ export const Routes = {
   Inicio: { path: "/Inicio" },
   TransferenciaInterna: { path: "/TransferenciaInterna"},
   Balance: { path: "/Balance"},
-
+  //Login
   Signin: { path: "/auth/login" },
 };

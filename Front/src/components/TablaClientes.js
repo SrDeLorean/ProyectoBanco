@@ -1,17 +1,7 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faEllipsisH,
-  faTrashAlt,
-} from "@fortawesome/free-solid-svg-icons";
-import {
-  Card,
-  Button,
-  Table,
-  Dropdown,
-  ButtonGroup,
-} from "@themesberg/react-bootstrap";
+import { faEdit, faEllipsisH, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { Card, Button, Table, Dropdown, ButtonGroup } from "@themesberg/react-bootstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch } from "react-redux";
 import { deleteUser } from "../actions/usuarios";
@@ -20,6 +10,7 @@ export const TablaClientes = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  //Definicion de las Filas de la tabla para clientes
   const TableRow = (props) => {
     const { id, nombre, email } = props;
     return (
@@ -30,7 +21,6 @@ export const TablaClientes = (props) => {
         <td>
           <span className="fw-normal">{email}</span>
         </td>
-
         <td>
           <Dropdown as={ButtonGroup}>
             <Dropdown.Toggle
@@ -68,11 +58,14 @@ export const TablaClientes = (props) => {
   };
 
   return (
+    //Contenedor de la tabla de clientes
     <Card border="light" className="table-wrapper table-responsive shadow-sm">
       <Card.Body className="pt-0">
+        {/* Se verifica si es que existen usuarios, o si se pudieron obtener de la BD */}
         {!props.usuarios ? (
           <div>cargando...</div>
         ) : (
+          //Se crea la tabla con los distintos encabezados
           <Table hover className="user-table align-items-center">
             <thead>
               <tr>
@@ -80,6 +73,7 @@ export const TablaClientes = (props) => {
                 <th className="border-bottom">Email</th>
               </tr>
             </thead>
+            {/* Aqui se llena la tabla con datos con los usuarios obtenidos */}
             <tbody>
               {props.usuarios.map((t) => (
                 <TableRow key={`transaction-${t.id}`} {...t} />

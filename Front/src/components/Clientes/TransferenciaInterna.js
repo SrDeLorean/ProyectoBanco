@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import Divider from "@material-ui/core/Divider";
-import {
-  Col,
-  Row,
-  Form,
-  Button,
-  Container,
-  InputGroup,
-  Tabs,
-  Tab,
-} from "@themesberg/react-bootstrap";
+import { Col, Row, Form, Button, Container, InputGroup, Tabs, Tab } from "@themesberg/react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { logout, startLogout } from "../../actions/auth";
@@ -222,20 +212,19 @@ export const TransferenciaInterna = () => {
     <main>
       <section className="d-flex justify-content-center">
         <Container>
-          <Tabs id="transferencias" unmountOnExit>
+          {/* Se crean Tabs para navegar entre transacciones internar y externas */}
+          <Tabs fill variant="pills" id="transferencias" unmountOnExit>
+            {/* Contenido del Tab Transacciones Internas */}
             <Tab eventKey="interna" title="Transferencia Interna">
-              <Row className="justify-content-center form-bg-image" style={{}}>
-                <Col
-                  xs={12}
-                  className="d-flex align-items-center justify-content-center"
-                >
-                  <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
-                    <div className="text-center text-md-center mb-5 mt-md-0">
+            <Col xs={12} className="d-flex align-items-center justify-content-center">
+              <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
+                <div className="text-center text-md-center mb-5 mt-md-0">
                       <h3 className="mb-0">Transferencia Interna</h3>
                     </div>
+                    {/* Formulario Transferencia Interna */}
                     <Form>
+                      {/* Distintos Inputs */}
                       <Row>
-                        <Col>
                           <Form.Group id="origenI" className="mb-4">
                             <Form.Label>Cuenta Origen</Form.Label>
                             <Form.Control
@@ -262,9 +251,6 @@ export const TransferenciaInterna = () => {
                               ))}
                             </Form.Control>
                           </Form.Group>
-                        </Col>
-                        <Divider orientation="vertical"></Divider>
-
                         <Col className="align-items-center justify-content-center">
                           <Form.Group id="montoI" className="mb-4">
                             <Form.Label>Monto a Transferir</Form.Label>
@@ -298,7 +284,8 @@ export const TransferenciaInterna = () => {
                               </Form.Text>
                             )}
                           </Form.Group>
-                          <Form.Group>
+                          {/* Boton submit */}
+                          <Form.Group> 
                             <Button
                               variant="primary"
                               className="w-100 mt-2"
@@ -315,10 +302,10 @@ export const TransferenciaInterna = () => {
                     </Form>
                   </div>
                 </Col>
-              </Row>
             </Tab>
-
+            {/* Contenido del Tab Transacciones Externas */}
             <Tab eventKey="terceros" title="A Terceros">
+              {/* Se crea el componenete Transferencia Externa */}
               <TransferenciaExterna />
             </Tab>
           </Tabs>
