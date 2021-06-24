@@ -83,15 +83,15 @@ class TransferenciasController extends Controller
             $trans->cuenta_origen = $request->cuenta_origen;
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
-            $trans->saldo = $origen->saldo - $request->monto;
-            $trans->saldo_destino = ($destino==null)?0:($destino->saldo + $request->monto);
+            $trans->saldo = intval($origen->saldo) - intval($request->monto);
+            $trans->saldo_destino = ($destino==null)?0:(intval($destino->saldo) + intval($request->monto));
             $trans->cliente_id = $user->id;
             $trans->save();
 
-            $origen->saldo = $origen->saldo - $request->monto;
+            $origen->saldo = intval($origen->saldo) - intval($request->monto);
             $origen->save();
 
-            $destino->saldo = $destino->saldo + $request->monto;
+            $destino->saldo = intval($destino->saldo) + intval($request->monto);
             $destino->save();
 
             return response()->json([
@@ -170,15 +170,15 @@ class TransferenciasController extends Controller
             $trans->tipo_cuenta_destino = $request->tipo_destino;
             $trans->cuenta_destino = $request->cuenta_destino;
             $trans->monto = $request->monto;
-            $trans->saldo = $origen->saldo - $request->monto;
-            $trans->saldo_destino = ($destino==null)?0:($destino->saldo + $request->monto);
+            $trans->saldo = intval($origen->saldo) - intval($request->monto);
+            $trans->saldo_destino = ($destino==null)?0:(intval($destino->saldo) + intval($request->monto));
             $trans->cliente_id = $user->id;
             $trans->save();
 
-            $origen->saldo = $origen->saldo - $request->monto;
+            $origen->saldo = intval($origen->saldo) - intval($request->monto);
             $origen->save();
             if($destino != null){
-                $destino->saldo = $destino->saldo + $request->monto;
+                $destino->saldo = intval($destino->saldo) + intval($request->monto);
                 $destino->save();
             }
 
