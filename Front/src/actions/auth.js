@@ -38,6 +38,8 @@ export const startLoginEmailPassword = (rut, password) => {
         sessionStorage.setItem("token", JSON.stringify(data.token));
         sessionStorage.setItem("config", JSON.stringify(config));
         sessionStorage.setItem("user", JSON.stringify(data.user));
+        sessionStorage.setItem("uid", JSON.stringify(data.user.id));
+
         if (data.user?.rol == "admin") {
           // carga la informacion de los usuarios del servidor
           await dispatch(cargarUsuariosBD());

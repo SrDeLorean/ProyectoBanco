@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Col, Row, Form, Button, InputGroup } from "@themesberg/react-bootstrap";
+import {
+  Col,
+  Row,
+  Form,
+  Button,
+  InputGroup,
+} from "@themesberg/react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { startLogout } from "../../actions/auth";
