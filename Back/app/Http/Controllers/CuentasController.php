@@ -11,7 +11,9 @@ use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 class CuentasController extends Controller
 {
-
+    /**
+     * Metodo para obtener los balances de una cuenta
+     */
     public function getBalance(Request $request){
         $user = JWTAuth::parseToken()->authenticate();
         $trans1 = [];
@@ -53,7 +55,9 @@ class CuentasController extends Controller
         usort($balance, 'App\Http\Controllers\CuentasController::date_compare');
         return response()->json($balance);
     }
-
+    /**
+     * Metodo para obtener un excel con el balance de una cuenta
+     */
     public function exportarBalance(Request $request){
         $user = JWTAuth::parseToken()->authenticate();
         $trans1 = [];
@@ -106,7 +110,7 @@ class CuentasController extends Controller
         $fila = 8;
         foreach($balance as $trans){
             $worksheet->getCell('B'.$fila)->setValue(date('d-m-Y', strtotime($trans['created_at'])));
-            if($trans['cuenta_origen'] == $cuenta->id){
+            if(intval($trans['cuenta_origen']) == intval($cuenta->id)){
                 $worksheet->getCell('C'.$fila)->setValue($trans['monto']);
                 $worksheet->getCell('D'.$fila)->setValue(0);
             }else{
@@ -126,14 +130,18 @@ class CuentasController extends Controller
 
         $writer->save('php://output');
     }
-
+    /**
+     * Metodo para comparar segun fecha de creacion del registro
+     */
     private static function date_compare($a, $b){
         $t1 = strtotime($a['created_at']);
         $t2 = strtotime($b['created_at']);
         return $t1 - $t2;
     }
 
-
+    /**
+     * Metodo para obtener las cuentas del usuario conectado
+     */
     public function getCuentas(Request $request){
         $user = JWTAuth::parseToken()->authenticate();
 

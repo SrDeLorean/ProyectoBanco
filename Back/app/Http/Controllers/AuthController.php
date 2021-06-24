@@ -23,7 +23,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Metodo para loguearse con las credenciales de email y password
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -67,7 +67,9 @@ class AuthController extends Controller
             ], 409);
         }
     }
-
+    /**
+     * Metodo para loguearse con rut y password
+     */
     public function login2(Request $request)
     {
         $validator = Validator::make($request->only(['rut', 'password']), [
@@ -114,7 +116,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Metodo para obtener el usuario actual autenticado
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -129,7 +131,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Metodo para desconectarse e invalidar el token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -163,7 +165,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
+     * Metodo para refrescar un token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -191,7 +193,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the token array structure.
+     * Metodo para obtener el token y su información
      *
      * @param  string $token
      *
