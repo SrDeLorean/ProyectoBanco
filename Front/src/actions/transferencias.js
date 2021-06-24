@@ -12,7 +12,10 @@ export const cargarTransferenciasBD = () => {
     await axios.get(api.route + "/cuentas/balance", config).then((resp) => {
       var balance = [];
       const { uid } = getState().auth;
-      balance.push(...resp.data);
+      if (resp.data)
+        if (resp.data.msg != "El usuario no posee este tipo de cuenta.")
+          balance.push(...resp.data);
+
       crearBalance(balance, uid, dispatch);
     });
 
@@ -55,8 +58,7 @@ const crearBalance = (balance, uid, dispatch) => {
   const internas = balance.filter((transaccion) => {
     return !transaccion.hasOwnProperty("tipo_cuenta_destino");
   });
-  console.log(internas);
-  console.log(externas);
+
   dispatch(
     cargarTransferencias(
       generalizarDatosTransferencias(internas, externas, uid)
@@ -71,6 +73,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
     data.push({
       cuenta: transferencia.cuenta_origen,
       fecha: transferencia.created_at.slice(0, 10),
+      fechaCompleta: transferencia.created_at,
       cargo: transferencia.monto,
       descripcion: "Transferencia Interna",
       saldo: transferencia.saldo,
@@ -78,6 +81,8 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
     data.push({
       cuenta: transferencia.cuenta_destino,
       fecha: transferencia.created_at.slice(0, 10),
+      fechaCompleta: transferencia.created_at,
+
       abono: transferencia.monto,
       descripcion: "Transferencia Interna",
       saldo: "---",
@@ -89,6 +94,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
       data.push({
         cuenta: transferencia.tipo_cuenta_origen,
         fecha: transferencia.created_at.slice(0, 10),
+        fechaCompleta: transferencia.created_at,
         cargo: transferencia.monto,
         descripcion: "Transferencia Externa",
         saldo: transferencia.saldo,
@@ -97,6 +103,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
       data.push({
         cuenta: transferencia.tipo_cuenta_origen,
         fecha: transferencia.created_at.slice(0, 10),
+        fechaCompleta: transferencia.created_at,
         abono: transferencia.monto,
         descripcion: "Transferencia Externa",
         saldo: "----",
@@ -111,9 +118,11 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
     });*/
   });
 
+  console.log(data);
+
   data.sort((a, b) => {
-    const fechaA = new Date(a.fecha).getTime();
-    const fechaB = new Date(b.fecha).getTime();
+    const fechaA = new Date(a.fechaCompleta).getTime();
+    const fechaB = new Date(b.fechaCompleta).getTime();
 
     if (fechaA < fechaB) {
       return 1;
@@ -124,6 +133,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
     // a must be equal to b
     return 0;
   });
+  console.log(data);
 
   return data;
 };
