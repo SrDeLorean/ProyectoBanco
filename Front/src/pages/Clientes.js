@@ -29,7 +29,7 @@ export const Clientes = () => {
 
   return (
     <>
-    {/* Pagina principal para Administradores */}
+      {/* Pagina principal para Administradores */}
       <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
         <div className="mb-n1 text-end">
           {/* Boton para Crear nuevos Clientes */}
@@ -42,7 +42,7 @@ export const Clientes = () => {
           </ButtonGroup>
         </div>
         <div className="text-center text-md-center mb-4 mt-md-0">
-            <h3 className="mb-0">Clientes</h3>
+          <h3 className="mb-0">Clientes</h3>
         </div>
         {/* Creacion componente TablaClientes */}
         <TablaClientes usuarios={usuarios} />

@@ -22,7 +22,6 @@ export const cargarTransferenciasBD = () => {
 
 const crearBalance = (balance, uid, dispatch) => {
   const data = [];
-
   const externas = balance.filter((transaccion) => {
     return transaccion.hasOwnProperty("tipo_cuenta_destino");
   });
@@ -57,7 +56,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
 
       abono: transferencia.monto,
       descripcion: "Transferencia Interna",
-      saldo: "---",
+      saldo: transferencia.saldo_destino,
     });
   });
 
@@ -78,7 +77,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
         fechaCompleta: transferencia.created_at,
         abono: transferencia.monto,
         descripcion: "Transferencia Externa",
-        saldo: "----",
+        saldo: transferencia.saldo_destino,
       });
   });
 
