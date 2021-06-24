@@ -74,6 +74,8 @@ export const startRegisterWithEmailPasswordName = async (
       .post(api.route + "/usuarios", datos, config)
       .then((resp) => {
         if (resp.data.status == 200) {
+          dispatch(cargarUsuariosBD());
+
           Swal.fire("", resp.data.msg, "success").then(() => {
             history.push("/Clientes");
           });

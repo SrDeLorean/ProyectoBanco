@@ -30,8 +30,10 @@ export const editarUsuario = (id, datos) => {
     await axios
       .put(api.route + "/usuarios/" + id, datos, config)
       .then((resp) => {
-        if (resp.data.status == 200) Swal.fire("", resp.data.msg, "success");
-        else Swal.fire("", resp.data.msg, "error");
+        if (resp.data.status == 200) {
+          Swal.fire("", resp.data.msg, "success");
+          dispatch(cargarUsuariosBD());
+        } else Swal.fire("", resp.data.msg, "error");
       })
       .catch((e) => {
         console.log(e);
@@ -47,11 +49,13 @@ export const deleteUser = (id, history) => {
       .delete(api.route + "/usuarios/" + id, config)
       .then((resp) => {
         //console.log(resp);
-        if (resp.data.status == 200)
+        if (resp.data.status == 200) {
+          dispatch(cargarUsuariosBD());
+
           Swal.fire("", resp.data.msg, "success").then(() => {
             history.push("/Clientes");
           });
-        else Swal.fire("", resp.data.msg, "error");
+        } else Swal.fire("", resp.data.msg, "error");
       })
       .catch((e) => {
         console.log(e);
