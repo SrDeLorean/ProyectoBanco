@@ -1,6 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Col, Row, Form, Button, Container, InputGroup, Tabs, Tab } from "@themesberg/react-bootstrap";
+import {
+  Col,
+  Row,
+  Form,
+  Button,
+  Container,
+  InputGroup,
+  Tabs,
+  Tab,
+} from "@themesberg/react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { logout, startLogout } from "../../actions/auth";
@@ -10,7 +19,10 @@ import { TransferenciaExterna } from "./TransferenciaExterna";
 export const TransferenciaInterna = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { cuentas } = useSelector((state) => state.cuentas);
+  const {
+    cuentas: { cuentas },
+    auth: { uid },
+  } = useSelector((state) => state);
   const [opcionesTI, setOpcionesTI] = useState([
     { value: "", label: "Selecciona una Cuenta..." },
   ]);
@@ -216,92 +228,95 @@ export const TransferenciaInterna = () => {
           <Tabs fill variant="pills" id="transferencias" unmountOnExit>
             {/* Contenido del Tab Transacciones Internas */}
             <Tab eventKey="interna" title="Transferencia Interna">
-            <Col xs={12} className="d-flex align-items-center justify-content-center">
-              <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
-                <div className="text-center text-md-center mb-5 mt-md-0">
-                      <h3 className="mb-0">Transferencia Interna</h3>
-                    </div>
-                    {/* Formulario Transferencia Interna */}
-                    <Form>
-                      {/* Distintos Inputs */}
-                      <Row>
-                          <Form.Group id="origenI" className="mb-4">
-                            <Form.Label>Cuenta Origen</Form.Label>
+              <Col
+                xs={12}
+                className="d-flex align-items-center justify-content-center"
+              >
+                <div className="mb-4 mb-lg-0 bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-1000">
+                  <div className="text-center text-md-center mb-5 mt-md-0">
+                    <h3 className="mb-0">Transferencia Interna</h3>
+                  </div>
+                  {/* Formulario Transferencia Interna */}
+                  <Form>
+                    {/* Distintos Inputs */}
+                    <Row>
+                      <Form.Group id="origenI" className="mb-4">
+                        <Form.Label>Cuenta Origen</Form.Label>
+                        <Form.Control
+                          as="select"
+                          onChange={handleChangeOptionsOTI}
+                        >
+                          {opcionesTI.map((opcion, key) => (
+                            <option value={opcion.value} key={key}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </Form.Group>
+                      <Form.Group id="destinoI" className="mb-4">
+                        <Form.Label>Cuenta Destino</Form.Label>
+                        <Form.Control
+                          as="select"
+                          onChange={handleChangeOptionsDTI}
+                        >
+                          {opcionesTI.map((opcion, key) => (
+                            <option value={opcion.value} key={key}>
+                              {opcion.label}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </Form.Group>
+                      <Col className="align-items-center justify-content-center">
+                        <Form.Group id="montoI" className="mb-4">
+                          <Form.Label>Monto a Transferir</Form.Label>
+                          <InputGroup>
+                            <InputGroup.Text>$</InputGroup.Text>
                             <Form.Control
-                              as="select"
-                              onChange={handleChangeOptionsOTI}
-                            >
-                              {opcionesTI.map((opcion, key) => (
-                                <option value={opcion.value} key={key}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </Form.Control>
-                          </Form.Group>
-                          <Form.Group id="destinoI" className="mb-4">
-                            <Form.Label>Cuenta Destino</Form.Label>
-                            <Form.Control
-                              as="select"
-                              onChange={handleChangeOptionsDTI}
-                            >
-                              {opcionesTI.map((opcion, key) => (
-                                <option value={opcion.value} key={key}>
-                                  {opcion.label}
-                                </option>
-                              ))}
-                            </Form.Control>
-                          </Form.Group>
-                        <Col className="align-items-center justify-content-center">
-                          <Form.Group id="montoI" className="mb-4">
-                            <Form.Label>Monto a Transferir</Form.Label>
-                            <InputGroup>
-                              <InputGroup.Text>$</InputGroup.Text>
-                              <Form.Control
-                                required
-                                type="text"
-                                name="montoTI"
-                                value={montoTI}
-                                onChange={({ target }) => {
-                                  setMontoTI(target.value);
-                                }}
-                                isInvalid={
-                                  saldoDisponibleTI - montoTI < 0 ? true : false
-                                }
-                                placeholder="10.000.000"
-                              />
-                            </InputGroup>
-                            {saldoDisponibleTI - montoTI < 0 ? (
-                              <Form.Text className="text-muted">
-                                <p style={{ color: "red" }}>
-                                  {" "}
-                                  Saldo Insuficiente para transferencia. Monto
-                                  Disponible: {saldoDisponibleTI}
-                                </p>
-                              </Form.Text>
-                            ) : (
-                              <Form.Text className="text-muted">
-                                Monto Disponible: {saldoDisponibleTI}
-                              </Form.Text>
-                            )}
-                          </Form.Group>
-                          {/* Boton submit */}
-                          <Form.Group> 
-                            <Button
-                              variant="primary"
-                              className="w-100 mt-2"
-                              onClick={actionTI}
-                              disabled={
+                              required
+                              type="text"
+                              name="montoTI"
+                              value={montoTI}
+                              onChange={({ target }) => {
+                                setMontoTI(target.value);
+                              }}
+                              isInvalid={
                                 saldoDisponibleTI - montoTI < 0 ? true : false
                               }
-                            >
-                              Realizar Transferencia
-                            </Button>
-                          </Form.Group>
-                        </Col>
-                      </Row>
-                    </Form>
-                  </div>
-                </Col>
+                              placeholder="10.000.000"
+                            />
+                          </InputGroup>
+                          {saldoDisponibleTI - montoTI < 0 ? (
+                            <Form.Text className="text-muted">
+                              <p style={{ color: "red" }}>
+                                {" "}
+                                Saldo Insuficiente para transferencia. Monto
+                                Disponible: {saldoDisponibleTI}
+                              </p>
+                            </Form.Text>
+                          ) : (
+                            <Form.Text className="text-muted">
+                              Monto Disponible: {saldoDisponibleTI}
+                            </Form.Text>
+                          )}
+                        </Form.Group>
+                        {/* Boton submit */}
+                        <Form.Group>
+                          <Button
+                            variant="primary"
+                            className="w-100 mt-2"
+                            onClick={actionTI}
+                            disabled={
+                              saldoDisponibleTI - montoTI < 0 ? true : false
+                            }
+                          >
+                            Realizar Transferencia
+                          </Button>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Form>
+                </div>
+              </Col>
             </Tab>
             {/* Contenido del Tab Transacciones Externas */}
             <Tab eventKey="terceros" title="A Terceros">

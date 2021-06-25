@@ -11,15 +11,20 @@ export const cargarTransferenciasBD = () => {
   return async (dispatch, getState) => {
     const transferencias = [];
     const config = JSON.parse(sessionStorage.getItem("config"));
+    const uid = JSON.parse(sessionStorage.getItem("uid"));
+
     // Petición get para obtener la información del balance.
     await axios.get(api.route + "/cuentas/balance", config).then((resp) => {
       var balance = [];
-      const { uid } = getState().auth;
+
+      //const { uid } = getState().auth;
 
       // Almacena la información de la respuesta de la api en un array
-      if (resp.data)
+      if (resp.data) {
+        console.log(resp.data);
         if (resp.data.msg != "El usuario no posee este tipo de cuenta.")
           balance.push(...resp.data);
+      }
       // crea el balance y lo estandariza para ser tratados de forma correcta por el front
       // ademas lo almacena en el store de redux
       crearBalance(balance, uid, dispatch);
@@ -89,6 +94,7 @@ const generalizarDatosTransferencias = (internas, externas, uid) => {
   // dependiendo de si el usuario realizo la transacción o no, y guarda
   // los datos.
   externas.map((transferencia, index) => {
+    console.log(uid, transferencia.cliente_id);
     if (uid == transferencia.cliente_id)
       data.push({
         cuenta: transferencia.tipo_cuenta_origen,
