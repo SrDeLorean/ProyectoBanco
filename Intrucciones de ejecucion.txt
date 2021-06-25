@@ -3,6 +3,7 @@ Para ejecutar el proyecto tiene que realizar los siguientes pasos:
 Requisitos:
 
 Tener instalado php
+Tener instalado composer
 Tener instalado npm (Node)
 Tener un sistema de base de datos (MySQL o PostgreSQL)
 
