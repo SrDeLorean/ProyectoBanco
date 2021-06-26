@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CuentasController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\TransferenciasController;
 use App\Http\Controllers\UsuarioController;
@@ -26,7 +27,7 @@ Route::group([
     'middleware' => 'api',
     'prefix' => 'auth'
 ], function ($router) {
-    Route::post('login', [AuthController::class, "login"]);
+    Route::post('login', [AuthController::class, "login2"]);
     Route::post('logout', [AuthController::class, "logout"]);
     Route::post('refresh', [AuthController::class, "refresh"]);
     Route::get('me', [AuthController::class, "me"]);
@@ -42,13 +43,18 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('usuarios', [UsuarioController::class, 'store']);
     Route::put('usuarios/{id}', [UsuarioController::class, 'update']);
     Route::delete('usuarios/{id}', [UsuarioController::class, 'delete']);
+    Route::get('cuentas/balance', [CuentasController::class, 'getBalance']);
+    Route::get('cuentas/balance/exportar', [CuentasController::class, 'exportarBalance']);
+    Route::get('cuentas', [CuentasController::class, 'getCuentas']);
 
     // Rutas Transferencias
     Route::get('transferencias/internas', [TransferenciasController::class, 'getInt']);
     Route::post('transferencias/internas', [TransferenciasController::class, 'storeInt']);
-
+    Route::get('transferencias/externas', [TransferenciasController::class, 'getExt']);
+    Route::post('transferencias/externas', [TransferenciasController::class, 'storeExt']);
     // Rutas CRUD de Productos
 
 });
+
 
 

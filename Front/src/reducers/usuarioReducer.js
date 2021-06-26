@@ -23,7 +23,7 @@ export const usuarioReducer = (state = initialState, action) => {
     case types.cargarUsuarios:
       return {
         ...state,
-        usuarios: [...action.payload],
+        usuarios: action.payload,
       };
     default:
       return state;

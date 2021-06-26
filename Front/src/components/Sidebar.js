@@ -177,11 +177,10 @@ export default (props = {}) => {
             {rol == "admin" ? (
               <Nav className="flex-column pt-3 pt-md-0">
                 <NavItem
-                  title="Clientes"
+                  title="Administrar Clientes"
                   icon={faCog}
                   link={Routes.Clientes.path}
                 />
-
 
                 <Dropdown.Divider className="my-3 border-indigo" />
               </Nav>
@@ -189,8 +188,13 @@ export default (props = {}) => {
               <Nav className="flex-column pt-3 pt-md-0">
                 <NavItem
                   title="Inicio"
-                  link={Routes.Clientes.path}
+                  link={Routes.Inicio.path}
                   image={ReactHero}
+                />
+                                <NavItem
+                  title="Balance"
+                  icon={faCog}
+                  link={Routes.Balance.path}
                 />
                 <NavItem
                   title="Transferencias"
@@ -198,12 +202,6 @@ export default (props = {}) => {
                   link={Routes.TransferenciaInterna.path}
                 />
                 <Dropdown.Divider className="my-3 border-indigo" />
-
-                <NavItem
-                  title="Cuentas"
-                  icon={faCog}
-                  link={Routes.Clientes.path}
-                />
               </Nav>
             )}
           </div>

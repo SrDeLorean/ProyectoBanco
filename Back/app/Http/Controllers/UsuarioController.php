@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Validator;
 
 class UsuarioController extends Controller
 {
+    /**
+     * Metodo para mostrar un cliente en especifico
+     */
     public function show($id){
         try{
             $user = User::findOrFail($id);
@@ -24,11 +27,15 @@ class UsuarioController extends Controller
         }
         return User::findOrFail($id);
     }
-
+    /**
+     * Metodo para mostrar todos los clientes
+     */
     public function showAll(){
         return User::all();
     }
-
+    /**
+     * Metodo para guardar un nuevo cliente y sus respectivas cuentas
+     */
     public function store(Request $request){
         try{
             $validador = Validator::make($request->all(), [
@@ -88,7 +95,9 @@ class UsuarioController extends Controller
             ]);
         }
     }
-
+    /**
+     * Metodo para actualizar la información de un cliente en especifico
+     */
     public function update(Request $request, $id){
         try{
             $validador = Validator::make($request->all(), [
@@ -145,7 +154,9 @@ class UsuarioController extends Controller
             ]);
         }
     }
-
+    /**
+     * Metodo para dar de baja un usuario
+     */
     public function delete(Request $request, $id){
         try{
             $user = User::findOrFail($id);

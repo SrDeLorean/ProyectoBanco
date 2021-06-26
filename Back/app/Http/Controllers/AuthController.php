@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Validator;
 
 
 class AuthController extends Controller
@@ -18,11 +19,11 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login2']]);
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Metodo para loguearse con las credenciales de email y password
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -58,7 +59,54 @@ class AuthController extends Controller
                 ], 401);
             }
         //este catch permite responder directamente que problemas en la peticion SQL
-        } catch(\Illuminate\Database\QueryException $ex){ 
+        } catch(\Illuminate\Database\QueryException $ex){
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al solicitar peticiones a la base de datos',
+                'data' => ['error'=>$ex]
+            ], 409);
+        }
+    }
+    /**
+     * Metodo para loguearse con rut y password
+     */
+    public function login2(Request $request)
+    {
+        $validator = Validator::make($request->only(['rut', 'password']), [
+            'rut' => 'required|exists:users,rut',
+            'password' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en las credenciales',
+                'data' => ['error'=>$validator->errors()]
+            ], 422);
+        }
+        try{
+            $user = User::where('rut', $request->rut)->first();
+            $credentials = [
+                'email' => $user->email,
+                'password' => $request->password
+            ];
+            $token = JWTAuth::attempt($credentials);
+            if ($token) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Operacion realizada con exito',
+                    'data' => ['token'=>$token,
+                            'user' =>User::where('email', $user->email)->get()->first()],
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'code' => 3,
+                    'message' => 'Error en las credenciales',
+                    'data' => ['error'=>$validator->errors()]
+                ], 401);
+            }
+        //este catch permite responder directamente que problemas en la peticion SQL
+        } catch(\Illuminate\Database\QueryException $ex){
             return response()->json([
                 'success' => false,
                 'message' => 'Error al solicitar peticiones a la base de datos',
@@ -68,7 +116,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the authenticated User.
+     * Metodo para obtener el usuario actual autenticado
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -83,7 +131,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Log the user out (Invalidate the token).
+     * Metodo para desconectarse e invalidar el token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -107,7 +155,7 @@ class AuthController extends Controller
                 'data' => null
             ], 422);
         //este catch permite responder directamente que problemas en la peticion SQL
-        } catch(\Illuminate\Database\QueryException $ex){ 
+        } catch(\Illuminate\Database\QueryException $ex){
             return response()->json([
                 'success' => false,
                 'message' => 'Error al solicitar peticiones a la base de datos',
@@ -117,7 +165,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Refresh a token.
+     * Metodo para refrescar un token
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -130,14 +178,14 @@ class AuthController extends Controller
         } catch (TokenExpiredException $ex) {
             // We were unable to refresh the token, our user needs to login again
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Need to login again, please (expired)!',
                 'data' => []
             ], 422);
         } catch (TokenBlacklistedException $ex) {
             // Blacklisted token
             return response()->json([
-                'success' => false, 
+                'success' => false,
                 'message' => 'Need to login again, please (blacklisted)!',
                 'data' => []
             ], 422);
@@ -145,7 +193,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get the token array structure.
+     * Metodo para obtener el token y su información
      *
      * @param  string $token
      *
