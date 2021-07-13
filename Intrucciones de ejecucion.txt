@@ -1,0 +1,41 @@
+Para ejecutar el proyecto tiene que realizar los siguientes pasos:
+
+Requisitos:
+
+Tener instalado php
+Tener instalado composer
+Tener instalado npm (Node)
+Tener un sistema de base de datos (MySQL o PostgreSQL)
+
+Antes de ejecutar comandos:
+
+ingrese a la carpeta de Back y busque el archivo .env, si utiliza Mac este va a estar oculto, si utiliza visual studio lo vera inmediatamente
+si abre este archivo podrá ver en la línea 10 a 15 la configuración de la base de datos, si usted posee MySQL no necesita cambiar nada
+si usted tiene PostgreSQL debe cambiar la línea 10, 12, 14, 15 según su configuración.
+El nombre de la base de datos tiene que ser igual que la línea 13, puede cambiarlo si lo desea.
+
+Acciones a ejecutar
+
+1. primero debe crear la base de datos (solo crearla no llenarla)
+2. luego con ingrese a la carpeta Back y coloque los siguientes comandos
+3. composer install (descarga carpeta vendor)
+4. php artisan migrate (crea las tablas en la base de datos)
+5. php artisan db:seed (ingresa los usuarios a la base de datos)
+6. php artisan serve (simula el servidor)
+
+Deje esta terminal abierta para tener la simulación del backend corriendo
+
+Para ejecutar el frontend debe hacer lo siguiente:
+
+1. npm install (descarga carpeta node_module)
+2. npm start (simula el servidor)
+
+Deje esta terminal abierta para tener la simulación del frotend corriendo
+En la terminal debe aparecer la IP a cuál conectarse para ver el proyecto si es que no le abrió una ventana
+
+En caso de que salga un error de login porque no enruta por favor utilizar el siguiente comando:
+
+php artisan key:generate
+php artisan jwt:secret
+
+En caso de que aún no pueda correr el sistema por favor consultar con el programado a cargo.
